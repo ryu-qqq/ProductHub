@@ -1,0 +1,25 @@
+pluginManagement {
+
+    def springBootVersion = settings.getProperty("springBootVersion")
+    def springDependencyManagementVersion = settings.getProperty("springDependencyManagementVersion")
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "org.springframework.boot") {
+                useVersion(springBootVersion)
+            }
+            if (requested.id.id == "io.spring.dependency-management") {
+                useVersion(springDependencyManagementVersion)
+            }
+        }
+    }
+
+}
+
+rootProject.name = 'ProductHub'
+include(
+        "core-api",
+        "support:logging",
+        "storage:db-core",
+        "domain"
+)

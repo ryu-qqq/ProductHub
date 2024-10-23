@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' apply false
+    id 'io.spring.dependency-management'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(findProperty("javaVersion"))
+    }
+}
+
+
+def projectGroup = findProperty("projectGroup")
+def applicationVersion = findProperty("applicationVersion")
+def springCloudDependenciesVersions = findProperty("springCloudDependenciesVersions")
+
+allprojects {
+    group = projectGroup
+    version = applicationVersion
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudDependenciesVersions}"
+        }
+    }
+
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    tasks.getByName("bootJar"){
+        enabled = false;
+    }
+
+    tasks.getByName("jar"){
+        enabled = true;
+    }
+
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
