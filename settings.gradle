@@ -17,8 +17,10 @@ pluginManagement {
 }
 
 rootProject.name = 'ProductHub'
+
 include(
-        "core-api",
+        "core:core-api",
+        "core:core-enum",
         "support:logging",
         "storage:db-core",
         "domain"

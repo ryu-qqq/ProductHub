@@ -14,25 +14,24 @@ spring.config.activate.on-profile: local
 
 spring:
   jpa:
+    generate-ddl: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-  h2:
-    console:
-      enabled: true
 
 storage:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      pool-name: jpa-hikari-pool
-      maximum-pool-size: 10
-    url: jdbc:mysql://${storage.database.core-db.url}
-    username: ${storage.database.core-db.username}
-    password: ${storage.database.core-db.username}
+    core:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        pool-name: jpa-hikari-pool
+        maximum-pool-size: 10
+      url: ${STORAGE_DATABASE_URL}
+      username: ${STORAGE_DATABASE_USERNAME}
+      password: ${STORAGE_DATABASE_PASSWORD}
 
 ---
 
