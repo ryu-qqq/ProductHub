@@ -3,6 +3,7 @@ package com.ryuqq.setof.storage.db.core.product;
 import com.ryuqq.setof.core.ManagementType;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.core.ProductCondition;
+import com.ryuqq.setof.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 
@@ -54,9 +55,12 @@ public class ProductGroupEntity extends BaseEntity {
     @Column(name = "DISPLAY_YN",  nullable = false)
     private boolean displayYn;
 
+    @Column(name = "PRODUCT_STATUS", length = 10,  nullable = false)
+    private ProductStatus productStatus;
+
     protected ProductGroupEntity() {}
 
-    public ProductGroupEntity(long sellerId, long categoryId, long brandId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn) {
+    public ProductGroupEntity(long sellerId, long categoryId, long brandId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus) {
         this.sellerId = sellerId;
         this.categoryId = categoryId;
         this.brandId = brandId;
@@ -70,6 +74,7 @@ public class ProductGroupEntity extends BaseEntity {
         this.discountRate = discountRate;
         this.soldOutYn = soldOutYn;
         this.displayYn = displayYn;
+        this.productStatus = productStatus;
     }
 
 

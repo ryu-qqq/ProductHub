@@ -24,4 +24,9 @@ public abstract class BaseEntity {
     @Column(name = "UPDATE_DATE", nullable = false)
     private LocalDateTime updateTime;
 
+    public Long getId() {
+        return id;
+    }
+
+
 }

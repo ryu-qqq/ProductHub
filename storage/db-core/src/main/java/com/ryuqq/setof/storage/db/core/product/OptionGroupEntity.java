@@ -21,4 +21,5 @@ public class OptionGroupEntity extends BaseEntity {
     public OptionName getOptionName() {
         return optionName;
     }
+
 }

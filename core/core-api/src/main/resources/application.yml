@@ -8,6 +8,12 @@ spring:
   profiles:
     active: local
 
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
 #---
 #
 #spring:
@@ -18,9 +24,3 @@ spring:
 #spring:
 #  profiles: dev
 #
-
----
-spring:
-  config:
-    activate:
-      on-profile: local

@@ -12,7 +12,7 @@ public class BrandEntity extends BaseEntity {
     @Column(name = "BRAND_NAME", nullable = false, length = 50)
     private String brandName;
 
-    @Column(name = "BRAND_ICON_IMAGE_URL", nullable = false, length = 255)
+    @Column(name = "BRAND_ICON_IMAGE_URL", nullable = true, length = 255)
     private String brandIconImageUrl;
 
     @Column(name = "DISPLAY_YN", nullable = false)
