@@ -2,8 +2,8 @@ package com.ryuqq.setof.storage.db.core.data;
 
 import com.ryuqq.setof.core.CategoryType;
 import com.ryuqq.setof.core.TargetGroup;
-import com.ryuqq.setof.domain.core.category.CategoryFilter;
 import com.ryuqq.setof.storage.db.core.category.CategoryEntity;
+import com.ryuqq.setof.storage.db.core.category.dto.CategoryStorageFilterDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +46,11 @@ public class CategoryModuleHelper {
         return categories;
     }
 
-    public static CategoryFilter toCategoryFilter(List<CategoryEntity> categories){
+    public static CategoryStorageFilterDto toCategoryFilter(List<CategoryEntity> categories){
         List<Long> categoryIds =
                 categories.isEmpty() ?
                         List.of(999L) : categories.stream().map(CategoryEntity::getId).toList();
 
-        return new CategoryFilter(categoryIds, null, null, null, 20);
+        return new CategoryStorageFilterDto(categoryIds, null, null, null, 20);
     }
 }

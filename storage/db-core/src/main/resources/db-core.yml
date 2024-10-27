@@ -16,11 +16,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/ryuqq?useSSL=true&useUnicode=true&serverTimezone=Asia/Seoul&allowMultiQueries=true
       pool-name: jpa-hikari-pool
       maximum-pool-size: 10
-    url: jdbc:mysql://127.0.0.1:3306/ryuqq?useSSL=true&useUnicode=true&serverTimezone=Asia/Seoul&allowMultiQueries=true
-    username: root
-    password: Ff@20122104
+      username: root
+      password: Ff@20122104
   jpa:
     generate-ddl: false
     hibernate:

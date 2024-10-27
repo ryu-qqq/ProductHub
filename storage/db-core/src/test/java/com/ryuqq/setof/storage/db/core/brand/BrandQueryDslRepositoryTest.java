@@ -1,15 +1,12 @@
 package com.ryuqq.setof.storage.db.core.brand;
 
-import com.ryuqq.setof.domain.core.brand.Brand;
-import com.ryuqq.setof.domain.core.brand.BrandFilter;
 import com.ryuqq.setof.storage.db.core.BaseRepositoryTest;
-import com.ryuqq.setof.storage.db.core.brand.dao.BrandDao;
+import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
+import com.ryuqq.setof.storage.db.core.brand.dto.BrandStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.data.BrandModuleHelper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -45,40 +42,40 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
     void shouldFetchBrandById() {
         BrandEntity savedBrand = this.brandEntity;
 
-        Optional<Brand> result = brandQueryDslRepository.fetchBrand(savedBrand.getId());
+        Optional<BrandDto> result = brandQueryDslRepository.fetchBrand(savedBrand.getId());
 
         assertTrue(result.isPresent());
-        assertEquals(savedBrand.getId(), result.get().id());
-        assertEquals(savedBrand.getBrandName(), result.get().brandName());
+        assertEquals(savedBrand.getId(), result.get().getId());
+        assertEquals(savedBrand.getBrandName(), result.get().getBrandName());
 
     }
 
 
     @Test
     void shouldReturnEmptyWhenBrandNotFoundById() {
-        Optional<Brand> result = brandQueryDslRepository.fetchBrand(999L);
+        Optional<BrandDto> result = brandQueryDslRepository.fetchBrand(999L);
         assertTrue(result.isEmpty());
     }
 
 
     @Test
     void shouldFetchBrandResponsesWithPagination() {
-        BrandFilter brandFilter = BrandModuleHelper.toBrandFilter(List.of());
+        BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of());
 
-        List<Brand> result = brandQueryDslRepository.fetchBrands((brandFilter));
+        List<BrandDto> result = brandQueryDslRepository.fetchBrands((brandFilter));
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
-        assertEquals(brandEntity.getId(), result.getFirst().id());
-        assertEquals(brandEntity.getBrandName(), result.getFirst().brandName());
+        assertEquals(brandEntity.getId(), result.getFirst().getId());
+        assertEquals(brandEntity.getBrandName(), result.getFirst().getBrandName());
     }
 
 
     @Test
     void shouldReturnEmptyBrandResponsesWhenNoMatches() {
-        BrandFilter brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
+        BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
 
-        List<Brand> result = brandQueryDslRepository.fetchBrands(brandFilter);
+        List<BrandDto> result = brandQueryDslRepository.fetchBrands(brandFilter);
 
         assertTrue(result.isEmpty());
     }
@@ -86,14 +83,14 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
 
     @Test
     void shouldReturnBrandCount() {
-        BrandFilter brandFilter = BrandModuleHelper.toBrandFilter(List.of());
+        BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of());
         long count = brandQueryDslRepository.fetchBrandCount(brandFilter);
         assertEquals(1, count);
     }
 
     @Test
     void shouldReturnZeroBrandCountWhenNoMatches() {
-        BrandFilter brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
+        BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
         long count = brandQueryDslRepository.fetchBrandCount(brandFilter);
         assertEquals(0, count);
     }

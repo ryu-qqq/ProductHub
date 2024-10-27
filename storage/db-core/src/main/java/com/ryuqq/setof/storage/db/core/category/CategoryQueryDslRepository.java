@@ -12,11 +12,9 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.Union;
 import com.ryuqq.setof.core.CategoryType;
 import com.ryuqq.setof.core.TargetGroup;
-import com.ryuqq.setof.domain.core.category.Category;
-import com.ryuqq.setof.domain.core.category.CategoryFilter;
-import com.ryuqq.setof.domain.core.category.CategoryQueryRepository;
-import com.ryuqq.setof.storage.db.core.category.dao.CategoryDao;
-import com.ryuqq.setof.storage.db.core.category.dao.QCategoryDao;
+import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
+import com.ryuqq.setof.storage.db.core.category.dto.CategoryStorageFilterDto;
+import com.ryuqq.setof.storage.db.core.category.dto.QCategoryDto;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -49,9 +47,9 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
     }
 
     @Override
-    public List<Category> fetchCategories(CategoryFilter categoryFilter) {
-        List<CategoryDao> categories = queryFactory
-                .select(new QCategoryDao(
+    public List<CategoryDto> fetchCategories(CategoryStorageFilterDto categoryFilter) {
+        return queryFactory
+                .select(new QCategoryDto(
                         categoryEntity.id,
                         categoryEntity.categoryName,
                         categoryEntity.depth,
@@ -72,11 +70,10 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
                 )
                 .fetch();
 
-        return toDomain(categories);
     }
 
     @Override
-    public long fetchCategoryCount(CategoryFilter categoryFilter) {
+    public long fetchCategoryCount(CategoryStorageFilterDto categoryFilter) {
         Long count =  queryFactory.select(
                         categoryEntity.count()
                 )
@@ -91,16 +88,16 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
     }
 
     @Override
-    public List<Category> fetchChildCategories(long categoryId) {
+    public List<CategoryDto> fetchChildCategories(long categoryId) {
         return fetchRecursiveCategories(categoryId, true);
     }
 
     @Override
-    public List<Category> fetchParentCategories(long categoryId) {
+    public List<CategoryDto> fetchParentCategories(long categoryId) {
         return fetchRecursiveCategories(categoryId, false);
     }
 
-    private List<Category> fetchRecursiveCategories(long categoryId, boolean isChild) {
+    private List<CategoryDto> fetchRecursiveCategories(long categoryId, boolean isChild) {
         JPASQLQuery<CategoryEntity> q = new JPASQLQuery<>(em, SQLTemplates.DEFAULT);
         QCategoryEntity c = new QCategoryEntity("c");
         QCategoryEntity sub = new QCategoryEntity("sub");
@@ -120,9 +117,9 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
 
         Union<CategoryEntity> union = SQLExpressions.unionAll(query1, query2);
 
-        List<CategoryDao> categories = q.withRecursive(rec, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType, c.path).as(union)
+        return q.withRecursive(rec, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType, c.path).as(union)
                 .select(
-                        new QCategoryDao(
+                        new QCategoryDto(
                                 sub.id,
                                 sub.categoryName,
                                 sub.depth,
@@ -136,15 +133,7 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
                 .orderBy(isChild ? sub.depth.asc() : sub.depth.desc())
                 .fetch();
 
-        return toDomain(categories);
     }
-
-
-    private List<Category> toDomain(List<CategoryDao> categories){
-        return categories.stream().map(CategoryDao::toCategory).toList();
-    }
-
-
 
     private BooleanExpression categoryIdEq(long categoryId){
         return categoryEntity.id.eq(categoryId);

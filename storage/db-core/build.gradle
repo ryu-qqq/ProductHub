@@ -15,13 +15,10 @@ dependencies {
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     implementation project(':core:core-enum')
-    compileOnly project(':domain')
-    testImplementation project(':domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //MySql
     runtimeOnly 'com.mysql:mysql-connector-j'
-
 
     testImplementation 'com.h2database:h2'
 

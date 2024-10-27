@@ -2,11 +2,9 @@ package com.ryuqq.setof.storage.db.core.color;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryuqq.setof.domain.core.color.Color;
-import com.ryuqq.setof.domain.core.color.ColorFilter;
-import com.ryuqq.setof.domain.core.color.ColorQueryRepository;
-import com.ryuqq.setof.storage.db.core.color.dao.ColorDao;
-import com.ryuqq.setof.storage.db.core.color.dao.QColorDao;
+import com.ryuqq.setof.storage.db.core.color.dto.ColorDto;
+import com.ryuqq.setof.storage.db.core.color.dto.ColorStorageFilterDto;
+import com.ryuqq.setof.storage.db.core.color.dto.QColorDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,9 +33,9 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
     }
 
     @Override
-    public List<Color> fetchColors(ColorFilter colorFilter) {
-        List<ColorDao> categories = queryFactory
-                .select(new QColorDao(
+    public List<ColorDto> fetchColors(ColorStorageFilterDto colorFilter) {
+        return queryFactory
+                .select(new QColorDto(
                         colorEntity.id,
                         colorEntity.colorName
                 ))
@@ -50,12 +48,11 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
                 )
                 .fetch();
 
-        return toDomain(categories);
     }
 
 
     @Override
-    public long fetchColorCount(ColorFilter colorFilter) {
+    public long fetchColorCount(ColorStorageFilterDto colorFilter) {
         Long count =  queryFactory.select(
                         colorEntity.count()
                 )
@@ -68,9 +65,6 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
     }
 
 
-    private List<Color> toDomain(List<ColorDao> colors){
-        return colors.stream().map(ColorDao::toColor).toList();
-    }
 
     private BooleanExpression colorIdEq(long colorId) {
         return colorEntity.id.eq(colorId);

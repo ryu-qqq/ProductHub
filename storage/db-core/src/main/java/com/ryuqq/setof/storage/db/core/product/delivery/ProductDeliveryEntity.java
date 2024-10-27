@@ -1,0 +1,53 @@
+package com.ryuqq.setof.storage.db.core.product.delivery;
+
+import com.ryuqq.setof.core.ReturnMethod;
+import com.ryuqq.setof.core.ShipmentCompanyCode;
+import com.ryuqq.setof.storage.db.core.BaseEntity;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+
+@Table(name = "PRODUCT_DELIVERY")
+@Entity
+public class ProductDeliveryEntity extends BaseEntity {
+
+    @Column(name = "PRODUCT_GROUP_ID", nullable = false)
+    private long productGroupId;
+
+    @Column(name = "DELIVERY_AREA", length = 50, nullable = false)
+    private String deliveryArea;
+
+    @Column(name = "DELIVERY_FEE", nullable = false)
+    private BigDecimal deliveryFee;
+
+    @Column(name = "DELIVERY_PERIOD_AVERAGE", nullable = false)
+    private int deliveryPeriodAverage;
+
+    @Column(name = "RETURN_METHOD_DOMESTIC", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReturnMethod returnMethodDomestic;
+
+    @Column(name = "RETURN_COURIER_DOMESTIC", length = 15, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShipmentCompanyCode returnCourierDomestic;
+
+    @Column(name = "RETURN_CHARGE_DOMESTIC", nullable = false)
+    private BigDecimal returnChargeDomestic;
+
+    @Column(name = "RETURN_EXCHANGE_AREA_DOMESTIC", length = 50, nullable = false)
+    private String returnExchangeAreaDomestic;
+
+    protected ProductDeliveryEntity() {}
+
+    public ProductDeliveryEntity(long productGroupId, String deliveryArea, BigDecimal deliveryFee, int deliveryPeriodAverage, ReturnMethod returnMethodDomestic, ShipmentCompanyCode returnCourierDomestic, BigDecimal returnChargeDomestic, String returnExchangeAreaDomestic) {
+        this.productGroupId = productGroupId;
+        this.deliveryArea = deliveryArea;
+        this.deliveryFee = deliveryFee;
+        this.deliveryPeriodAverage = deliveryPeriodAverage;
+        this.returnMethodDomestic = returnMethodDomestic;
+        this.returnCourierDomestic = returnCourierDomestic;
+        this.returnChargeDomestic = returnChargeDomestic;
+        this.returnExchangeAreaDomestic = returnExchangeAreaDomestic;
+    }
+
+}

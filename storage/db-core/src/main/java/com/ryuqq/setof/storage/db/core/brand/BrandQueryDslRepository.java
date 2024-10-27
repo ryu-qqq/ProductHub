@@ -1,12 +1,10 @@
 package com.ryuqq.setof.storage.db.core.brand;
 
-import com.ryuqq.setof.domain.core.brand.Brand;
-import com.ryuqq.setof.domain.core.brand.BrandFilter;
-import com.ryuqq.setof.domain.core.brand.BrandQueryRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryuqq.setof.storage.db.core.brand.dao.BrandDao;
-import com.ryuqq.setof.storage.db.core.brand.dao.QBrandDao;
+import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
+import com.ryuqq.setof.storage.db.core.brand.dto.BrandStorageFilterDto;
+import com.ryuqq.setof.storage.db.core.brand.dto.QBrandDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,10 +33,10 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public Optional<Brand> fetchBrand(long brandId) {
-        BrandDao brandDao = queryFactory
+    public Optional<BrandDto> fetchBrand(long brandId) {
+        return Optional.ofNullable(queryFactory
                         .select(
-                                new QBrandDao(
+                                new QBrandDto(
                                         brandEntity.id,
                                         brandEntity.brandName,
                                         brandEntity.brandIconImageUrl.coalesce(""),
@@ -47,18 +45,11 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
                         )
                         .from(brandEntity)
                         .where(brandIdEq(brandId))
-                        .fetchOne();
-
-        if(brandDao == null) {
-            return Optional.empty();
-        }else{
-            return Optional.ofNullable(brandDao.toBrand());
-        }
-
+                        .fetchOne());
     }
 
     @Override
-    public long fetchBrandCount(BrandFilter brandFilter) {
+    public long fetchBrandCount(BrandStorageFilterDto brandFilter) {
         Long count = queryFactory.select(
                         brandEntity.count()
                 )
@@ -71,10 +62,10 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public List<Brand> fetchBrands(BrandFilter brandFilter) {
-        List<BrandDao> brands = queryFactory
+    public List<BrandDto> fetchBrands(BrandStorageFilterDto brandFilter) {
+        return queryFactory
                 .select(
-                        new QBrandDao(
+                        new QBrandDto(
                                 brandEntity.id,
                                 brandEntity.brandName,
                                 brandEntity.brandIconImageUrl.coalesce(""),
@@ -90,12 +81,8 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
                 )
                 .fetch();
 
-        return toDomain(brands);
     }
 
-    private List<Brand> toDomain(List<BrandDao> brands) {
-        return brands.stream().map(BrandDao::toBrand).toList();
-    }
 
     private BooleanExpression brandIdEq(long brandId){
         return brandEntity.id.eq(brandId);

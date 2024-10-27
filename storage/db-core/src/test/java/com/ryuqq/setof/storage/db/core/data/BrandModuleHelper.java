@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.data;
 
-import com.ryuqq.setof.domain.core.brand.BrandFilter;
 import com.ryuqq.setof.storage.db.core.brand.BrandEntity;
+import com.ryuqq.setof.storage.db.core.brand.dto.BrandStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.data.utils.EasyRandomUtils;
 import org.jeasy.random.EasyRandom;
 
@@ -22,8 +22,8 @@ public class BrandModuleHelper {
     }
 
 
-    public static BrandFilter toBrandFilter(List<Long> brandIds){
-        return new BrandFilter(brandIds, null, 20);
+    public static BrandStorageFilterDto toBrandFilter(List<Long> brandIds){
+        return new BrandStorageFilterDto(brandIds, null, 20);
     }
 
 

@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.data;
 
-import com.ryuqq.setof.domain.core.color.ColorFilter;
 import com.ryuqq.setof.storage.db.core.color.ColorEntity;
+import com.ryuqq.setof.storage.db.core.color.dto.ColorStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.data.utils.EasyRandomUtils;
 import org.jeasy.random.EasyRandom;
 
@@ -20,8 +20,8 @@ public class ColorModuleHelper {
     }
 
 
-    public static ColorFilter toColorFilter(List<Long> colorIds){
-        return new ColorFilter(colorIds, null, 20);
+    public static ColorStorageFilterDto toColorFilter(List<Long> colorIds){
+        return new ColorStorageFilterDto(colorIds, null, 20);
     }
 
 }

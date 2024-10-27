@@ -22,6 +22,7 @@ include(
         "core:core-api",
         "core:core-enum",
         "support:logging",
+        "support:utils",
         "storage:db-core",
-        "domain"
+        "domain:product-core"
 )
