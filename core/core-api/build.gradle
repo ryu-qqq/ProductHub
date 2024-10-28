@@ -1,3 +1,8 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+
 tasks.getByName("bootJar"){
     enabled = true;
 }
@@ -13,6 +18,9 @@ dependencies {
     implementation(project(":support:utils"))
     implementation(project(":storage:db-core"))
     implementation(project(":domain:product-core"))
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation project(":tests:api-docs")
 
 }

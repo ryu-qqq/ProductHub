@@ -11,10 +11,11 @@ public record ProductGroupImageRequestDto(
         String imageUrl
 ){
     public ProductGroupImageRequestDto {
-        validateFields();
+        validateFields(productImageType, imageUrl);
     }
 
-    private void validateFields() {
+    private void validateFields(ProductImageType productImageType,
+                                String imageUrl) {
         validateString(imageUrl, 255, "Image Url");
         validateEnum(productImageType, "Product Image Type");
     }

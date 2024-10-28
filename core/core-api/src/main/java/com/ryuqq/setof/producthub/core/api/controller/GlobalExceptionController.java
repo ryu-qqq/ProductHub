@@ -7,11 +7,14 @@ import com.ryuqq.setof.producthub.core.api.controller.support.ErrorMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.security.InvalidParameterException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -37,31 +40,16 @@ public class GlobalExceptionController {
     }
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
-        String errorMsg = combineBadRequestMsg(e);
+    @ExceptionHandler(InvalidParameterException.class)
+    public ResponseEntity<?> handleValidationExceptions(InvalidParameterException e) {
+        String errorMsg = e.getMessage();
         log.warn(ERROR_LOG_MSG_FORMAT, errorMsg, e);
 
-        ErrorType errorType = ErrorType.of(e.getStatusCode().value());
+        ErrorType errorType = ErrorType.of(HttpStatus.BAD_REQUEST.value());
 
         return ResponseEntity
-                .status(e.getStatusCode().value())
+                .status(HttpStatus.BAD_REQUEST.value())
                 .body(ApiResponse.error(new ErrorMessage(errorType)));
-    }
-
-
-    private String combineBadRequestMsg(MethodArgumentNotValidException e){
-        String fieldErrors = e.getBindingResult().getFieldErrors()
-                .stream()
-                .map(fieldError -> String.format("%s", fieldError.getDefaultMessage()))
-                .collect(Collectors.joining(" "));
-
-        String globalErrors = e.getBindingResult().getGlobalErrors()
-                .stream()
-                .map(objectError -> String.format("%s", objectError.getDefaultMessage()))
-                .collect(Collectors.joining(" "));
-
-        return (fieldErrors + " " + globalErrors).trim();
     }
 
 

@@ -3,5 +3,6 @@ dependencies {
     implementation project(':core:core-enum')
     implementation project(':storage:db-core')
     compileOnly("org.springframework:spring-context")
+    compileOnly("jakarta.transaction:jakarta.transaction-api")
 
 }

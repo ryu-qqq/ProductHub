@@ -5,7 +5,5 @@ public enum OptionName {
     COLOR,
     DEFAULT_ONE,
     DEFAULT_TWO,
-
-
     ;
 }
