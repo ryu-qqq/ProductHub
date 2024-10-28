@@ -9,5 +9,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.ryuqq.setof.storage.db.core")
 public class StorageModuleTestConfig {
 
-
 }

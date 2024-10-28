@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ProductHub
+    name: core-api
   config:
     import:
       - logging.yml

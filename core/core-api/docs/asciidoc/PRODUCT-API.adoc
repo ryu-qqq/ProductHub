@@ -1,0 +1,15 @@
+= PRODUCT API
+:toc:
+:toclevels: 3
+
+
+=== PRODUCT COMMAND POST API
+==== Curl Request
+include::{snippets}/product-group-register/curl-request.adoc[]
+==== Request Fields
+include::{snippets}/product-group-register/request-fields.adoc[]
+==== Http Response
+include::{snippets}/product-group-register/http-response.adoc[]
+==== Response Fields
+include::{snippets}/product-group-register/response-fields-beneath-data.adoc[]
+include::{snippets}/product-group-register/response-fields-beneath-response.adoc[]

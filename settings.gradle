@@ -11,12 +11,10 @@ pluginManagement {
 
 rootProject.name = 'ProductHub'
 
-include(
-        "core:core-api",
-        "core:core-enum",
-        "support:logging",
-        "support:utils",
-        "storage:db-core",
-        "domain:product-core",
-        "tests:api-docs"
-)
+include 'core:core-api'
+include 'core:core-enum'
+include 'support:logging'
+include 'support:utils'
+include 'storage:db-core'
+include 'domain:product-core'
+include 'tests:api-docs'

@@ -3,7 +3,6 @@ package com.ryuqq.setof.storage.db.core;
 import com.ryuqq.setof.storage.db.core.brand.BrandQueryDslRepository;
 import com.ryuqq.setof.storage.db.core.category.CategoryQueryDslRepository;
 import com.ryuqq.setof.storage.db.core.color.ColorQueryDslRepository;
-import com.ryuqq.setof.storage.db.core.config.JpaConfiguration;
 import com.ryuqq.setof.storage.db.core.config.StorageModuleTestConfig;
 import com.ryuqq.setof.storage.db.core.config.TestQueryDslConfig;
 import jakarta.persistence.EntityManager;
@@ -11,15 +10,9 @@ import org.junit.jupiter.api.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
 
-//@ActiveProfiles("local")
-//@SpringBootTest
-//@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-//@Tag("context")
-
+@Tag("unitTest")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @Import({
@@ -28,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
         BrandQueryDslRepository.class,
         CategoryQueryDslRepository.class,
         ColorQueryDslRepository.class,
-
-
 
 })
 public abstract class BaseRepositoryTest {

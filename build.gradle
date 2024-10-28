@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' apply false
     id 'io.spring.dependency-management'
     id 'io.spring.javaformat' apply(false)
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.asciidoctor.jvm.convert' apply(false)
 
 }
 
@@ -36,6 +36,7 @@ subprojects {
         testImplementation "org.springframework.boot:spring-boot-starter-test"
         //EASY RANDOM
         testImplementation "org.jeasy:easy-random-core:${easyRandomVersions}"
+        testImplementation 'com.h2database:h2'
 
     }
 

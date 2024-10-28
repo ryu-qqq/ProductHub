@@ -14,23 +14,23 @@ public record ProductGroupCommandContextRequestDto(
         ProductNoticeInsertRequestDto productNotice,
         ProductDeliveryRequestDto productDelivery,
         List<ProductGroupImageRequestDto> productImageList,
-        ProductGroupDetailDescriptionRequestDto productGroupDetailDescriptionRequestDto,
+        ProductGroupDetailDescriptionRequestDto detailDescription,
         List<ProductInsertRequestDto> productOptions
 ) {
     public ProductGroupCommandContextRequestDto{
-        validateFields(productGroup, productNotice, productDelivery, productImageList, productGroupDetailDescriptionRequestDto, productOptions);
+        validateFields(productGroup, productNotice, productDelivery, productImageList, detailDescription, productOptions);
     }
 
     private void validateFields(ProductGroupInsertRequestDto productGroup,
                                                 ProductNoticeInsertRequestDto productNotice,
                                                 ProductDeliveryRequestDto productDelivery,
                                                 List<ProductGroupImageRequestDto> productImageList,
-                                                ProductGroupDetailDescriptionRequestDto productGroupDetailDescriptionRequestDto,
+                                                ProductGroupDetailDescriptionRequestDto detailDescription,
                                                 List<ProductInsertRequestDto> productOptions){
         validateObjectNotNull(productGroup, "Product Group");
         validateObjectNotNull(productNotice, "Product Notice");
         validateObjectNotNull(productDelivery, "Product Delivery");
-        validateObjectNotNull(productGroupDetailDescriptionRequestDto, "Product Detail Description");
+        validateObjectNotNull(detailDescription, "Product Detail Description");
         validateListNotNullOrEmpty(productImageList, "Product Image List", false);
         validateListNotNullOrEmpty(productOptions, "Product Options", false);
     }
@@ -41,10 +41,10 @@ public record ProductGroupCommandContextRequestDto(
         ProductNoticeCommand notice = productNotice.toProductNotice();
         ProductDeliveryCommand delivery = productDelivery.toProductDelivery();
         List<ProductGroupImageCommand> images = toProductGroupImageCommands();
-        ProductDetailDescriptionCommand detailDescription = productGroupDetailDescriptionRequestDto.toProductDetailDescription();
+        ProductDetailDescriptionCommand description = detailDescription.toProductDetailDescription();
         List<ProductCommand> productCommands = toProductCommands(group.optionType(), productOptions);
 
-        return new ProductGroupCommandContext(group, notice, delivery, images, detailDescription, productCommands);
+        return new ProductGroupCommandContext(group, notice, delivery, images, description, productCommands);
     }
 
     public List<ProductCommand> toProductCommands(OptionType optionType, List<ProductInsertRequestDto> productOptions) {
