@@ -48,6 +48,10 @@ public record ProductGroupCommandContextRequestDto(
     }
 
     public List<ProductCommand> toProductCommands(OptionType optionType, List<ProductInsertRequestDto> productOptions) {
+        if(!optionType.isMultiOption() && productOptions.size() > 1){
+            throw new IllegalArgumentException("Single option type can only have one product");
+        }
+
         return productOptions.stream()
                 .map(p -> p.toProductCommand(optionType))
                 .toList();

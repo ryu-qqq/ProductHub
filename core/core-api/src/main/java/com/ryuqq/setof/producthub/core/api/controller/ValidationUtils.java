@@ -46,8 +46,10 @@ public class ValidationUtils {
     }
 
     public static <T> void validateListNotNullOrEmpty(List<T> list, String fieldName, boolean nullable) {
-        if (!nullable && list == null || list.isEmpty()) {
-            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        if(!nullable){
+            if(list == null || list.isEmpty()){
+                throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+            }
         }
     }
 

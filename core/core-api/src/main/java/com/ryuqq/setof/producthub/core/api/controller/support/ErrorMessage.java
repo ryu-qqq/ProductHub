@@ -16,6 +16,12 @@ public class ErrorMessage {
         this.status = HttpStatus.valueOf(errorType.getStatus());
     }
 
+    public ErrorMessage(ErrorType errorType, String message) {
+        this.code = errorType.getCode().name();
+        this.message = String.format("%s, Detail Message : %s",errorType.getMessage(), message);
+        this.status = HttpStatus.valueOf(errorType.getStatus());
+    }
+
     public String getCode() {
         return code;
     }

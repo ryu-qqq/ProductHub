@@ -40,8 +40,8 @@ public class GlobalExceptionController {
     }
 
 
-    @ExceptionHandler(InvalidParameterException.class)
-    public ResponseEntity<?> handleValidationExceptions(InvalidParameterException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleValidationExceptions(IllegalArgumentException e) {
         String errorMsg = e.getMessage();
         log.warn(ERROR_LOG_MSG_FORMAT, errorMsg, e);
 
@@ -49,7 +49,7 @@ public class GlobalExceptionController {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST.value())
-                .body(ApiResponse.error(new ErrorMessage(errorType)));
+                .body(ApiResponse.error(new ErrorMessage(errorType, errorMsg)));
     }
 
 
