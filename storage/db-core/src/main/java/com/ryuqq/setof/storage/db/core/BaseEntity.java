@@ -17,11 +17,11 @@ public abstract class BaseEntity {
     private boolean deleteYn;
 
     @CreationTimestamp
-    @Column(name = "INSERT_DATE", nullable = false)
+    @Column(name = "INSERT_TIME", nullable = false)
     private LocalDateTime insertTime;
 
     @UpdateTimestamp
-    @Column(name = "UPDATE_DATE", nullable = false)
+    @Column(name = "UPDATE_TIME", nullable = false)
     private LocalDateTime updateTime;
 
     public Long getId() {
