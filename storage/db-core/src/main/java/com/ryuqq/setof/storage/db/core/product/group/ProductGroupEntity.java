@@ -28,16 +28,16 @@ public class ProductGroupEntity extends BaseEntity {
     @Column(name = "STYLE_CODE", length = 50)
     private String styleCode;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "PRODUCT_CONDITION", length = 15, nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ProductCondition productCondition;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "MANAGEMENT_TYPE", length = 15, nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ManagementType managementType;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "OPTION_TYPE", length = 20, nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private OptionType optionType;
 
     @Column(name = "REGULAR_PRICE", nullable = false)
@@ -56,6 +56,7 @@ public class ProductGroupEntity extends BaseEntity {
     private boolean displayYn;
 
     @Column(name = "PRODUCT_STATUS", length = 10,  nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ProductStatus productStatus;
 
     protected ProductGroupEntity() {}
