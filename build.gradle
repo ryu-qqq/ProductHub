@@ -1,24 +1,17 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'org.springframework.boot' apply false
     id 'io.spring.dependency-management'
+    id 'io.spring.javaformat' apply(false)
+    id 'org.asciidoctor.jvm.convert' apply(false)
+
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(findProperty("javaVersion"))
-    }
-}
-
-
-def projectGroup = findProperty("projectGroup")
-def applicationVersion = findProperty("applicationVersion")
-def springCloudDependenciesVersions = findProperty("springCloudDependenciesVersions")
-def easyRandomVersions = findProperty("easyRandomVersions")
 
 allprojects {
-    group = projectGroup
-    version = applicationVersion
+    group = "${projectGroup}"
+    version = "${applicationVersion}"
+    sourceCompatibility = project.javaVersion
 
     repositories {
         mavenCentral()
@@ -26,9 +19,11 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.asciidoctor.jvm.convert'
+
 
     dependencyManagement {
         imports {
@@ -41,19 +36,43 @@ subprojects {
         testImplementation "org.springframework.boot:spring-boot-starter-test"
         //EASY RANDOM
         testImplementation "org.jeasy:easy-random-core:${easyRandomVersions}"
+        testImplementation 'com.h2database:h2'
 
     }
 
-    tasks.getByName("bootJar"){
-        enabled = false;
+    bootJar.enabled = false
+    jar.enabled = true
+
+    test {
+        useJUnitPlatform {
+            excludeTags('develop', 'restdocs')
+        }
     }
 
-    tasks.getByName("jar"){
-        enabled = true;
+
+    tasks.register('unitTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            excludeTags('develop', 'context', 'restdocs')
+        }
+    }
+
+    tasks.register('contextTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            includeTags('context')
+        }
+    }
+
+    tasks.register('restDocsTest', Test) {
+        group = 'verification'
+        useJUnitPlatform {
+            includeTags('restdocs')
+        }
     }
 
 
-    tasks.named('test') {
-        useJUnitPlatform()
+    tasks.named('asciidoctor') {
+        dependsOn restDocsTest
     }
 }

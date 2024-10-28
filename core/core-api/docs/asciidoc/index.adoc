@@ -1,0 +1,16 @@
+= SETOF PATNER CENTER OPEN API DOC
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:docinfo: shared-head
+include::summary.adoc[]
+
+include::AUTH-API.adoc[]
+include::BRAND-API.adoc[]
+include::CATEGORY-API.adoc[]
+include::PRODUCT-API.adoc[]
+include::ENUMS.adoc[]
+

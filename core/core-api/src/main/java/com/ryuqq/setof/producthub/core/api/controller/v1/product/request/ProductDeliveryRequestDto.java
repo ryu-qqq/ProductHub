@@ -2,7 +2,6 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.ReturnMethod;
 import com.ryuqq.setof.core.ShipmentCompanyCode;
-import com.ryuqq.setof.domain.core.product.ProductDelivery;
 import com.ryuqq.setof.domain.core.product.command.ProductDeliveryCommand;
 
 import java.math.BigDecimal;
@@ -19,10 +18,17 @@ public record ProductDeliveryRequestDto(
         String returnExchangeAreaDomestic
 ){
     public ProductDeliveryRequestDto {
-        validateFields();
+        validateFields(deliveryArea, deliveryFee, deliveryPeriodAverage, returnMethodDomestic, returnCourierDomestic, returnChargeDomestic, returnExchangeAreaDomestic);
     }
 
-    private void validateFields() {
+    private void validateFields(String deliveryArea,
+                                BigDecimal deliveryFee,
+                                int deliveryPeriodAverage,
+                                ReturnMethod returnMethodDomestic,
+                                ShipmentCompanyCode returnCourierDomestic,
+                                BigDecimal returnChargeDomestic,
+                                String returnExchangeAreaDomestic
+    ) {
         validateString(deliveryArea, 15, "Delivery Area");
         validateBigDecimal(deliveryFee, BigDecimal.valueOf(50000), "Delivery Fee");
         validateInt(deliveryPeriodAverage, 14, "Delivery Period Average");

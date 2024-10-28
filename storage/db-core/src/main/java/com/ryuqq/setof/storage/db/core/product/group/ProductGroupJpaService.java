@@ -3,7 +3,7 @@ package com.ryuqq.setof.storage.db.core.product.group;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductGroupJpaService implements ProductGroupPersistenceService{
+public class ProductGroupJpaService implements ProductGroupPersistenceService {
 
     private final ProductGroupJpaRepository productGroupJpaRepository;
 

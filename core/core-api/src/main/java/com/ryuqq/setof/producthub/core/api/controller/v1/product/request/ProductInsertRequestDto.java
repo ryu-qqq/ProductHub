@@ -21,10 +21,13 @@ public record ProductInsertRequestDto(
 ) {
 
     public ProductInsertRequestDto {
-        validateFields();
+        validateFields(quantity, additionalPrice, options);
     }
 
-    private void validateFields() {
+    private void validateFields(
+                                int quantity,
+                                BigDecimal additionalPrice,
+                                List<ProductOptionInsertRequestDto> options) {
         validateInt(quantity, 999, "Quantity");
         validateBigDecimal(additionalPrice, BigDecimal.valueOf(100000000), "Additional Price");
         validateListNotNullOrEmpty(options, "Options", true);

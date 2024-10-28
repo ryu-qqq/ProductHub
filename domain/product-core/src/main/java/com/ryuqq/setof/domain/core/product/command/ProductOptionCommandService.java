@@ -5,7 +5,7 @@ import com.ryuqq.setof.storage.db.core.product.option.mapping.ProductOptionEntit
 import com.ryuqq.setof.storage.db.core.product.option.mapping.ProductOptionPersistenceService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +23,8 @@ public class ProductOptionCommandService {
     }
 
     public void inserts(Map<Long, List<OptionCommand>> productIdOptionMap) {
-        Map<OptionName, Long> optionGroupMap = new HashMap<>(); // OptionName과 Group ID 매핑
-        Map<String, Long> optionDetailMap = new HashMap<>(); // Option value와 Detail ID 매핑
+        Map<OptionName, Long> optionGroupMap = new LinkedHashMap<>();
+        Map<String, Long> optionDetailMap = new LinkedHashMap<>();
 
         productIdOptionMap.forEach((productId, optionCommands) -> {
             if (optionCommands.size() == 2) {

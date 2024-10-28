@@ -1,11 +1,4 @@
-
-def queryDslVersion = findProperty("queryDslVersion")
-
-
-
-
 dependencies {
-
 
     // QueryDSL
     implementation "com.querydsl:querydsl-sql:${queryDslVersion}"
@@ -19,16 +12,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //MySql
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    testImplementation 'com.h2database:h2'
-
 }
 
 ext {
     snippetsDir = file('build/generated-snippets')
 }
-
-
 
 // QueryDSL 설정
 def querydslDir = "$buildDir/generated/querydsl"

@@ -8,9 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CoreDataSourceConfig {
+class CoreDataSourceConfig {
+
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    @ConfigurationProperties(prefix = "storage.datasource.core")
     public HikariConfig coreHikariConfig() {
         return new HikariConfig();
     }
@@ -21,3 +22,4 @@ public class CoreDataSourceConfig {
     }
 
 }
+

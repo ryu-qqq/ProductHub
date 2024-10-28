@@ -1,28 +1,20 @@
 pluginManagement {
 
-    def springBootVersion = settings.getProperty("springBootVersion")
-    def springDependencyManagementVersion = settings.getProperty("springDependencyManagementVersion")
-
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "org.springframework.boot") {
-                useVersion(springBootVersion)
-            }
-            if (requested.id.id == "io.spring.dependency-management") {
-                useVersion(springDependencyManagementVersion)
-            }
-        }
+    plugins {
+        id 'org.springframework.boot' version "${springBootVersion}"
+        id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+        id 'org.asciidoctor.jvm.convert' version "${asciidoctorConvertVersion}"
+        id 'io.spring.javaformat' version "${springJavaFormatVersion}"
     }
 
 }
 
 rootProject.name = 'ProductHub'
 
-include(
-        "core:core-api",
-        "core:core-enum",
-        "support:logging",
-        "support:utils",
-        "storage:db-core",
-        "domain:product-core"
-)
+include 'core:core-api'
+include 'core:core-enum'
+include 'support:logging'
+include 'support:utils'
+include 'storage:db-core'
+include 'domain:product-core'
+include 'tests:api-docs'

@@ -12,10 +12,11 @@ public record ProductOptionInsertRequestDto(
         String optionValue) {
 
     public ProductOptionInsertRequestDto {
-        validateFields();
+        validateFields(optionName, optionValue);
     }
 
-    private void validateFields() {
+    private void validateFields(OptionName optionName,
+                                String optionValue) {
         validateEnum(optionName, "Option Name");
         validateString(optionValue, 50, "Option Value");
     }

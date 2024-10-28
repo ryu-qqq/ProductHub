@@ -20,7 +20,6 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
 
     protected BrandEntity brandEntity;
 
-
     @BeforeEach
     void setUp() {
         saveBrand();

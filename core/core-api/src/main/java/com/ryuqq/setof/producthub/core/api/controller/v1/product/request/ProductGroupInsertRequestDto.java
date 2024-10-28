@@ -4,10 +4,9 @@ import com.ryuqq.setof.core.ManagementType;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.core.ProductCondition;
 import com.ryuqq.setof.core.ProductStatus;
-import com.ryuqq.setof.domain.core.product.command.*;
+import com.ryuqq.setof.domain.core.product.command.ProductGroupCommand;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static com.ryuqq.setof.producthub.core.api.controller.ValidationUtils.*;
 
@@ -23,26 +22,35 @@ public record ProductGroupInsertRequestDto(
         BigDecimal regularPrice,
         BigDecimal currentPrice,
         boolean soldOutYn,
-        boolean displayYn,
-        ProductNoticeInsertRequestDto productNotice,
-        ProductDeliveryRequestDto productDelivery,
-        List<ProductGroupImageRequestDto> productImageList,
-        ProductGroupDetailDescriptionRequestDto productGroupDetailDescriptionRequestDto,
-        List<ProductInsertRequestDto> productOptions
+        boolean displayYn
 ) {
     public ProductGroupInsertRequestDto {
-        validateFields();
+        validateFields(productGroupName, styleCode, productCondition, managementType, optionType, regularPrice, currentPrice);
     }
 
-    private void validateFields() {
+    private void validateFields(
+                                String productGroupName,
+                                String styleCode,
+                                ProductCondition productCondition,
+                                ManagementType managementType,
+                                OptionType optionType,
+                                BigDecimal regularPrice,
+                                BigDecimal currentPrice) {
+
         validateString(productGroupName, 100, "Product Group Name");
         validateString(styleCode, 50, "Style Code");
         validateBigDecimal(regularPrice, BigDecimal.valueOf(100000000), "Regular Price");
         validateBigDecimal(currentPrice, BigDecimal.valueOf(100000000), "Current Price");
-        validateObjectNotNull(productNotice, "Product Notice");
-        validateObjectNotNull(productDelivery, "Product Delivery");
-        validateListNotNullOrEmpty(productImageList, "Product Image List", false);
-        validateListNotNullOrEmpty(productOptions, "Product Options", false);
+        validatePrice(regularPrice, currentPrice);
+        validateEnum(productCondition, "Product Condition Type");
+        validateEnum(managementType, "Management Type");
+        validateEnum(optionType, "Option Type");
+    }
+
+    private void validatePrice(BigDecimal regularPrice, BigDecimal currentPrice) {
+        if(regularPrice.compareTo(currentPrice) < 0) {
+            throw new IllegalArgumentException("Regular Price must be greater than Current Price");
+        }
     }
 
     public ProductGroupCommand toProductGroupCommand() {
@@ -52,20 +60,4 @@ public record ProductGroupInsertRequestDto(
     }
 
 
-    public ProductGroupCommandContext toProductGroupCommandContext(){
-        ProductGroupCommand productGroup = toProductGroupCommand();
-        ProductNoticeCommand notice = productNotice.toProductNotice();
-        ProductDeliveryCommand delivery = productDelivery.toProductDelivery();
-        List<ProductGroupImageCommand> images = productImageList.stream().map(ProductGroupImageRequestDto::toProductGroupImage).toList();
-        ProductDetailDescriptionCommand detailDescription = productGroupDetailDescriptionRequestDto.toProductDetailDescription();
-        List<ProductCommand> productCommands = toProductCommands(productGroup.optionType(), productOptions);
-
-        return new ProductGroupCommandContext(productGroup, notice, delivery, images, detailDescription, productCommands);
-    }
-
-    public List<ProductCommand> toProductCommands(OptionType optionType, List<ProductInsertRequestDto> productOptions) {
-        return productOptions.stream()
-                .map(p -> p.toProductCommand(optionType))
-                .toList();
-    }
 }

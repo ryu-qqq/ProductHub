@@ -22,7 +22,7 @@ public class ValidationUtils {
         if (field < 0) {
             throw new IllegalArgumentException(fieldName + " cannot be less than 0");
         }
-        if (field  > 0) {
+        if (field  > maxValue) {
             throw new IllegalArgumentException(fieldName + " cannot be greater than " + maxValue);
         }
     }

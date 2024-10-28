@@ -20,5 +20,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(null, errorMessage.toErrorResponse());
     }
 
+    public T getData() {
+        return data;
+    }
 
+    public Response getResponse() {
+        return response;
+    }
 }
