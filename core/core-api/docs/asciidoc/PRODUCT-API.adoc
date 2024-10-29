@@ -24,4 +24,6 @@ include::{snippets}/product-group-get/query-parameters.adoc[]
 ==== Http Response
 include::{snippets}/product-group-get/http-response.adoc[]
 ==== Response Fields
-include::{snippets}/product-group-get/response-fields.adoc[]
+include::{snippets}/product-group-get/response-fields-ProductGroupContent.adoc[]
+include::{snippets}/product-group-get/response-fields-beneath-response.adoc[]
+
