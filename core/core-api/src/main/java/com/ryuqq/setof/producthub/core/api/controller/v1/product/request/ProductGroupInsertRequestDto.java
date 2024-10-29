@@ -5,59 +5,55 @@ import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.core.ProductCondition;
 import com.ryuqq.setof.core.ProductStatus;
 import com.ryuqq.setof.domain.core.product.command.ProductGroupCommand;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-import static com.ryuqq.setof.producthub.core.api.controller.ValidationUtils.*;
-
 public record ProductGroupInsertRequestDto(
+
+        @NotNull(message = "Brand ID cannot be null.")
+        @Positive(message = "Brand ID must be a positive number.")
         long brandId,
+
+        @NotNull(message = "Category ID cannot be null.")
+        @Positive(message = "Category ID must be a positive number.")
         long categoryId,
+
+        @NotNull(message = "Seller ID cannot be null.")
+        @Positive(message = "Seller ID must be a positive number.")
         long sellerId,
+
+        @NotBlank(message = "Product Group Name cannot be blank.")
+        @Size(max = 100, message = "Product Group Name must be 100 characters or less.")
         String productGroupName,
+
+        @NotBlank(message = "Style Code cannot be blank.")
+        @Size(max = 50, message = "Style Code must be 50 characters or less.")
         String styleCode,
+
+        @NotNull(message = "Product Condition Type cannot be null.")
         ProductCondition productCondition,
+
+        @NotNull(message = "Management Type cannot be null.")
         ManagementType managementType,
+
+        @NotNull(message = "Option Type cannot be null.")
         OptionType optionType,
+
+        @NotNull(message = "Regular Price cannot be null.")
+        @DecimalMax(value = "100000000", inclusive = true, message = "Regular Price must be less than or equal to 100,000,000.")
         BigDecimal regularPrice,
+
+        @NotNull(message = "Current Price cannot be null.")
+        @DecimalMax(value = "100000000", inclusive = true, message = "Current Price must be less than or equal to 100,000,000.")
         BigDecimal currentPrice,
+
         boolean soldOutYn,
         boolean displayYn
 ) {
-    public ProductGroupInsertRequestDto {
-        validateFields(productGroupName, styleCode, productCondition, managementType, optionType, regularPrice, currentPrice);
-    }
-
-    private void validateFields(
-                                String productGroupName,
-                                String styleCode,
-                                ProductCondition productCondition,
-                                ManagementType managementType,
-                                OptionType optionType,
-                                BigDecimal regularPrice,
-                                BigDecimal currentPrice) {
-
-        validateString(productGroupName, 100, "Product Group Name");
-        validateString(styleCode, 50, "Style Code");
-        validateBigDecimal(regularPrice, BigDecimal.valueOf(100000000), "Regular Price");
-        validateBigDecimal(currentPrice, BigDecimal.valueOf(100000000), "Current Price");
-        validatePrice(regularPrice, currentPrice);
-        validateEnum(productCondition, "Product Condition Type");
-        validateEnum(managementType, "Management Type");
-        validateEnum(optionType, "Option Type");
-    }
-
-    private void validatePrice(BigDecimal regularPrice, BigDecimal currentPrice) {
-        if(regularPrice.compareTo(currentPrice) < 0) {
-            throw new IllegalArgumentException("Regular Price must be greater than Current Price");
-        }
-    }
-
     public ProductGroupCommand toProductGroupCommand() {
         return new ProductGroupCommand(brandId, categoryId, sellerId, productGroupName,
                 styleCode, productCondition, managementType, optionType, regularPrice, currentPrice,
                 soldOutYn, displayYn, ProductStatus.WAITING);
     }
-
-
 }

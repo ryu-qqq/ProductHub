@@ -10,7 +10,7 @@ import java.util.List;
 import static com.ryuqq.setof.domain.core.brand.BrandErrorConstants.BRAND_NOT_FOUND_ERROR_MSG;
 
 @Component
-public class BrandFinder {
+public class BrandFinder implements BrandQueryService{
 
     private final BrandQueryRepository brandQueryRepository;
 
@@ -18,30 +18,27 @@ public class BrandFinder {
         this.brandQueryRepository = brandQueryRepository;
     }
 
+
     public boolean brandExist(long brandId){
         return brandQueryRepository.fetchBrandExists(brandId);
     }
 
-    public Brand findBrand(long brandId){
-        BrandDto b = brandQueryRepository.fetchBrand(brandId)
+    public BrandRecord findBrand(long brandId){
+        BrandDto brand = brandQueryRepository.fetchBrand(brandId)
                 .orElseThrow(() -> new NotFoundException(BRAND_NOT_FOUND_ERROR_MSG + brandId));
-
-        return new Brand(b.getId(), b.getBrandName(), b.getBrandIconImageUrl(), b.isDisplayYn());
+        return BrandRecord.toBrandRecord(brand);
     }
 
-    public List<Brand> findBrands(BrandFilter brandFilter){
-        List<BrandDto> brandDtos = brandQueryRepository.fetchBrands(brandFilter.toStorageFilter());
-        return brandDtos.stream()
-                .map(b ->
-                        new Brand(b.getId(), b.getBrandName(),
-                                b.getBrandIconImageUrl(), b.isDisplayYn())
-                )
+    public List<BrandRecord> findBrands(BrandFilter brandFilter){
+        List<BrandDto> brands = brandQueryRepository.fetchBrands(brandFilter.toStorageFilter());
+        return brands.stream()
+                .map(BrandRecord::toBrandRecord)
                 .toList();
     }
-
 
     public long findBrandCount(BrandFilter brandFilter){
         return brandQueryRepository.fetchBrandCount(brandFilter.toStorageFilter());
     }
+
 
 }

@@ -53,7 +53,7 @@ public class EasyRandomUtils {
                 .excludeField(named("id"))
                 .objectFactory(new RecordRandomizerRegistry())
                 .randomize(Long.class, new LongRangeRandomizer(1L, 100000000L))
-                .randomize(String.class, new StringRandomizer(10))
+                .randomize(String.class, new StringRandomizer(15))
                 .collectionSizeRange(1, 2);
 
         for(Map.Entry<String, Object> entry : values.entrySet()){

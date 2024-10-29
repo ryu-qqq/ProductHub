@@ -13,3 +13,17 @@ include::{snippets}/product-group-register/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/product-group-register/response-fields-beneath-data.adoc[]
 include::{snippets}/product-group-register/response-fields-beneath-response.adoc[]
+
+
+
+=== PRODUCTS QUERY GET API
+==== Curl Request
+include::{snippets}/product-group-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/product-group-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/product-group-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/product-group-get/response-fields-ProductGroupContent.adoc[]
+include::{snippets}/product-group-get/response-fields-beneath-response.adoc[]
+

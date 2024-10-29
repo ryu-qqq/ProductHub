@@ -1,10 +1,10 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.color;
 
-import com.ryuqq.setof.domain.core.color.Color;
-import com.ryuqq.setof.domain.core.color.ColorService;
 import com.ryuqq.setof.domain.core.generic.Slice;
-import com.ryuqq.setof.producthub.core.api.controller.v1.color.request.ColorGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.color.request.ColorGetRequestDto;
+import com.ryuqq.setof.producthub.core.api.controller.v1.color.response.ColorResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.color.service.ColorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,9 +24,8 @@ public class ColorController {
     }
 
     @GetMapping("/colors")
-    public ResponseEntity<ApiResponse<Slice<Color>>> getColors(@ModelAttribute ColorGetRequestDto colorGetRequestDto) {
-        return ResponseEntity.ok(ApiResponse.success(colorService.getColors(colorGetRequestDto.toColorFilter())));
+    public ResponseEntity<ApiResponse<Slice<ColorResponse>>> getColors(@ModelAttribute ColorGetRequestDto colorGetRequestDto) {
+        return ResponseEntity.ok(ApiResponse.success(colorService.getColors(colorGetRequestDto)));
     }
-
 
 }

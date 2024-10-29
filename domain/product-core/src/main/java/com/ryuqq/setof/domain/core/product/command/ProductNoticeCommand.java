@@ -15,9 +15,9 @@ public record ProductNoticeCommand(
         String asPhone
 ) {
 
-
     public ProductNoticeEntity toEntity(long productGroupId){
         return new ProductNoticeEntity(productGroupId, material, color, size, maker,
                 origin, washingMethod, yearMonth, assuranceStandard, asPhone);
     }
+
 }

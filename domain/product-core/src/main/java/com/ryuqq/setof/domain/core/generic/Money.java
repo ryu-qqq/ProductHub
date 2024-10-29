@@ -10,6 +10,10 @@ public class Money {
 
     private final BigDecimal amount;
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
     public static Money wons(BigDecimal amount) {
         return new Money(amount);
     }

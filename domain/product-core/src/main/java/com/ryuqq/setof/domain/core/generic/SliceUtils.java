@@ -1,5 +1,7 @@
 package com.ryuqq.setof.domain.core.generic;
 
+import com.ryuqq.setof.core.Sort;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class SliceUtils {
                 .first(contents.isEmpty())
                 .numberOfElements(contents.size())
                 .empty(contents.isEmpty())
+                .sort(Sort.DESC)
                 .build();
     }
 
@@ -29,6 +32,7 @@ public class SliceUtils {
                 .numberOfElements(contents.size())
                 .empty(contents.isEmpty())
                 .totalElements(totalElements)
+                .sort(Sort.DESC)
                 .build();
     }
 
