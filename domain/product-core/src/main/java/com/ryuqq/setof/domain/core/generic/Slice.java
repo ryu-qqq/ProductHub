@@ -1,5 +1,7 @@
 package com.ryuqq.setof.domain.core.generic;
 
+import com.ryuqq.setof.core.Sort;
+
 import java.util.List;
 
 
@@ -12,7 +14,7 @@ public class Slice<T> {
     private final int numberOfElements;
     private final boolean empty;
     private Long cursor;
-    private Long totalElements;
+    private final Long totalElements;
 
     private Slice(Builder<T> builder) {
         this.content = builder.content;

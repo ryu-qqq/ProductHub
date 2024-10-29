@@ -1,6 +1,7 @@
 package com.ryuqq.setof.producthub.data;
 
 import com.ryuqq.setof.core.*;
+import com.ryuqq.setof.domain.core.product.query.ProductGroup;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.*;
 
 import java.math.BigDecimal;
@@ -29,6 +30,13 @@ public class ProductModuleHelper {
                 List.of(productInsertRequestDto)
         );
     }
+
+
+
+
+//    public static ProductGroup toProductGroup(){
+//        return new ProductGroup(1L, 1L, );
+//    }
 
 
 

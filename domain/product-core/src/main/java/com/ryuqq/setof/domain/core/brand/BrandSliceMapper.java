@@ -18,4 +18,14 @@ public class BrandSliceMapper extends AbstractGeneralSliceMapper<Brand> {
     public Slice<Brand> toSlice(List<Brand> data, int pageSize) {
         return super.toSlice(data, pageSize);
     }
+
+    @Override
+    protected void setCursor(Slice<Brand> slice) {
+        if (!slice.isEmpty()) {
+            List<Brand> content = slice.getContent();
+            Brand t = content.getLast();
+            slice.setCursor(t.id());
+        }
+    }
+
 }

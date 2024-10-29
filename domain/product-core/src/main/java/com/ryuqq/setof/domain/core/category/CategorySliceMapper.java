@@ -17,4 +17,13 @@ public class CategorySliceMapper extends AbstractGeneralSliceMapper<Category> {
     public Slice<Category> toSlice(List<Category> data, int pageSize, long totalElements) {
         return super.toSlice(data, pageSize, totalElements);
     }
+
+    @Override
+    protected void setCursor(Slice<Category> slice) {
+        if (!slice.isEmpty()) {
+            List<Category> content = slice.getContent();
+            Category t = content.getLast();
+            slice.setCursor(t.id());
+        }
+    }
 }

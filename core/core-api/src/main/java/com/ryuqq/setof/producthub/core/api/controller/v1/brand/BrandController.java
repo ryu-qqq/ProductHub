@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.brand;
 
 import com.ryuqq.setof.domain.core.brand.Brand;
-import com.ryuqq.setof.domain.core.brand.BrandService;
+import com.ryuqq.setof.domain.core.brand.BrandDomainQueryService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.producthub.core.api.controller.v1.brand.request.BrandGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
@@ -15,15 +15,15 @@ import static com.ryuqq.setof.producthub.core.api.controller.config.EndPointsCon
 @RestController
 public class BrandController {
 
-    private final BrandService brandService;
+    private final BrandDomainQueryService brandDomainQueryService;
 
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
+    public BrandController(BrandDomainQueryService brandDomainQueryService) {
+        this.brandDomainQueryService = brandDomainQueryService;
     }
 
     @GetMapping("/brands")
     public ResponseEntity<ApiResponse<Slice<Brand>>> getBrands(@ModelAttribute BrandGetRequestDto brandGetRequestDto) {
-        return ResponseEntity.ok(ApiResponse.success(brandService.getBrands(brandGetRequestDto.toBrandFilter())));
+        return ResponseEntity.ok(ApiResponse.success(brandDomainQueryService.getBrands(brandGetRequestDto.toBrandFilter())));
     }
 
 }

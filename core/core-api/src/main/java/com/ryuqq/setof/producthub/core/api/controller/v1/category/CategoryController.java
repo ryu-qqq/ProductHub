@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.category;
 
 import com.ryuqq.setof.domain.core.category.Category;
-import com.ryuqq.setof.domain.core.category.CategoryService;
+import com.ryuqq.setof.domain.core.category.CategoryDomainQueryService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.producthub.core.api.controller.v1.category.request.CategoryGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
@@ -16,25 +16,25 @@ import static com.ryuqq.setof.producthub.core.api.controller.config.EndPointsCon
 @RestController
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryDomainQueryService categoryDomainQueryService;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryController(CategoryDomainQueryService categoryDomainQueryService) {
+        this.categoryDomainQueryService = categoryDomainQueryService;
     }
 
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<Slice<Category>>> getCategories(@ModelAttribute CategoryGetRequestDto categoryFilter) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategories(categoryFilter.toCategoryFilter())));
+        return ResponseEntity.ok(ApiResponse.success(categoryDomainQueryService.getCategories(categoryFilter.toCategoryFilter())));
     }
 
     @GetMapping("/categories/{categoryId}/children")
     public ResponseEntity<ApiResponse<List<Category>>> getChildCategories(@PathVariable("categoryId") long categoryId) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getChildCategories(categoryId)));
+        return ResponseEntity.ok(ApiResponse.success(categoryDomainQueryService.getChildCategories(categoryId)));
     }
 
     @GetMapping("/categories/{categoryId}/parents")
     public ResponseEntity<ApiResponse<List<Category>>> getParentCategories(@PathVariable("categoryId") long categoryId) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getParentCategories(categoryId)));
+        return ResponseEntity.ok(ApiResponse.success(categoryDomainQueryService.getParentCategories(categoryId)));
     }
 
 }

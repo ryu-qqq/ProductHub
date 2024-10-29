@@ -4,22 +4,22 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductGroupInsertService {
+public class ProductGroupInsertFacade {
 
     private final ProductGroupCommandService productGroupCommandService;
     private final ProductNoticeCommandService productNoticeCommandService;
     private final ProductDeliveryCommandService productDeliveryCommandService;
     private final ProductGroupImageCommandService productGroupImageCommandService;
     private final ProductDetailDescriptionCommandService productDetailDescriptionCommandService;
-    private final ProductCommandService productCommandService;
+    private final ProductInsertFacade productInsertFacade;
 
-    public ProductGroupInsertService(ProductGroupCommandService productGroupCommandService, ProductNoticeCommandService productNoticeCommandService, ProductDeliveryCommandService productDeliveryCommandService, ProductGroupImageCommandService productGroupImageCommandService, ProductDetailDescriptionCommandService productDetailDescriptionCommandService, ProductCommandService productCommandService) {
+    public ProductGroupInsertFacade(ProductGroupCommandService productGroupCommandService, ProductNoticeCommandService productNoticeCommandService, ProductDeliveryCommandService productDeliveryCommandService, ProductGroupImageCommandService productGroupImageCommandService, ProductDetailDescriptionCommandService productDetailDescriptionCommandService, ProductInsertFacade productInsertFacade) {
         this.productGroupCommandService = productGroupCommandService;
         this.productNoticeCommandService = productNoticeCommandService;
         this.productDeliveryCommandService = productDeliveryCommandService;
         this.productGroupImageCommandService = productGroupImageCommandService;
         this.productDetailDescriptionCommandService = productDetailDescriptionCommandService;
-        this.productCommandService = productCommandService;
+        this.productInsertFacade = productInsertFacade;
     }
 
     @Transactional
@@ -31,7 +31,7 @@ public class ProductGroupInsertService {
         productGroupImageCommandService.inserts(productGroupId, context.productGroupImageCommands());
         productDetailDescriptionCommandService.insert(productGroupId, context.productDetailDescriptionCommand());
 
-        productCommandService.insert(productGroupId, context.productCommands());
+        productInsertFacade.insert(productGroupId, context.productCommands());
 
         return productGroupId;
     }

@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryService {
+public class CategoryDomainQueryService {
 
     private final CategoryFinder categoryFinder;
     private final CategorySliceMapper categorySliceMapper;
 
-    public CategoryService(CategoryFinder categoryFinder, CategorySliceMapper categorySliceMapper) {
+    public CategoryDomainQueryService(CategoryFinder categoryFinder, CategorySliceMapper categorySliceMapper) {
         this.categoryFinder = categoryFinder;
         this.categorySliceMapper = categorySliceMapper;
     }
@@ -20,6 +20,11 @@ public class CategoryService {
         List<Category> categories = categoryFinder.findCategories(categoryFilter);
         long categoryCount = categoryFinder.findCategoryCount(categoryFilter);
         return categorySliceMapper.toSlice(categories, categoryFilter.pageSize(), categoryCount);
+    }
+
+    public List<Category> getCategories(List<Long> categoryIds){
+        CategoryFilter categoryFilter = new CategoryFilter(categoryIds, null, null, null, categoryIds.size());
+        return categoryFinder.findCategories(categoryFilter);
     }
 
 

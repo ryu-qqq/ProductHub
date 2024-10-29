@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ProductCommandService {
+public class ProductInsertFacade {
 
     private final ProductPersistenceService productPersistenceService;
     private final ProductOptionCommandService productOptionCommandService;
 
-    public ProductCommandService(ProductPersistenceService productPersistenceService, ProductOptionCommandService productOptionCommandService) {
+    public ProductInsertFacade(ProductPersistenceService productPersistenceService, ProductOptionCommandService productOptionCommandService) {
         this.productPersistenceService = productPersistenceService;
         this.productOptionCommandService = productOptionCommandService;
     }

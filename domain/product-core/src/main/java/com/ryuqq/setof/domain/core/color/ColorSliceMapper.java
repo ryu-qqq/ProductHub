@@ -17,4 +17,14 @@ public class ColorSliceMapper extends AbstractGeneralSliceMapper<Color> {
     public Slice<Color> toSlice(List<Color> data, int pageSize, long totalElements) {
         return super.toSlice(data, pageSize, totalElements);
     }
+
+    @Override
+    protected void setCursor(Slice<Color> slice) {
+        if (!slice.isEmpty()) {
+            List<Color> content = slice.getContent();
+            Color t = content.getLast();
+            slice.setCursor(t.id());
+        }
+    }
+
 }

@@ -6,24 +6,13 @@ import com.ryuqq.setof.domain.core.category.CategoryFilter;
 
 import java.util.List;
 
-public class CategoryGetRequestDto {
-
-    private List<Long> categoryIds;
-    private TargetGroup targetGroup;
-    private CategoryType categoryType;
-    private Long cursorId;
-    private int pageSiz;
-
-    protected CategoryGetRequestDto() {}
-
-    public CategoryGetRequestDto(List<Long> categoryIds, TargetGroup targetGroup, CategoryType categoryType, Long cursorId, int pageSiz) {
-        this.categoryIds = categoryIds;
-        this.targetGroup = targetGroup;
-        this.categoryType = categoryType;
-        this.cursorId = cursorId;
-        this.pageSiz = pageSiz;
-    }
-
+public record CategoryGetRequestDto(
+        List<Long> categoryIds,
+        TargetGroup targetGroup,
+        CategoryType categoryType,
+        Long cursorId,
+        int pageSiz
+) {
     public CategoryFilter toCategoryFilter(){
         return new CategoryFilter(categoryIds, targetGroup, categoryType, cursorId, pageSiz);
     }

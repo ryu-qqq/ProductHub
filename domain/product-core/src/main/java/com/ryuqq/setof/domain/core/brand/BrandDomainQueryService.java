@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BrandService {
+public class BrandDomainQueryService {
 
     private final BrandFinder brandFinder;
     private final BrandSliceMapper brandSliceMapper;
 
-    public BrandService(BrandFinder brandFinder, BrandSliceMapper brandSliceMapper) {
+    public BrandDomainQueryService(BrandFinder brandFinder, BrandSliceMapper brandSliceMapper) {
         this.brandFinder = brandFinder;
         this.brandSliceMapper = brandSliceMapper;
     }
