@@ -4,12 +4,11 @@ import com.querydsl.core.annotations.QueryProjection;
 
 public class BrandDto {
 
-    private long id;
-    private String brandName;
-    private String brandIconImageUrl;
-    private boolean displayYn;
+    private final long id;
+    private final String brandName;
+    private final String brandIconImageUrl;
+    private final boolean displayYn;
 
-    protected BrandDto(){}
 
     @QueryProjection
     public BrandDto(long id, String brandName, String brandIconImageUrl, boolean displayYn) {

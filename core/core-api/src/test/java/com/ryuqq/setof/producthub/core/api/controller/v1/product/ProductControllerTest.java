@@ -1,11 +1,14 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product;
 
 
-import com.ryuqq.setof.core.CategoryType;
-import com.ryuqq.setof.core.TargetGroup;
+import com.ryuqq.setof.core.OptionType;
+import com.ryuqq.setof.domain.core.generic.Slice;
+import com.ryuqq.setof.domain.core.generic.SliceUtils;
+import com.ryuqq.setof.domain.core.product.ProductGroupContext;
 import com.ryuqq.setof.domain.core.product.command.ProductGroupInsertFacade;
-import com.ryuqq.setof.domain.core.product.query.ProductGroupDomainQueryFacade;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupCommandContextRequestDto;
+import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.ProductGroupContextResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.product.service.ProductGroupQueryFacade;
 import com.ryuqq.setof.producthub.data.ProductModuleHelper;
 import com.ryuqq.setof.test.api.RestDocsTest;
 import io.restassured.http.ContentType;
@@ -21,6 +24,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -39,7 +44,7 @@ class ProductControllerTest extends RestDocsTest {
     private ProductGroupInsertFacade productGroupInsertFacade;
 
     @Mock
-    private ProductGroupDomainQueryFacade productGroupDomainQueryFacade;
+    private ProductGroupQueryFacade productGroupQueryFacade;
 
     @InjectMocks
     private ProductController productController;
@@ -130,7 +135,15 @@ class ProductControllerTest extends RestDocsTest {
     @DisplayName("상품 그룹 리스트 조회 API")
     void getProductGroups() throws Exception {
         // given
-        when(productGroupDomainQueryFacade.getProductGroupContexts(any())).thenReturn();
+        ProductGroupContextResponse twoOption = ProductModuleHelper.toProductGroupContextResponse(1L, OptionType.OPTION_TWO);
+        ProductGroupContextResponse oneOption = ProductModuleHelper.toProductGroupContextResponse(2L, OptionType.OPTION_ONE);
+        ProductGroupContextResponse singleOption = ProductModuleHelper.toProductGroupContextResponse(3L, OptionType.SINGLE);
+
+        List<ProductGroupContextResponse> results = List.of(twoOption, oneOption, singleOption);
+        Slice<ProductGroupContextResponse> slice = SliceUtils.toSlice(results, 20, 3);
+        slice.setCursor(3L);
+
+        when(productGroupQueryFacade.getProductGroupContexts(any())).thenReturn(slice);
 
         // when
         given()
@@ -161,31 +174,37 @@ class ProductControllerTest extends RestDocsTest {
                                 parameterWithName("endDate").optional().description("종료 날짜 (yyyy-MM-dd HH:mm:ss)").attributes(key("format").value("yyyy-MM-dd HH:mm:ss"))
                         ),
                         responseFields(
-                                fieldWithPath("content").description("응답 데이터 리스트").type(JsonFieldType.ARRAY),
+                                beneathPath("data").withSubsectionId("ProductGroupContent"),
                                 fieldWithPath("content[].productGroup.productGroupId").type(JsonFieldType.NUMBER).description("상품 그룹 ID"),
                                 fieldWithPath("content[].productGroup.sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
                                 fieldWithPath("content[].productGroup.categories[].id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
                                 fieldWithPath("content[].productGroup.categories[].categoryName").type(JsonFieldType.STRING).description("카테고리 이름"),
                                 fieldWithPath("content[].productGroup.categories[].depth").type(JsonFieldType.NUMBER).description("카테고리 댑스"),
                                 fieldWithPath("content[].productGroup.categories[].parentCategoryId").type(JsonFieldType.NUMBER).description("부모 카테고리 ID"),
-                                fieldWithPath("content[].productGroup.categories[].displayYn").type(JsonFieldType.STRING).description("전시 여부"),
+                                fieldWithPath("content[].productGroup.categories[].displayYn").type(JsonFieldType.BOOLEAN).description("전시 여부"),
                                 fieldWithPath("content[].productGroup.categories[].targetGroup").type(JsonFieldType.STRING).description("카테고리 타겟 그룹"),
                                 fieldWithPath("content[].productGroup.categories[].categoryType").type(JsonFieldType.STRING).description("카테고리 타입"),
                                 fieldWithPath("content[].productGroup.categories[].path").type(JsonFieldType.STRING).description("카테고리 경로"),
-
-
+                                fieldWithPath("content[].productGroup.color.colorId").optional().type(JsonFieldType.NUMBER).description("컬러 ID"),
+                                fieldWithPath("content[].productGroup.color.colorName").optional().type(JsonFieldType.STRING).description("컬러 이름"),
                                 fieldWithPath("content[].productGroup.brand.id").type(JsonFieldType.NUMBER).description("브랜드 ID"),
-                                fieldWithPath("content[].productGroup.brand.name").type(JsonFieldType.STRING).description("브랜드 이름"),
+                                fieldWithPath("content[].productGroup.brand.brandName").type(JsonFieldType.STRING).description("브랜드 이름"),
+                                fieldWithPath("content[].productGroup.brand.brandIconImageUrl").type(JsonFieldType.STRING).description("브랜드 이미지 URL"),
+                                fieldWithPath("content[].productGroup.brand.displayYn").type(JsonFieldType.BOOLEAN).description("브랜드 전시 여부"),
+                                fieldWithPath("content[].productGroup.price.regularPrice").type(JsonFieldType.NUMBER).description("일반 가격"),
+                                fieldWithPath("content[].productGroup.price.currentPrice").type(JsonFieldType.NUMBER).description("현재 가격"),
+                                fieldWithPath("content[].productGroup.price.salePrice").type(JsonFieldType.NUMBER).description("세일 가격"),
+                                fieldWithPath("content[].productGroup.price.directDiscountPrice").type(JsonFieldType.NUMBER).description("즉시 할인 가격"),
+                                fieldWithPath("content[].productGroup.price.directDiscountRate").type(JsonFieldType.NUMBER).description("즉시 할인율"),
+                                fieldWithPath("content[].productGroup.price.discountRate").type(JsonFieldType.NUMBER).description("할인율"),
                                 fieldWithPath("content[].productGroup.productGroupName").type(JsonFieldType.STRING).description("상품 그룹명"),
                                 fieldWithPath("content[].productGroup.styleCode").type(JsonFieldType.STRING).description("스타일 코드"),
                                 fieldWithPath("content[].productGroup.productCondition").type(JsonFieldType.STRING).description("상품 상태 (예: 새 상품)"),
                                 fieldWithPath("content[].productGroup.managementType").type(JsonFieldType.STRING).description("관리 유형"),
                                 fieldWithPath("content[].productGroup.optionType").type(JsonFieldType.STRING).description("옵션 타입"),
-                                fieldWithPath("content[].productGroup.price.amount").type(JsonFieldType.NUMBER).description("상품 가격"),
                                 fieldWithPath("content[].productGroup.soldOutYn").type(JsonFieldType.BOOLEAN).description("품절 여부 (true: 품절)"),
                                 fieldWithPath("content[].productGroup.displayYn").type(JsonFieldType.BOOLEAN).description("노출 여부 (true: 노출)"),
                                 fieldWithPath("content[].productGroup.productStatus").type(JsonFieldType.STRING).description("상품 상태"),
-
                                 fieldWithPath("content[].productDelivery.deliveryArea").type(JsonFieldType.STRING).description("배송 지역"),
                                 fieldWithPath("content[].productDelivery.deliveryFee").type(JsonFieldType.NUMBER).description("배송비"),
                                 fieldWithPath("content[].productDelivery.deliveryPeriodAverage").type(JsonFieldType.NUMBER).description("평균 배송 기간"),
@@ -193,7 +212,6 @@ class ProductControllerTest extends RestDocsTest {
                                 fieldWithPath("content[].productDelivery.returnCourierDomestic").type(JsonFieldType.STRING).description("국내 반품 택배사 코드"),
                                 fieldWithPath("content[].productDelivery.returnChargeDomestic").type(JsonFieldType.NUMBER).description("국내 반품 요금"),
                                 fieldWithPath("content[].productDelivery.returnExchangeAreaDomestic").type(JsonFieldType.STRING).description("국내 반품/교환 지역"),
-
                                 fieldWithPath("content[].productNotice.material").type(JsonFieldType.STRING).description("소재"),
                                 fieldWithPath("content[].productNotice.color").type(JsonFieldType.STRING).description("색상"),
                                 fieldWithPath("content[].productNotice.size").type(JsonFieldType.STRING).description("사이즈"),
@@ -203,24 +221,23 @@ class ProductControllerTest extends RestDocsTest {
                                 fieldWithPath("content[].productNotice.yearMonth").type(JsonFieldType.STRING).description("제조 연월"),
                                 fieldWithPath("content[].productNotice.assuranceStandard").type(JsonFieldType.STRING).description("품질 보증 기준"),
                                 fieldWithPath("content[].productNotice.asPhone").type(JsonFieldType.STRING).description("A/S 전화번호"),
-
-                                fieldWithPath("content[].productGroupImages[].productImageType").type(JsonFieldType.STRING).description("상품 이미지 유형"),
-                                fieldWithPath("content[].productGroupImages[].imageUrl").type(JsonFieldType.STRING).description("상품 이미지 URL"),
-
+                                fieldWithPath("content[].productImages[].productImageType").type(JsonFieldType.STRING).description("상품 이미지 유형"),
+                                fieldWithPath("content[].productImages[].imageUrl").type(JsonFieldType.STRING).description("상품 이미지 URL"),
                                 fieldWithPath("content[].productDetailDescription.detailDescription").type(JsonFieldType.STRING).description("상품 상세 설명"),
+                                fieldWithPath("content[].products[].productGroupId").type(JsonFieldType.NUMBER).description("상품 그룹 ID"),
+                                fieldWithPath("content[].products[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                                fieldWithPath("content[].products[].quantity").type(JsonFieldType.NUMBER).description("수량"),
+                                fieldWithPath("content[].products[].soldOutYn").type(JsonFieldType.BOOLEAN).description("품절 여부"),
+                                fieldWithPath("content[].products[].displayYn").type(JsonFieldType.BOOLEAN).description("노출 여부"),
+                                fieldWithPath("content[].products[].option").type(JsonFieldType.STRING).description("옵션명"),
+                                fieldWithPath("content[].products[].options[]").type(JsonFieldType.ARRAY).optional().description("옵션 배열"),
 
-                                fieldWithPath("content[].product").description("상품 옵션 목록"),
-                                fieldWithPath("content[].product[].productGroupId").type(JsonFieldType.NUMBER).description("상품 그룹 ID"),
-                                fieldWithPath("content[].product[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
-                                fieldWithPath("content[].product[].quantity").type(JsonFieldType.NUMBER).description("수량"),
-                                fieldWithPath("content[].product[].soldOutYn").type(JsonFieldType.BOOLEAN).description("품절 여부"),
-                                fieldWithPath("content[].product[].displayYn").type(JsonFieldType.BOOLEAN).description("노출 여부"),
-                                fieldWithPath("content[].product[].option").type(JsonFieldType.ARRAY).description("옵션명"),
-                                fieldWithPath("content[].product[].options[].optionGroupId").type(JsonFieldType.NUMBER).description("옵션 그룹 ID"),
-                                fieldWithPath("content[].product[].options[].optionDetailId").type(JsonFieldType.NUMBER).description("옵션 상세 ID"),
-                                fieldWithPath("content[].product[].options[].optionName").type(JsonFieldType.STRING).description("옵션 이름"),
-                                fieldWithPath("content[].product[].options[].optionValue").type(JsonFieldType.STRING).description("옵션 값"),
-                                fieldWithPath("content[].product[].additionalPrice").type(JsonFieldType.NUMBER).description("추가 가격"),
+                                fieldWithPath("content[].products[].options[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                                fieldWithPath("content[].products[].options[].optionGroupId").type(JsonFieldType.NUMBER).description("옵션 그룹 ID"),
+                                fieldWithPath("content[].products[].options[].optionDetailId").type(JsonFieldType.NUMBER).description("옵션 상세 ID"),
+                                fieldWithPath("content[].products[].options[].optionName").type(JsonFieldType.STRING).description("옵션 이름"),
+                                fieldWithPath("content[].products[].options[].optionValue").type(JsonFieldType.STRING).description("옵션 값"),
+                                fieldWithPath("content[].products[].additionalPrice").type(JsonFieldType.NUMBER).description("추가 가격"),
 
                                 fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
                                 fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
@@ -230,7 +247,9 @@ class ProductControllerTest extends RestDocsTest {
                                 fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("페이지 비어있는지 여부"),
                                 fieldWithPath("cursor").type(JsonFieldType.NUMBER).description("다음 페이지를 위한 커서"),
                                 fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 요소 개수")
+
                         ),
+
                         responseFields(
                                 beneathPath("response"),
                                 statusMsg()

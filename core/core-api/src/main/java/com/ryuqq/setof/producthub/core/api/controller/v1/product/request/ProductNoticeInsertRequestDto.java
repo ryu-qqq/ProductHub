@@ -2,38 +2,49 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.Origin;
 import com.ryuqq.setof.domain.core.product.command.ProductNoticeCommand;
-
-import static com.ryuqq.setof.producthub.core.api.controller.ValidationUtils.validateString;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record ProductNoticeInsertRequestDto(
+
+        @NotBlank(message = "Material cannot be blank.")
+        @Size(max = 15, message = "Material must be 15 characters or less.")
         String material,
+
+        @NotBlank(message = "Color cannot be blank.")
+        @Size(max = 15, message = "Color must be 15 characters or less.")
         String color,
+
+        @NotBlank(message = "Size cannot be blank.")
+        @Size(max = 100, message = "Size must be 100 characters or less.")
         String size,
+
+        @NotBlank(message = "Maker cannot be blank.")
+        @Size(max = 15, message = "Maker must be 15 characters or less.")
         String maker,
+
         Origin origin,
+
+        @NotBlank(message = "Washing Method cannot be blank.")
+        @Size(max = 100, message = "Washing Method must be 100 characters or less.")
         String washingMethod,
+
+        @NotBlank(message = "Year Month cannot be blank.")
+        @Size(max = 15, message = "Year Month must be 15 characters or less.")
         String yearMonth,
+
+        @NotBlank(message = "Assurance Standard cannot be blank.")
+        @Size(max = 15, message = "Assurance Standard must be 15 characters or less.")
         String assuranceStandard,
+
+        @NotBlank(message = "AS Phone cannot be blank.")
+        @Size(max = 15, message = "AS Phone must be 15 characters or less.")
         String asPhone
 ) {
-    public ProductNoticeInsertRequestDto {
-        validateFields(material, color, size, maker, washingMethod, yearMonth, assuranceStandard, asPhone);
-    }
-
-    private static void validateFields(String material, String color, String size, String maker,
-                                       String washingMethod, String yearMonth, String assuranceStandard, String asPhone) {
-        validateString(material, 15, "Material");
-        validateString(color, 15, "Color");
-        validateString(size, 100, "Size");
-        validateString(maker, 15, "Maker");
-        validateString(washingMethod, 100, "Washing method");
-        validateString(yearMonth, 15, "Year Month");
-        validateString(assuranceStandard, 15, "Assurance standard");
-        validateString(asPhone, 15, "AS phone number");
-    }
-
     public ProductNoticeCommand toProductNotice() {
-        return new ProductNoticeCommand(material, color, size, maker, origin, washingMethod, yearMonth, assuranceStandard, asPhone);
+        return new ProductNoticeCommand(
+                material, color, size, maker, origin,
+                washingMethod, yearMonth, assuranceStandard, asPhone
+        );
     }
-
 }

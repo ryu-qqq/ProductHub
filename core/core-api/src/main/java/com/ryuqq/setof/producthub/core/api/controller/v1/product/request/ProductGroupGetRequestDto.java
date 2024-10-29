@@ -2,7 +2,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.ManagementType;
 import com.ryuqq.setof.core.ProductStatus;
-import com.ryuqq.setof.domain.core.product.query.ProductGroupFilter;
+import com.ryuqq.setof.domain.core.product.ProductGroupFilter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public record ProductGroupGetRequestDto(
         Long sellerId,
         Long cursorId,
         String styleCode,
-        int pageSize,
+        Integer pageSize,
         Boolean soldOutYn,
         Boolean displayYn,
         Long minSalePrice,
@@ -32,7 +32,7 @@ public record ProductGroupGetRequestDto(
 ) {
 
     public ProductGroupFilter toProductGroupFilter() {
-        int defaultSize = pageSize == 0 ? 20 : pageSize;
+        int defaultSize = (pageSize == null || pageSize == 0) ? 20 : pageSize;
         List<Long> defaultBrandIds = brandIds == null ? List.of() : brandIds;
         List<Long> defaultColorIds = colorIds == null ? List.of() : colorIds;
         List<Long> defaultProductGroupIds = productGroupIds == null ? List.of() : productGroupIds;

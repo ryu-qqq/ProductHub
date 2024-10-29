@@ -6,23 +6,22 @@ import com.ryuqq.setof.core.TargetGroup;
 
 public class CategoryDto {
 
-    private long id;
+    private final long id;
 
-    private String categoryName;
+    private final String categoryName;
 
-    private int depth;
+    private final int depth;
 
-    private long parentCategoryId;
+    private final long parentCategoryId;
 
-    private boolean displayYn;
+    private final boolean displayYn;
 
-    private TargetGroup targetGroup;
+    private final TargetGroup targetGroup;
 
-    private CategoryType categoryType;
+    private final CategoryType categoryType;
 
-    private String path;
+    private final String path;
 
-    protected CategoryDto() {}
 
     @QueryProjection
     public CategoryDto(long id, String categoryName, int depth, long parentCategoryId, boolean displayYn, TargetGroup targetGroup, CategoryType categoryType, String path) {

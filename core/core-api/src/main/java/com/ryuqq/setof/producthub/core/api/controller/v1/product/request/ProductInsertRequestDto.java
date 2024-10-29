@@ -4,39 +4,33 @@ import com.ryuqq.setof.core.OptionName;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.domain.core.product.command.OptionCommand;
 import com.ryuqq.setof.domain.core.product.command.ProductCommand;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.ryuqq.setof.producthub.core.api.controller.ValidationUtils.*;
-
 public record ProductInsertRequestDto(
         boolean soldOutYn,
         boolean displayYn,
+
+        @NotNull(message = "Quantity cannot be null.")
+        @Max(value = 999, message = "Quantity must be 999 or less.")
         int quantity,
+
+        @NotNull(message = "Additional Price cannot be null.")
+        @DecimalMax(value = "100000000", message = "Additional Price must be less than or equal to 100,000,000.")
         BigDecimal additionalPrice,
+
+        @Valid
         List<ProductOptionInsertRequestDto> options
 ) {
 
-    public ProductInsertRequestDto {
-        validateFields(quantity, additionalPrice, options);
-    }
-
-    private void validateFields(
-                                int quantity,
-                                BigDecimal additionalPrice,
-                                List<ProductOptionInsertRequestDto> options) {
-        validateInt(quantity, 999, "Quantity");
-        validateBigDecimal(additionalPrice, BigDecimal.valueOf(100000000), "Additional Price");
-        validateListNotNullOrEmpty(options, "Options", true);
-    }
-
-    public ProductCommand toProductCommand(OptionType optionType) {
-
-        validOption(optionType);
-
+    public ProductCommand toProductCommand() {
         List<OptionCommand> optionCommands = options.stream()
                 .map(ProductOptionInsertRequestDto::toOption)
                 .toList();
@@ -46,39 +40,6 @@ public record ProductInsertRequestDto(
 
 
 
-    private void validOption(OptionType optionType){
-        switch (optionType) {
-            case SINGLE -> {
-                if (!options.isEmpty()) {
-                    throw new IllegalArgumentException("Single option type does not allow options.");
-                }
-            }
-            case OPTION_ONE -> {
-                Set<OptionName> optionNames = toOptionNameSet(options);
-                if (optionNames.size() != 1) {
-                    throw new IllegalArgumentException("One step option type should have only one unique OptionName.");
-                }
-            }
-            case OPTION_TWO -> {
-                Set<OptionName> optionNames = toOptionNameSet(options);
-                if (optionNames.size() != 2 || !isValidTwoStepOptionCombination(optionNames)) {
-                    throw new IllegalArgumentException("Two step options must be a valid combination of Color and Size, or Default_One and Default_Two.");
-                }
-            }
-        }
-    }
-
-
-    private Set<OptionName> toOptionNameSet(List<ProductOptionInsertRequestDto> options){
-        return options.stream()
-                .map(ProductOptionInsertRequestDto::optionName)
-                .collect(Collectors.toSet());
-    }
-
-    private boolean isValidTwoStepOptionCombination(Set<OptionName> optionNames) {
-        return (optionNames.contains(OptionName.COLOR) && optionNames.contains(OptionName.SIZE)) ||
-                (optionNames.contains(OptionName.DEFAULT_ONE) && optionNames.contains(OptionName.DEFAULT_TWO));
-    }
 
 
 }

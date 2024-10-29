@@ -12,6 +12,7 @@ public class ProductGroupContextDto {
     private List<ProductGroupImageDto> productGroupImageDtos;
     private ProductDetailDescriptionDto productDetailDescriptionDto;
 
+
     protected ProductGroupContextDto() {}
 
     @QueryProjection

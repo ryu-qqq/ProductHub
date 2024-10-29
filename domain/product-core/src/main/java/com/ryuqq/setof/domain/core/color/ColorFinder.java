@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ColorFinder {
+public class ColorFinder implements ColorQueryService{
 
     private final ColorQueryRepository colorQueryRepository;
 
@@ -15,26 +15,22 @@ public class ColorFinder {
         this.colorQueryRepository = colorQueryRepository;
     }
 
+    @Override
     public boolean colorExist(long colorId){
         return colorQueryRepository.fetchColorExists(colorId);
     }
 
-    public List<Color> findColors(ColorFilter colorFilter){
-        List<ColorDto> colorDtos = colorQueryRepository.fetchColors(colorFilter.toStorageFilter());
-        return toColors(colorDtos);
-    }
-
-    public long findColorCount(ColorFilter colorFilter){
-        return colorQueryRepository.fetchColorCount(colorFilter.toStorageFilter());
-    }
-
-    private List<Color> toColors(List<ColorDto> colorDtos){
-        return colorDtos.stream()
-                .map(c ->
-                        new Color(c.getId(), c.getColorName())
-                    )
+    @Override
+    public List<ColorRecord> findColors(ColorFilter colorFilter){
+        List<ColorDto> colors = colorQueryRepository.fetchColors(colorFilter.toStorageFilter());
+        return colors.stream()
+                .map(ColorRecord::toColorRecord)
                 .toList();
     }
 
+    @Override
+    public long findColorCount(ColorFilter colorFilter){
+        return colorQueryRepository.fetchColorCount(colorFilter.toStorageFilter());
+    }
 
 }

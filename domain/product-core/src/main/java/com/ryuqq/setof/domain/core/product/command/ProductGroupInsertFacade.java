@@ -25,14 +25,13 @@ public class ProductGroupInsertFacade {
     @Transactional
     public long insert(ProductGroupCommandContext context) {
         long productGroupId = productGroupCommandService.insert(context.productGroupCommand());
+
         productNoticeCommandService.insert(productGroupId, context.productNoticeCommand());
         productDeliveryCommandService.insert(productGroupId, context.productDeliveryCommand());
-
         productGroupImageCommandService.inserts(productGroupId, context.productGroupImageCommands());
         productDetailDescriptionCommandService.insert(productGroupId, context.productDetailDescriptionCommand());
 
         productInsertFacade.insert(productGroupId, context.productCommands());
-
         return productGroupId;
     }
 

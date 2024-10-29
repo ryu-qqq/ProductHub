@@ -3,40 +3,38 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 import com.ryuqq.setof.core.ReturnMethod;
 import com.ryuqq.setof.core.ShipmentCompanyCode;
 import com.ryuqq.setof.domain.core.product.command.ProductDeliveryCommand;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-import static com.ryuqq.setof.producthub.core.api.controller.ValidationUtils.*;
-
 public record ProductDeliveryRequestDto(
+
+        @NotBlank(message = "Delivery Area cannot be blank.")
+        @Size(max = 15, message = "Delivery Area must be 15 characters or less.")
         String deliveryArea,
+
+        @NotNull(message = "Delivery Fee cannot be null.")
+        @DecimalMax(value = "50000", inclusive = true, message = "Delivery Fee must be less than or equal to 50,000.")
         BigDecimal deliveryFee,
+
+        @NotNull(message = "Delivery Period Average cannot be null.")
+        @Max(value = 14, message = "Delivery Period Average must be 14 days or less.")
         int deliveryPeriodAverage,
+
+        @NotNull(message = "Return Method Domestic cannot be null.")
         ReturnMethod returnMethodDomestic,
+
+        @NotNull(message = "Return Courier Domestic cannot be null.")
         ShipmentCompanyCode returnCourierDomestic,
+
+        @NotNull(message = "Return Charge Domestic cannot be null.")
+        @DecimalMax(value = "50000", inclusive = true, message = "Return Charge Domestic must be less than or equal to 50,000.")
         BigDecimal returnChargeDomestic,
+
+        @NotBlank(message = "Return Exchange Area Domestic cannot be blank.")
+        @Size(max = 15, message = "Return Exchange Area Domestic must be 15 characters or less.")
         String returnExchangeAreaDomestic
 ){
-    public ProductDeliveryRequestDto {
-        validateFields(deliveryArea, deliveryFee, deliveryPeriodAverage, returnMethodDomestic, returnCourierDomestic, returnChargeDomestic, returnExchangeAreaDomestic);
-    }
-
-    private void validateFields(String deliveryArea,
-                                BigDecimal deliveryFee,
-                                int deliveryPeriodAverage,
-                                ReturnMethod returnMethodDomestic,
-                                ShipmentCompanyCode returnCourierDomestic,
-                                BigDecimal returnChargeDomestic,
-                                String returnExchangeAreaDomestic
-    ) {
-        validateString(deliveryArea, 15, "Delivery Area");
-        validateBigDecimal(deliveryFee, BigDecimal.valueOf(50000), "Delivery Fee");
-        validateInt(deliveryPeriodAverage, 14, "Delivery Period Average");
-        validateEnum(returnMethodDomestic,  "Return Method Domestic");
-        validateEnum(returnCourierDomestic,  "Return Courier Domestic");
-        validateBigDecimal(returnChargeDomestic, BigDecimal.valueOf(50000), "Return Charge Domestic");
-        validateString(returnExchangeAreaDomestic, 15, "Return Exchange Area Domestic");
-    }
 
     public ProductDeliveryCommand toProductDelivery(){
         return new ProductDeliveryCommand(deliveryArea, deliveryFee, deliveryPeriodAverage, returnMethodDomestic, returnCourierDomestic, returnChargeDomestic, returnExchangeAreaDomestic);

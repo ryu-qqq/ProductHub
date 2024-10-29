@@ -11,9 +11,9 @@ public record CategoryGetRequestDto(
         TargetGroup targetGroup,
         CategoryType categoryType,
         Long cursorId,
-        int pageSiz
+        int pageSize
 ) {
     public CategoryFilter toCategoryFilter(){
-        return new CategoryFilter(categoryIds, targetGroup, categoryType, cursorId, pageSiz);
+        return new CategoryFilter(categoryIds, targetGroup, categoryType, cursorId, pageSize);
     }
 }

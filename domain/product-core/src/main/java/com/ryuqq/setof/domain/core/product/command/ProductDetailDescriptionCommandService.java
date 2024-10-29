@@ -12,7 +12,6 @@ public class ProductDetailDescriptionCommandService {
         this.productDetailDescriptionJpaService = productDetailDescriptionJpaService;
     }
 
-
     public void insert(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
         productDetailDescriptionJpaService.insert(productDetailDescriptionCommand.toEntity(productGroupId));
     }

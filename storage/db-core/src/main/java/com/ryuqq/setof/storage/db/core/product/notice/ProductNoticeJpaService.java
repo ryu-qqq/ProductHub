@@ -15,4 +15,5 @@ public class ProductNoticeJpaService implements ProductNoticePersistenceService{
     public void insert(ProductNoticeEntity productNoticeEntity) {
         productNoticeJpaRepository.save(productNoticeEntity);
     }
+
 }

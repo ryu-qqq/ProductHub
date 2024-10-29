@@ -1,11 +1,14 @@
 package com.ryuqq.setof.producthub.data;
 
 import com.ryuqq.setof.core.*;
-import com.ryuqq.setof.domain.core.product.query.ProductGroup;
+import com.ryuqq.setof.domain.core.product.*;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.*;
+import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ProductModuleHelper {
 
@@ -32,12 +35,111 @@ public class ProductModuleHelper {
     }
 
 
+    public static ProductGroupResponse toProductGroupResponse(long productGroupId, OptionType optionType){
+        return new ProductGroupResponse(
+                productGroupId,
+                101L,
+                new Color(1L, "Red"),
+                CategoryModuleHelper.toCategory(),
+                BrandModuleHelper.toBrandRecord(),
+                "Sample Product Group",
+                "SGX001",
+                ProductCondition.NEW,
+                ManagementType.MENUAL,
+                optionType,
+                toPrice(100000, 50000, 50),
+                false,
+                true,
+                ProductStatus.WAITING
+        );
+    }
 
 
-//    public static ProductGroup toProductGroup(){
-//        return new ProductGroup(1L, 1L, );
-//    }
+    public static PriceResponse toPrice(long regularPrice, long currentPrice, int discountRate){
+        return new PriceResponse(new BigDecimal(regularPrice), new BigDecimal(currentPrice), new BigDecimal(currentPrice), new BigDecimal(regularPrice- currentPrice), discountRate, discountRate);
+    }
 
 
+    public static ProductDeliveryResponse toProductDeliveryResponse(){
+        return new ProductDeliveryResponse(
+                "Domestic",
+                new BigDecimal("5.00"),
+                3,
+                ReturnMethod.RETURN_CONSUMER,
+                ShipmentCompanyCode.SHIP01,
+                new BigDecimal("3.00"),
+                "123 Warehouse St."
+        );
+    }
 
+    public static ProductNoticeResponse toProductNoticeResponse(){
+        return new ProductNoticeResponse(
+                "Plastic",
+                "Red",
+                "Medium",
+                "BrandX",
+                Origin.KR,
+                "Hand wash only",
+                "2023-08",
+                "ISO Certified",
+                "123-456-7890"
+        );
+    }
+
+    public static List<ProductGroupImageResponse> toProductGroupImageResponse(){
+        return List.of(
+                new ProductGroupImageResponse(ProductImageType.MAIN, "https://images.com/product-main.jpg"),
+                new ProductGroupImageResponse(ProductImageType.DETAIL, "https://images.com/product-thumb.jpg")
+        );
+    }
+
+    public static ProductDetailDescriptionResponse toProductDetailDescriptionResponse(){
+        return new ProductDetailDescriptionResponse(
+                "This is a sample product description with detailed information."
+        );
+    }
+
+    public static Set<ProductResponse> toProducts(long productGroupId, OptionType optionType){
+        switch (optionType) {
+            case SINGLE:
+                return Set.of(new ProductResponse(productGroupId, 1L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
+            case OPTION_ONE:
+                return Set.of(
+                        new ProductResponse(productGroupId, 1L, 10,false, true, "", Set.of(new OptionResponse(1L, 1L, 1L, OptionName.SIZE, "M")), BigDecimal.ZERO),
+                        new ProductResponse(productGroupId, 2L,5,false, true, "", Set.of(new OptionResponse(2L, 1L, 2L, OptionName.SIZE, "L")), BigDecimal.ZERO)
+                );
+            case OPTION_TWO:
+                return Set.of(
+                        new ProductResponse(productGroupId, 1L, 10,false, true, "",
+                                Set.of(
+                                        new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
+                                        new OptionResponse(2L, 2L, 2L, OptionName.SIZE, "M")
+
+                                ), BigDecimal.ZERO),
+
+                        new ProductResponse(productGroupId, 2L,5,false, true, "",
+                                Set.of(
+                                        new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
+                                        new OptionResponse(2L, 2L, 3L, OptionName.SIZE, "L")
+
+                                ), BigDecimal.ZERO)
+                );
+
+
+            default:
+                return Collections.emptySet();
+        }
+
+    }
+
+    public static ProductGroupContextResponse toProductGroupContextResponse(long productGroupId, OptionType optionType) {
+        return new ProductGroupContextResponse(
+                toProductGroupResponse(productGroupId, optionType),
+                toProductDeliveryResponse(),
+                toProductNoticeResponse(),
+                toProductDetailDescriptionResponse(),
+                toProductGroupImageResponse(),
+                toProducts(productGroupId, optionType)
+        );
+    }
 }
