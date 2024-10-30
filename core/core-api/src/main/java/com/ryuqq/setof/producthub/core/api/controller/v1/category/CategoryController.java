@@ -24,7 +24,7 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<Slice<CategoryResponse>>> getCategories(@ModelAttribute CategoryGetRequestDto categoryFilter) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategorySlices(categoryFilter)));
+        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategories(categoryFilter)));
     }
 
     @GetMapping("/categories/{categoryId}/children")

@@ -7,9 +7,10 @@ import java.util.List;
 public record BrandGetRequestDto(
         List<Long> brandIds,
         Long cursorId,
-        int pageSize
+        Integer pageSize
 ) {
     public BrandFilter toBrandFilter() {
-        return new BrandFilter(brandIds, cursorId, pageSize);
+        int defaultSize = (pageSize == null || pageSize == 0) ? 20 : pageSize;
+        return new BrandFilter(brandIds, cursorId, defaultSize);
     }
 }

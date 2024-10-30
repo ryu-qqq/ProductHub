@@ -26,7 +26,7 @@ public class BrandController {
 
     @GetMapping("/brands")
     public ResponseEntity<ApiResponse<Slice<BrandResponse>>> getBrands(@ModelAttribute BrandGetRequestDto brandGetRequestDto) {
-        return ResponseEntity.ok(ApiResponse.success(brandService.getBrandSlices(brandGetRequestDto)));
+        return ResponseEntity.ok(ApiResponse.success(brandService.getBrands(brandGetRequestDto)));
     }
 
 }

@@ -5,7 +5,7 @@ import com.ryuqq.setof.core.TargetGroup;
 import com.ryuqq.setof.domain.core.category.CategoryRecord;
 
 public record CategoryResponse(
-        long id,
+        long categoryId,
         String categoryName,
         int depth,
         long parentCategoryId,

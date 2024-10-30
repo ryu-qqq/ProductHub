@@ -24,7 +24,7 @@ public class CategorySliceMapper extends AbstractGeneralSliceMapper<CategoryResp
         if (!slice.isEmpty()) {
             List<CategoryResponse> content = slice.getContent();
             CategoryResponse t = content.getLast();
-            slice.setCursor(t.id());
+            slice.setCursor(t.categoryId());
         }
     }
 }

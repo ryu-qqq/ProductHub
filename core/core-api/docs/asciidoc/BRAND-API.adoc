@@ -1,0 +1,17 @@
+= BRAND API
+:toc:
+:toclevels: 3
+
+
+=== BRAND QUERY GET API
+==== Curl Request
+include::{snippets}/brand-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/brand-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/brand-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/brand-get/response-fields-BrandResponseContent.adoc[]
+include::{snippets}/brand-get/response-fields-beneath-response.adoc[]
+
+

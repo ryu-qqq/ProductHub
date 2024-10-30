@@ -1,0 +1,40 @@
+= CATEGORY API
+:toc:
+:toclevels: 3
+
+
+
+=== CATEGORY QUERY GET API
+==== Curl Request
+include::{snippets}/category-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/category-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/category-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/category-get/response-fields-CategoryResponseContent.adoc[]
+include::{snippets}/category-get/response-fields-beneath-response.adoc[]
+
+
+=== CHILD CATEGORY QUERY GET API
+==== Curl Request
+include::{snippets}/category-child-get/curl-request.adoc[]
+==== PATH Parameters
+include::{snippets}/category-child-get/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/category-child-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/category-child-get/response-fields-CategoryResponseList.adoc[]
+include::{snippets}/category-child-get/response-fields-beneath-response.adoc[]
+
+
+=== PARENT CATEGORY QUERY GET API
+==== Curl Request
+include::{snippets}/category-parent-get/curl-request.adoc[]
+==== PATH Parameters
+include::{snippets}/category-parent-get/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/category-parent-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/category-parent-get/response-fields-CategoryResponseList.adoc[]
+include::{snippets}/category-parent-get/response-fields-beneath-response.adoc[]

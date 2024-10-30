@@ -102,24 +102,24 @@ public class ProductModuleHelper {
     public static Set<ProductResponse> toProducts(long productGroupId, OptionType optionType){
         switch (optionType) {
             case SINGLE:
-                return Set.of(new ProductResponse(productGroupId, 1L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
+                return Set.of(new ProductResponse(productGroupId, 4L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
             case OPTION_ONE:
                 return Set.of(
-                        new ProductResponse(productGroupId, 1L, 10,false, true, "", Set.of(new OptionResponse(1L, 1L, 1L, OptionName.SIZE, "M")), BigDecimal.ZERO),
-                        new ProductResponse(productGroupId, 2L,5,false, true, "", Set.of(new OptionResponse(2L, 1L, 2L, OptionName.SIZE, "L")), BigDecimal.ZERO)
+                        new ProductResponse(productGroupId, 3L, 10,false, true, "", Set.of(new OptionResponse(3L, 3L, 4L, OptionName.SIZE, "M")), BigDecimal.ZERO),
+                        new ProductResponse(productGroupId, 3L,5,false, true, "", Set.of(new OptionResponse(3L, 3L, 5L, OptionName.SIZE, "L")), BigDecimal.ZERO)
                 );
             case OPTION_TWO:
                 return Set.of(
                         new ProductResponse(productGroupId, 1L, 10,false, true, "",
                                 Set.of(
                                         new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
-                                        new OptionResponse(2L, 2L, 2L, OptionName.SIZE, "M")
+                                        new OptionResponse(1L, 2L, 2L, OptionName.SIZE, "M")
 
                                 ), BigDecimal.ZERO),
 
                         new ProductResponse(productGroupId, 2L,5,false, true, "",
                                 Set.of(
-                                        new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
+                                        new OptionResponse(2L, 1L, 1L, OptionName.COLOR, "Black"),
                                         new OptionResponse(2L, 2L, 3L, OptionName.SIZE, "L")
 
                                 ), BigDecimal.ZERO)
