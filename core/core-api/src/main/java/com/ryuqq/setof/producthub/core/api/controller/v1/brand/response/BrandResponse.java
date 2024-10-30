@@ -3,7 +3,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.brand.response;
 import com.ryuqq.setof.domain.core.brand.BrandRecord;
 
 public record BrandResponse(
-        long id,
+        long brandId,
         String brandName,
         String brandIconImageUrl,
         boolean displayYn

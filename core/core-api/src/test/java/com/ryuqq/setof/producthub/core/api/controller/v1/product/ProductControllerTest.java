@@ -4,7 +4,6 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
-import com.ryuqq.setof.domain.core.product.ProductGroupContext;
 import com.ryuqq.setof.domain.core.product.command.ProductGroupInsertFacade;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.ProductGroupContextResponse;
@@ -139,9 +138,9 @@ class ProductControllerTest extends RestDocsTest {
         ProductGroupContextResponse oneOption = ProductModuleHelper.toProductGroupContextResponse(2L, OptionType.OPTION_ONE);
         ProductGroupContextResponse singleOption = ProductModuleHelper.toProductGroupContextResponse(3L, OptionType.SINGLE);
 
-        List<ProductGroupContextResponse> results = List.of(twoOption, oneOption, singleOption);
+        List<ProductGroupContextResponse> results = List.of(singleOption, oneOption, twoOption);
         Slice<ProductGroupContextResponse> slice = SliceUtils.toSlice(results, 20, 3);
-        slice.setCursor(3L);
+        slice.setCursor(1L);
 
         when(productGroupQueryFacade.getProductGroupContexts(any())).thenReturn(slice);
 

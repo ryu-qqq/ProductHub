@@ -26,7 +26,7 @@ public class BrandSliceMapper extends AbstractGeneralSliceMapper<BrandResponse> 
         if (!slice.isEmpty()) {
             List<BrandResponse> content = slice.getContent();
             BrandResponse t = content.getLast();
-            slice.setCursor(t.id());
+            slice.setCursor(t.brandId());
         }
     }
 

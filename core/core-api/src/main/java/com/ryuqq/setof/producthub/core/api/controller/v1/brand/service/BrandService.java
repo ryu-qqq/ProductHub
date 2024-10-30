@@ -20,7 +20,7 @@ public class BrandService {
         this.brandQueryService = brandQueryService;
     }
 
-    public Slice<BrandResponse> getBrandSlices(BrandGetRequestDto brandGetRequestDto){
+    public Slice<BrandResponse> getBrands(BrandGetRequestDto brandGetRequestDto){
         List<BrandRecord> brands = brandQueryService.findBrands(brandGetRequestDto.toBrandFilter());
         long brandCount = brandQueryService.findBrandCount(brandGetRequestDto.toBrandFilter());
         return brandSliceMapper.toSlice(toBrandRecords(brands), brandGetRequestDto.pageSize(), brandCount);

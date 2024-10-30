@@ -7,10 +7,11 @@ import java.util.List;
 public record ColorGetRequestDto(
         List<Long> colorIds,
         Long cursorId,
-        int pageSize
+        Integer pageSize
 ) {
 
     public ColorFilter toColorFilter() {
-        return new ColorFilter(colorIds, cursorId, pageSize);
+        int defaultSize = (pageSize == null || pageSize == 0) ? 20 : pageSize;
+        return new ColorFilter(colorIds, cursorId, defaultSize);
     }
 }

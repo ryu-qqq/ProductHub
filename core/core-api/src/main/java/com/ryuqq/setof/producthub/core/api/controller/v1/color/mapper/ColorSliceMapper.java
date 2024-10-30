@@ -25,7 +25,7 @@ public class ColorSliceMapper extends AbstractGeneralSliceMapper<ColorResponse> 
         if (!slice.isEmpty()) {
             List<ColorResponse> content = slice.getContent();
             ColorResponse t = content.getLast();
-            slice.setCursor(t.id());
+            slice.setCursor(t.colorId());
         }
     }
 

@@ -22,7 +22,7 @@ public class CategoryService {
     }
 
 
-    public Slice<CategoryResponse> getCategorySlices(CategoryGetRequestDto categoryGetRequestDto){
+    public Slice<CategoryResponse> getCategories(CategoryGetRequestDto categoryGetRequestDto){
         List<CategoryRecord> categories = categoryQueryService.findCategories(categoryGetRequestDto.toCategoryFilter());
         long categoryCount = categoryQueryService.findCategoryCount(categoryGetRequestDto.toCategoryFilter());
         return categorySliceMapper.toSlice(toCategoryResponses(categories), categoryGetRequestDto.pageSize(), categoryCount);

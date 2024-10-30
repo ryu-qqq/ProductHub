@@ -1,0 +1,17 @@
+= COLOR API
+:toc:
+:toclevels: 3
+
+
+
+=== COLORS QUERY GET API
+==== Curl Request
+include::{snippets}/color-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/color-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/color-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/color-get/response-fields-ColorResponseContent.adoc[]
+include::{snippets}/color-get/response-fields-beneath-response.adoc[]
+

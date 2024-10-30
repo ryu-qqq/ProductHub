@@ -8,9 +8,8 @@
 :docinfo: shared-head
 include::summary.adoc[]
 
-include::AUTH-API.adoc[]
 include::BRAND-API.adoc[]
 include::CATEGORY-API.adoc[]
+include::COLOR-API.adoc[]
 include::PRODUCT-API.adoc[]
-include::ENUMS.adoc[]
 
