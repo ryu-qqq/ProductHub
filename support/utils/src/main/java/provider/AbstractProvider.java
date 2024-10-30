@@ -15,7 +15,5 @@ public abstract class AbstractProvider<K, T> implements Provider<K, T> {
         return value;
     }
 
-
-
 }
 
