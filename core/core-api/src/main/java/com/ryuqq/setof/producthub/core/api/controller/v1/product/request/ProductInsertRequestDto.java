@@ -1,7 +1,5 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
-import com.ryuqq.setof.core.OptionName;
-import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.domain.core.product.command.OptionCommand;
 import com.ryuqq.setof.domain.core.product.command.ProductCommand;
 import jakarta.validation.Valid;
@@ -11,8 +9,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public record ProductInsertRequestDto(
         boolean soldOutYn,
