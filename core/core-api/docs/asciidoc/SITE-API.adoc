@@ -28,3 +28,15 @@ include::{snippets}/site-get/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/site-get/response-fields-siteContextResponse.adoc[]
 include::{snippets}/site-get/response-fields-beneath-response.adoc[]
+
+
+=== SITES QUERY GET API
+==== Curl Request
+include::{snippets}/sites-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/sites-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/sites-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/sites-get/response-fields-siteResponse.adoc[]
+include::{snippets}/sites-get/response-fields-beneath-response.adoc[]

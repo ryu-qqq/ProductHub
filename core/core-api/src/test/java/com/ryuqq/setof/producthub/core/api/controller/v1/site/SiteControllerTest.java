@@ -1,8 +1,12 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
+import com.ryuqq.setof.domain.core.generic.Slice;
+import com.ryuqq.setof.domain.core.generic.SliceUtils;
 import com.ryuqq.setof.domain.core.site.command.SiteContextCommandFacade;
+import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.service.SiteQueryFacade;
 import com.ryuqq.setof.producthub.data.SiteModuleHelper;
 import com.ryuqq.setof.test.api.RestDocsTest;
@@ -20,12 +24,15 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 
 @Tag("restdocs")
 @ExtendWith(RestDocumentationExtension.class)
@@ -96,7 +103,6 @@ class SiteControllerTest extends RestDocsTest {
                 ));
     }
 
-
     @Test
     @DisplayName("Site 조회 API")
     void getSite() throws Exception {
@@ -139,6 +145,58 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].actionType").type(JsonFieldType.STRING).description("행동 타입"),
                                 fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
                                 fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
+                        ),
+
+                        responseFields(
+                                beneathPath("response"),
+                                statusMsg()
+                        )
+                ));
+
+
+    }
+
+    @Test
+    @DisplayName("Site 리스트 조회 API")
+    void getSites() {
+        // given
+        SiteResponse results = SiteModuleHelper.toSiteResponse();
+
+        Slice<SiteResponse> slice = SliceUtils.toSlice(List.of(results), 20, 1);
+        slice.setCursor(1L);
+        when(siteQueryFacade.getSiteResponses(any())).thenReturn(slice);
+
+        // when
+        given()
+                .accept(ContentType.JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/api/v1/site")
+                .then()
+                .status(HttpStatus.OK)
+                .apply(document("sites-get", requestPreprocessor(), responsePreprocessor(),
+                        queryParameters(
+                                parameterWithName("siteType").optional().description("Site Type"),
+                                parameterWithName("pageSize").optional().description("페이지 크기 (기본값: 20)").attributes(key("default").value("20")),
+                                parameterWithName("cursorId").optional().description("커서 ID (페이징에 사용)")
+                                ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("siteResponse"),
+                                fieldWithPath("content[].siteId").type(JsonFieldType.NUMBER).description("사이트 ID"),
+                                fieldWithPath("content[].siteName").type(JsonFieldType.STRING).description("사이트 이름 (e.g., SETOF)"),
+                                fieldWithPath("content[].baseUrl").type(JsonFieldType.STRING).description("사이트 URL (e.g., www.set-of.net)"),
+                                fieldWithPath("content[].countryCode").type(JsonFieldType.STRING).description("사이트 국가 (e.g., KR)"),
+                                fieldWithPath("content[].siteType").type(JsonFieldType.STRING).description("사이트 유형 (e.g., CRAWL)"),
+
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                                fieldWithPath("sort").type(JsonFieldType.STRING).description("정렬 여부"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 요소 개수"),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("페이지 비어있는지 여부"),
+                                fieldWithPath("cursor").type(JsonFieldType.NUMBER).description("다음 페이지를 위한 커서"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 요소 개수")
+
+
 
                         ),
 

@@ -1,11 +1,14 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
 import com.ryuqq.setof.core.SiteType;
+import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.command.SiteContextCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteInsertResponseDto;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.service.SiteQueryFacade;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +28,13 @@ public class SiteController {
         this.siteContextCommandFacade = siteContextCommandFacade;
     }
 
+    @GetMapping("/site")
+    public ResponseEntity<ApiResponse<Slice<SiteResponse>>> getSites(@ModelAttribute SiteGetRequestDto siteGetRequestDto){
+        return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteResponses(siteGetRequestDto.toSiteFilter())));
+    }
+
     @GetMapping("/site/{siteId}")
-    public ResponseEntity<ApiResponse<SiteContextResponse>> getSites(@PathVariable("siteId") long siteId){
+    public ResponseEntity<ApiResponse<SiteContextResponse>> getSite(@PathVariable("siteId") long siteId){
         return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteContextResponse(siteId)));
     }
 

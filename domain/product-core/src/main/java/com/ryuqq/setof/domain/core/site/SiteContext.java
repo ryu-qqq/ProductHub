@@ -12,9 +12,6 @@ public class SiteContext {
     private SiteType siteType;
     private SiteProfile siteProfile;
 
-    public void setSiteProfile(SiteProfile siteProfile) {
-        this.siteProfile = siteProfile;
-    }
 
     public SiteContext(long siteId, String siteName, String baseUrl, Origin countryCode, SiteType siteType, SiteProfile siteProfile) {
         this.siteId = siteId;

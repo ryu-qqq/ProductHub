@@ -61,8 +61,6 @@ class ProductControllerTest extends RestDocsTest {
         ProductGroupCommandContextRequestDto requestDto = ProductModuleHelper.toProductGroupCommandContextRequestDto();
         when(productGroupInsertFacade.insert(any())).thenReturn(1L);
 
-
-
         // when
         given()
 

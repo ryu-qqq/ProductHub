@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 public class SiteContextMapper {
 
     public SiteContext toSiteContext(SiteContextDto siteContextDto, SiteProfile siteProfile){
-
         return new SiteContext(
                 siteContextDto.getSiteId(),
                 siteContextDto.getSiteName(),

@@ -39,6 +39,13 @@ public class SiteModuleHelper {
         return List.of(new CrawlTaskRequestDto(1, TaskType.API_CALL, "", ActionType.EXTRACT, "{}", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
     }
 
+    public static SiteResponse toSiteResponse(){
+        return new SiteResponse(1L,
+                "SETOF", "www.set-of.net",
+                Origin.KR, SiteType.CRAWL
+        );
+    }
+
 
     public static SiteContextResponse toSiteContextResponse(){
         return new SiteContextResponse(1L,
