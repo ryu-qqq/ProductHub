@@ -4,6 +4,6 @@ import com.ryuqq.setof.core.SiteType;
 
 public interface SiteQueryService {
 
-    SiteContext findSiteContext(long siteId, SiteType siteType);
+    SiteContext findSiteContext(long siteId);
 
 }

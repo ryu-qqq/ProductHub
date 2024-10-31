@@ -1,0 +1,30 @@
+= SITE API
+:toc:
+:toclevels: 3
+
+
+=== SITE COMMAND POST API
+==== Curl Request
+include::{snippets}/site-register/curl-request.adoc[]
+==== Request Fields
+include::{snippets}/site-register/request-fields.adoc[]
+==== Http Response
+include::{snippets}/site-register/http-response.adoc[]
+==== Response Fields
+include::{snippets}/site-register/response-fields-beneath-data.adoc[]
+include::{snippets}/site-register/response-fields-beneath-response.adoc[]
+
+
+
+=== SITE QUERY GET API
+==== Curl Request
+include::{snippets}/site-get/curl-request.adoc[]
+==== PATH Parameters
+include::{snippets}/site-get/path-parameters.adoc[]
+==== Query Parameters
+include::{snippets}/site-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/site-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/site-get/response-fields-siteContextResponse.adoc[]
+include::{snippets}/site-get/response-fields-beneath-response.adoc[]

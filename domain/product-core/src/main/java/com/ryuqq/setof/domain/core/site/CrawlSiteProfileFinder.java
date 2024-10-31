@@ -7,6 +7,7 @@ import com.ryuqq.setof.storage.db.core.site.CrawlSiteQueryDslQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlAuthSettingDto;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlEndPointDto;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlSiteProfileDto;
+import com.ryuqq.setof.storage.db.core.site.dto.CrawlTaskDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     public SiteProfile fetchSiteProfile(long siteId, SiteType siteType) {
         CrawlSiteProfileDto crawlSiteProfileDto = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType)
                 .orElseThrow(() -> new NotFoundException(SITE_PROFILE_NOT_FOUND_ERROR_MSG + siteId));
+        List<CrawlEndPointDto> crawlEndPointDtos = crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId);
+        crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDtos);
         return toCrawlSiteProfile(crawlSiteProfileDto);
     }
 
@@ -61,11 +64,24 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
         return crawlEndPointDtos.stream()
                 .map(c -> new CrawlEndpoint(
                         c.getEndPointUrl(),
-                        c.getCrawlFrequency()
+                        toCrawlTasks(c.getCrawlTaskDtos())
                 ))
                 .toList();
     }
 
+    public List<CrawlTask> toCrawlTasks(List<CrawlTaskDto> crawlTaskDtos){
+        return crawlTaskDtos.stream()
+                .map(c -> new CrawlTask(
+                        c.getEndpointId(),
+                        c.getStepOrder(),
+                        c.getTaskType(),
+                        c.getActionTarget(),
+                        c.getActionType(),
+                        c.getParams(),
+                        c.getResponseMapping()
+                ))
+                .toList();
+    }
 
 
 }

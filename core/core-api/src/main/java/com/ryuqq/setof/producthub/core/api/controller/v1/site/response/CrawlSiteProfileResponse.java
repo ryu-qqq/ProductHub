@@ -6,7 +6,7 @@ import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlSetti
 import java.util.List;
 
 public record CrawlSiteProfileResponse(
-        CrawlSettingResponse crawlSettingResponse,
+        CrawlSettingResponse crawlSetting,
         CrawlAuthSettingResponse crawlAuthSetting,
         List<CrawlEndpointResponse> crawlEndpoints
 ) implements SiteProfileResponse {

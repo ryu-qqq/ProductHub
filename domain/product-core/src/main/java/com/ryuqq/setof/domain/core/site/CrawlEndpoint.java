@@ -1,27 +1,23 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.storage.db.core.site.CrawlEndpointEntity;
+import java.util.List;
 
 public class CrawlEndpoint {
 
     private String endPointUrl;
-    private int crawlFrequency;
+    private List<CrawlTask> crawlTasks;
 
-    public CrawlEndpoint(String endPointUrl, int crawlFrequency) {
+    public CrawlEndpoint(String endPointUrl, List<CrawlTask> crawlTasks) {
         this.endPointUrl = endPointUrl;
-        this.crawlFrequency = crawlFrequency;
+        this.crawlTasks = crawlTasks;
     }
 
     public String getEndPointUrl() {
         return endPointUrl;
     }
 
-    public int getCrawlFrequency() {
-        return crawlFrequency;
-    }
-
-    public CrawlEndpointEntity toCrawlEndpointEntity(long siteID) {
-        return new CrawlEndpointEntity(siteID, endPointUrl, crawlFrequency);
+    public List<CrawlTask> getCrawlTasks() {
+        return crawlTasks;
     }
 
 }

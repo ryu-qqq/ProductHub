@@ -15,12 +15,11 @@ public class CrawlSiteProfileDto {
     private List<CrawlEndPointDto> crawlEndPointDtos;
 
     @QueryProjection
-    public CrawlSiteProfileDto(SiteType siteType, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto, List<CrawlEndPointDto> crawlEndPointDtos) {
+    public CrawlSiteProfileDto(SiteType siteType, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto) {
         this.siteType = siteType;
         this.crawlFrequency = crawlFrequency;
         this.crawlType = crawlType;
         this.crawlAuthSettingDto = crawlAuthSettingDto;
-        this.crawlEndPointDtos = crawlEndPointDtos;
     }
 
     public SiteType getSiteType() {
@@ -41,5 +40,9 @@ public class CrawlSiteProfileDto {
 
     public List<CrawlEndPointDto> getCrawlEndPointDtos() {
         return crawlEndPointDtos;
+    }
+
+    public void setCrawlEndPointDtos(List<CrawlEndPointDto> crawlEndPointDtos) {
+        this.crawlEndPointDtos = crawlEndPointDtos;
     }
 }

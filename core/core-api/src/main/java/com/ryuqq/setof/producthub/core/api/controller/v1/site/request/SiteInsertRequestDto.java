@@ -26,7 +26,7 @@ public record SiteInsertRequestDto(
 
         @Valid
         @NotNull(message = "Site Profile cannot be null.")
-        SiteProfileRequestDto siteProfileRequestDto
+        SiteProfileRequestDto siteProfile
 ) {
 
         public SiteCommand toSiteCommand(){
@@ -35,7 +35,7 @@ public record SiteInsertRequestDto(
                         baseUrl,
                         countryCode,
                         siteType,
-                        siteProfileRequestDto.toSiteProfileCommand()
+                        siteProfile.toSiteProfileCommand()
                 );
         }
 }

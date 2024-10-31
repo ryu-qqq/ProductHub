@@ -1,6 +1,5 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.service;
 
-import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.domain.core.site.SiteContext;
 import com.ryuqq.setof.domain.core.site.SiteQueryService;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
@@ -15,8 +14,8 @@ public class SiteQueryFacade {
         this.siteQueryService = siteQueryService;
     }
 
-    public SiteContextResponse getSiteContextResponse(long siteId, SiteType siteType){
-        SiteContext siteContext = siteQueryService.findSiteContext(siteId, siteType);
+    public SiteContextResponse getSiteContextResponse(long siteId){
+        SiteContext siteContext = siteQueryService.findSiteContext(siteId);
         return SiteContextResponse.of(siteContext);
     }
 

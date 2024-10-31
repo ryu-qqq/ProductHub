@@ -26,12 +26,12 @@ public class SiteController {
     }
 
     @GetMapping("/site/{siteId}")
-    public ResponseEntity<ApiResponse<SiteContextResponse>> getSites(@PathVariable("siteId") long siteId, @RequestParam SiteType siteType){
-        return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteContextResponse(siteId, siteType)));
+    public ResponseEntity<ApiResponse<SiteContextResponse>> getSites(@PathVariable("siteId") long siteId){
+        return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteContextResponse(siteId)));
     }
 
-    @PostMapping("/site/")
-    public ResponseEntity<ApiResponse<SiteInsertResponseDto>> getProductGroups(@RequestBody @Valid SiteInsertRequestDto siteInsertRequestDto){
+    @PostMapping("/site")
+    public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerSite(@RequestBody @Valid SiteInsertRequestDto siteInsertRequestDto){
         long siteId = siteContextCommandFacade.insert(siteInsertRequestDto.toSiteCommand());
         return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
     }

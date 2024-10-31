@@ -12,7 +12,7 @@ public class CrawlEndPointJpaService implements CrawlEndPointPersistenceService{
     }
 
     @Override
-    public void insert(CrawlEndpointEntity crawlEndpointEntity) {
-        crawlEndPointJpaRepository.save(crawlEndpointEntity);
+    public long insert(CrawlEndpointEntity crawlEndpointEntity) {
+        return crawlEndPointJpaRepository.save(crawlEndpointEntity).getId();
     }
 }

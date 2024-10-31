@@ -19,7 +19,7 @@ public class SiteAuthSettingEntity extends BaseEntity {
     @Column(name = "AUTH_ENDPOINT")
     private String authEndpoint;
 
-    @Column(name = "AUTH_HEADERS")
+    @Column(name = "AUTH_HEADERS", nullable = true, length = 255)
     private String authHeaders;
 
     @Column(name = "AUTH_PAYLOAD")

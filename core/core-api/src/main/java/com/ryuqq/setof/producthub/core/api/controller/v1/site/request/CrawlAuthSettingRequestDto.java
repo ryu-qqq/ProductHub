@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 public record CrawlAuthSettingRequestDto(
         @NotNull(message = "Auth Type cannot be null.")
         AuthType authType,
-
         String authEndpoint,
         String authHeaders,
         String authPayload

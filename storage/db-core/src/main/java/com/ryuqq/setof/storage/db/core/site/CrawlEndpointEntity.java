@@ -15,15 +15,12 @@ public class CrawlEndpointEntity extends BaseEntity {
     @Column(name = "ENDPOINT_URL", nullable = false, length = 255)
     private String endPointUrl;
 
-    @Column(name = "CRAWL_FREQUENCY", nullable = false)
-    private int crawlFrequency;
 
     protected CrawlEndpointEntity() {}
 
-    public CrawlEndpointEntity(long siteId, String endPointUrl, int crawlFrequency) {
+    public CrawlEndpointEntity(long siteId, String endPointUrl) {
         this.siteId = siteId;
         this.endPointUrl = endPointUrl;
-        this.crawlFrequency = crawlFrequency;
     }
 
     public long getSiteId() {
@@ -34,7 +31,4 @@ public class CrawlEndpointEntity extends BaseEntity {
         return endPointUrl;
     }
 
-    public int getCrawlFrequency() {
-        return crawlFrequency;
-    }
 }

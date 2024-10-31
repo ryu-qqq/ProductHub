@@ -11,7 +11,7 @@ public record SiteContextResponse(
         String baseUrl,
         Origin countryCode,
         SiteType siteType,
-        SiteProfileResponse siteProfileResponse
+        SiteProfileResponse siteProfile
 ) {
 
     public static SiteContextResponse of(SiteContext siteContext) {
