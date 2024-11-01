@@ -64,14 +64,16 @@ public class CrawlSiteQueryDslQueryRepository {
         return queryFactory
                 .selectFrom(crawlEndpointEntity)
                 .innerJoin(crawlTaskEntity)
-                .on(crawlTaskEntity.endpointId.eq(crawlEndpointEntity.id))
+                    .on(crawlTaskEntity.endpointId.eq(crawlEndpointEntity.id))
+                    .on(crawlTaskEntity.deleteYn.eq(false))
                 .where(
-                        crawlEndpointEntity.siteId.eq(siteId)
+                        crawlEndpointEntity.siteId.eq(siteId),
+                        crawlEndpointEntity.deleteYn.eq(false)
                 ).transform(
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
                                         crawlEndpointEntity.endPointUrl,
-                                        crawlEndpointEntity.parameters,
+                                        crawlEndpointEntity.parameters.coalesce(""),
                                         GroupBy.list(
                                                 new QCrawlTaskDto(
                                                         crawlTaskEntity.endpointId,
