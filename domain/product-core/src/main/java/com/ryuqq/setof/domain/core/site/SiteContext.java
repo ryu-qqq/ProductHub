@@ -3,6 +3,8 @@ package com.ryuqq.setof.domain.core.site;
 import com.ryuqq.setof.core.Origin;
 import com.ryuqq.setof.core.SiteType;
 
+import java.util.List;
+
 public class SiteContext {
 
     private long siteId;
@@ -10,16 +12,16 @@ public class SiteContext {
     private String baseUrl;
     private Origin countryCode;
     private SiteType siteType;
-    private SiteProfile siteProfile;
+    private List<SiteProfile> siteProfiles;
 
 
-    public SiteContext(long siteId, String siteName, String baseUrl, Origin countryCode, SiteType siteType, SiteProfile siteProfile) {
+    public SiteContext(long siteId, String siteName, String baseUrl, Origin countryCode, SiteType siteType, List<SiteProfile> siteProfiles) {
         this.siteId = siteId;
         this.siteName = siteName;
         this.baseUrl = baseUrl;
         this.countryCode = countryCode;
         this.siteType = siteType;
-        this.siteProfile = siteProfile;
+        this.siteProfiles = siteProfiles;
     }
 
     public long getSiteId() {
@@ -42,7 +44,7 @@ public class SiteContext {
         return siteType;
     }
 
-    public SiteProfile getSiteProfile() {
-        return siteProfile;
+    public List<SiteProfile> getSiteProfiles() {
+        return siteProfiles;
     }
 }

@@ -12,7 +12,8 @@ public class CrawlSettingJpaService implements CrawlSettingPersistenceService{
     }
 
     @Override
-    public void insert(CrawlSettingEntity crawlSettingEntity) {
-        crawlSettingJpaRepository.save(crawlSettingEntity);
+    public long insert(CrawlSettingEntity crawlSettingEntity) {
+        return crawlSettingJpaRepository.save(crawlSettingEntity).getId();
     }
+
 }

@@ -166,23 +166,21 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("countryCode").type(JsonFieldType.STRING).description("사이트 국가 (e.g., KR)"),
                                 fieldWithPath("siteType").type(JsonFieldType.STRING).description("사이트 유형 (e.g., CRAWL)"),
 
-                                fieldWithPath("siteProfile.crawlSetting.crawlFrequency").type(JsonFieldType.NUMBER).description("크롤링 주기"),
-                                fieldWithPath("siteProfile.crawlSetting.crawlType").type(JsonFieldType.STRING).description("크롤링 타입 (e.g., BEAUTIFUL_SOUP)"),
-
-                                fieldWithPath("siteProfile.crawlAuthSetting.authType").type(JsonFieldType.STRING).description("인증 타입 (e.g., TOKEN)"),
-                                fieldWithPath("siteProfile.crawlAuthSetting.authEndpoint").type(JsonFieldType.STRING).description("인증 URL (e.g., www.set-of.net)"),
-                                fieldWithPath("siteProfile.crawlAuthSetting.authHeaders").type(JsonFieldType.STRING).description("헤더 키 (e.g., Authorization)"),
-                                fieldWithPath("siteProfile.crawlAuthSetting.authPayload").type(JsonFieldType.STRING).description("토큰 타입 (e.g., Bearer)"),
-
-                                fieldWithPath("siteProfile.crawlEndpoints[].endPointUrl").type(JsonFieldType.STRING).description("엔드포인트 URL (e.g., /api/v1/product)"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].parameters").type(JsonFieldType.STRING).description("엔드포인트 파라미터"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].endpointId").type(JsonFieldType.NUMBER).description("엔드포인트 ID"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].stepOrder").type(JsonFieldType.NUMBER).description("작업 순서"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].taskType").type(JsonFieldType.STRING).description("작업 종류"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].actionTarget").type(JsonFieldType.STRING).description("타깃"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].actionType").type(JsonFieldType.STRING).description("행동 타입"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
-                                fieldWithPath("siteProfile.crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
+                                fieldWithPath("siteProfiles[].crawlSetting.crawlFrequency").type(JsonFieldType.NUMBER).description("크롤링 주기"),
+                                fieldWithPath("siteProfiles[].crawlSetting.crawlType").type(JsonFieldType.STRING).description("크롤링 타입 (e.g., BEAUTIFUL_SOUP)"),
+                                fieldWithPath("siteProfiles[].crawlAuthSetting.authType").type(JsonFieldType.STRING).description("인증 타입 (e.g., TOKEN)"),
+                                fieldWithPath("siteProfiles[].crawlAuthSetting.authEndpoint").type(JsonFieldType.STRING).description("인증 URL (e.g., www.set-of.net)"),
+                                fieldWithPath("siteProfiles[].crawlAuthSetting.authHeaders").type(JsonFieldType.STRING).description("헤더 키 (e.g., Authorization)"),
+                                fieldWithPath("siteProfiles[].crawlAuthSetting.authPayload").type(JsonFieldType.STRING).description("토큰 타입 (e.g., Bearer)"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].endPointUrl").type(JsonFieldType.STRING).description("엔드포인트 URL (e.g., /api/v1/product)"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].parameters").type(JsonFieldType.STRING).description("엔드포인트 파라미터"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].endpointId").type(JsonFieldType.NUMBER).description("엔드포인트 ID"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].stepOrder").type(JsonFieldType.NUMBER).description("작업 순서"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].taskType").type(JsonFieldType.STRING).description("작업 종류"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].actionTarget").type(JsonFieldType.STRING).description("타깃"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].actionType").type(JsonFieldType.STRING).description("행동 타입"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
                         ),
 
                         responseFields(

@@ -10,8 +10,8 @@ public record CrawlEndpointCommand(
         List<CrawlTaskCommand> crawlTasks
 ) {
 
-    public CrawlEndpointEntity toCrawlEndpointEntity(long siteId) {
-        return new CrawlEndpointEntity(siteId, parameters, endPointUrl);
+    public CrawlEndpointEntity toCrawlEndpointEntity(long siteId, long mappingId) {
+        return new CrawlEndpointEntity(siteId, mappingId, parameters, endPointUrl);
     }
 
 }

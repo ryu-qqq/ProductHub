@@ -2,7 +2,6 @@ package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.core.CrawlType;
 import com.ryuqq.setof.core.SiteType;
-import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import com.ryuqq.setof.storage.db.core.site.CrawlSiteQueryDslQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlAuthSettingDto;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlEndPointDto;
@@ -11,8 +10,9 @@ import com.ryuqq.setof.storage.db.core.site.dto.CrawlTaskDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.ryuqq.setof.domain.core.site.SiteErrorConstants.SITE_PROFILE_NOT_FOUND_ERROR_MSG;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CrawlSiteProfileFinder implements SiteProfileFinder{
@@ -29,16 +29,24 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     }
 
     @Override
-    public SiteProfile fetchSiteProfile(long siteId, SiteType siteType) {
-        CrawlSiteProfileDto crawlSiteProfileDto = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType)
-                .orElseThrow(() -> new NotFoundException(SITE_PROFILE_NOT_FOUND_ERROR_MSG + siteId));
-        List<CrawlEndPointDto> crawlEndPointDtos = crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId);
-        crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDtos);
-        return toCrawlSiteProfile(crawlSiteProfileDto);
+    public List<CrawlSiteProfile> fetchSiteProfile(long siteId, SiteType siteType) {
+        List<CrawlSiteProfileDto> crawlSiteProfileDtos = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType);
+        Map<Long, CrawlEndPointDto> crawlEndPointMap = fetchAndMapCrawlEndpoints(siteId);
+
+        crawlSiteProfileDtos.forEach(profileDto ->
+                profileDto.addCrawlEndPoint(crawlEndPointMap.get(profileDto.getMappingId()))
+        );
+
+        return crawlSiteProfileDtos.stream().map(this::toCrawlSiteProfile).toList();
     }
 
+    private Map<Long, CrawlEndPointDto> fetchAndMapCrawlEndpoints(long siteId) {
+        return crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId)
+                .stream()
+                .collect(Collectors.toMap(CrawlEndPointDto::getMappingId, Function.identity(), (existing, replacement) -> existing));
+    }
 
-    public CrawlSiteProfile toCrawlSiteProfile(CrawlSiteProfileDto crawlSiteProfileDto){
+    private CrawlSiteProfile toCrawlSiteProfile(CrawlSiteProfileDto crawlSiteProfileDto){
         return new CrawlSiteProfile(
                 toCrawlSetting(crawlSiteProfileDto.getCrawlFrequency(), crawlSiteProfileDto.getCrawlType()),
                 toCrawlAuthSetting(crawlSiteProfileDto.getCrawlAuthSettingDto()),
@@ -46,11 +54,11 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
         );
     }
 
-    public CrawlSetting toCrawlSetting(int crawlFrequency, CrawlType crawlType){
+    private CrawlSetting toCrawlSetting(int crawlFrequency, CrawlType crawlType){
         return new CrawlSetting(crawlFrequency, crawlType);
     }
 
-    public CrawlAuthSetting toCrawlAuthSetting(CrawlAuthSettingDto crawlAuthSettingDto){
+    private CrawlAuthSetting toCrawlAuthSetting(CrawlAuthSettingDto crawlAuthSettingDto){
         return new CrawlAuthSetting(
                 crawlAuthSettingDto.getAuthType(),
                 crawlAuthSettingDto.getAuthEndpoint(),
@@ -60,7 +68,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     }
 
 
-    public List<CrawlEndpoint> toCrawlEndPoints(List<CrawlEndPointDto> crawlEndPointDtos){
+    private List<CrawlEndpoint> toCrawlEndPoints(List<CrawlEndPointDto> crawlEndPointDtos){
         return crawlEndPointDtos.stream()
                 .map(c -> new CrawlEndpoint(
                         c.getEndPointUrl(),
@@ -70,7 +78,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 .toList();
     }
 
-    public List<CrawlTask> toCrawlTasks(List<CrawlTaskDto> crawlTaskDtos){
+    private List<CrawlTask> toCrawlTasks(List<CrawlTaskDto> crawlTaskDtos){
         return crawlTaskDtos.stream()
                 .map(c -> new CrawlTask(
                         c.getEndpointId(),

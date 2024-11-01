@@ -54,12 +54,12 @@ public class SiteModuleHelper {
         );
     }
 
-    public static CrawlSiteProfileResponse toCrawlSiteProfileResponse(){
-        return new CrawlSiteProfileResponse(
+    public static List<SiteProfileResponse> toCrawlSiteProfileResponse(){
+        return List.of(new CrawlSiteProfileResponse(
                 toCrawlSettingResponse(),
                 toCrawlAuthSettingResponse(),
                 toCrawlEndpointResponses()
-        );
+        ));
     }
 
     public static CrawlSettingResponse toCrawlSettingResponse(){
