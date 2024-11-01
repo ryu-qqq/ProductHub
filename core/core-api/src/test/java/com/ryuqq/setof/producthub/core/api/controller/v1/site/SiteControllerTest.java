@@ -53,7 +53,6 @@ class SiteControllerTest extends RestDocsTest {
         this.mockMvc = mockController(siteController);
     }
 
-
     @Test
     @DisplayName("사이트 등록 API")
     void registerSite() throws Exception {

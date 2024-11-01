@@ -35,4 +35,5 @@ public class ProductEntity extends BaseEntity {
         this.quantity = quantity;
         this.additionalPrice = additionalPrice;
     }
+
 }

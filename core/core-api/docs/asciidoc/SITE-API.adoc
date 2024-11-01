@@ -21,8 +21,6 @@ include::{snippets}/site-register/response-fields-beneath-response.adoc[]
 include::{snippets}/site-get/curl-request.adoc[]
 ==== PATH Parameters
 include::{snippets}/site-get/path-parameters.adoc[]
-==== Query Parameters
-include::{snippets}/site-get/query-parameters.adoc[]
 ==== Http Response
 include::{snippets}/site-get/http-response.adoc[]
 ==== Response Fields
