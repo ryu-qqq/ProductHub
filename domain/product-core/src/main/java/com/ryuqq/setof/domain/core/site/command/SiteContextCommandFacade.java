@@ -1,26 +1,24 @@
 package com.ryuqq.setof.domain.core.site.command;
 
+import com.ryuqq.setof.domain.core.site.SiteQueryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SiteContextCommandFacade {
 
+    private final SiteQueryService siteQueryService;
     private final SiteCommandService siteCommandService;
-    private final SiteProfileCommandProvider siteProfileCommandProvider;
 
-    public SiteContextCommandFacade(SiteCommandService siteCommandService, SiteProfileCommandProvider siteProfileCommandProvider) {
+    public SiteContextCommandFacade(SiteQueryService siteQueryService, SiteCommandService siteCommandService) {
+        this.siteQueryService = siteQueryService;
         this.siteCommandService = siteCommandService;
-        this.siteProfileCommandProvider = siteProfileCommandProvider;
     }
 
     @Transactional
     public long insert(SiteCommand siteCommand){
-        long siteId = siteCommandService.insert(siteCommand.toSiteEntity());
-        SiteProfileCommandService<SiteProfileCommand> siteProfileCommandSiteProfileCommandService =
-                (SiteProfileCommandService<SiteProfileCommand>) siteProfileCommandProvider.get(siteCommand.siteType());
-        siteProfileCommandSiteProfileCommandService.insert(siteId, siteCommand.siteProfileCommand());
-        return siteId;
+        boolean b = siteQueryService.siteExist(siteCommand.name(), siteCommand.baseUrl());
+        if(b) throw new IllegalArgumentException(String.format("이미 존재하는 사이트 %s 입니다.", siteCommand.name()));
+        return siteCommandService.insert(siteCommand.toSiteEntity());
     }
-
 }

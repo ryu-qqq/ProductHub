@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SiteQueryRepository {
-
+    boolean fetchSiteExists(long siteId);
+    boolean fetchSiteExists(String name, String baseUrl);
     List<SiteContextDto> fetchSites(SiteFilterStorageDto siteFilterStorageDto);
     long fetchSiteCount(SiteFilterStorageDto siteFilterStorageDto);
     Optional<SiteContextDto> fetchSiteContext(long siteId);

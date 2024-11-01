@@ -20,6 +20,16 @@ public class SiteFinder implements SiteQueryService{
     }
 
     @Override
+    public boolean siteExist(long siteId) {
+        return siteQueryRepository.fetchSiteExists(siteId);
+    }
+
+    @Override
+    public boolean siteExist(String name, String baseUrl) {
+        return siteQueryRepository.fetchSiteExists(name, baseUrl);
+    }
+
+    @Override
     public List<Site> findSiteResponse(SiteFilter siteFilter) {
         List<SiteContextDto> siteContextDtos = siteQueryRepository.fetchSites(siteFilter.toSiteFilterStorageDto());
         return siteContextDtos.stream()

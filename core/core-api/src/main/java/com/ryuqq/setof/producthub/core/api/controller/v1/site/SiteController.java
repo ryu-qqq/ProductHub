@@ -3,9 +3,11 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.command.SiteContextCommandFacade;
+import com.ryuqq.setof.domain.core.site.command.SiteProfileCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteProfileRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteInsertResponseDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteResponse;
@@ -22,10 +24,12 @@ public class SiteController {
 
     private final SiteQueryFacade siteQueryFacade;
     private final SiteContextCommandFacade siteContextCommandFacade;
+    private final SiteProfileCommandFacade siteProfileCommandFacade;
 
-    public SiteController(SiteQueryFacade siteQueryFacade, SiteContextCommandFacade siteContextCommandFacade) {
+    public SiteController(SiteQueryFacade siteQueryFacade, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade) {
         this.siteQueryFacade = siteQueryFacade;
         this.siteContextCommandFacade = siteContextCommandFacade;
+        this.siteProfileCommandFacade = siteProfileCommandFacade;
     }
 
     @GetMapping("/site")
@@ -41,6 +45,16 @@ public class SiteController {
     @PostMapping("/site")
     public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerSite(@RequestBody @Valid SiteInsertRequestDto siteInsertRequestDto){
         long siteId = siteContextCommandFacade.insert(siteInsertRequestDto.toSiteCommand());
+        return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
+    }
+
+
+    @PostMapping("/site/{siteType}/{siteId}")
+    public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerSiteProfile(
+            @PathVariable("siteType") SiteType siteType,
+            @PathVariable("siteId") long siteId,
+            @RequestBody @Valid SiteProfileRequestDto siteProfileRequestDto){
+        siteProfileCommandFacade.insert(siteType, siteId, siteProfileRequestDto.toSiteProfileCommand());
         return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
     }
 

@@ -11,7 +11,7 @@ public class SiteModuleHelper {
 
     public static SiteInsertRequestDto toSiteInsertRequestDto(){
         return new SiteInsertRequestDto("SETOF", "www.set-of.net",
-                Origin.KR, SiteType.CRAWL, toCrawlSiteProfileRequestDto());
+                Origin.KR, SiteType.CRAWL);
     }
 
     public static CrawlSiteProfileRequestDto toCrawlSiteProfileRequestDto(){
@@ -32,7 +32,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlEndpointRequestDto> toCrawlEndpointRequestDtos(){
-        return List.of(new CrawlEndpointRequestDto("/api/v1/product", toCrawlTaskRequestDtos()));
+        return List.of(new CrawlEndpointRequestDto("/api/v1/product", "",toCrawlTaskRequestDtos()));
     }
 
     public static List<CrawlTaskRequestDto> toCrawlTaskRequestDtos(){
@@ -71,7 +71,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlEndpointResponse> toCrawlEndpointResponses(){
-        return List.of(new CrawlEndpointResponse("/api/v1/product", toCrawlTaskResponses()));
+        return List.of(new CrawlEndpointResponse("/api/v1/product", "",toCrawlTaskResponses()));
     }
 
     public static List<CrawlTaskResponse> toCrawlTaskResponses(){
