@@ -64,6 +64,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
         return crawlEndPointDtos.stream()
                 .map(c -> new CrawlEndpoint(
                         c.getEndPointUrl(),
+                        c.getParameters(),
                         toCrawlTasks(c.getCrawlTaskDtos())
                 ))
                 .toList();

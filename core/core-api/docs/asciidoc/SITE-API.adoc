@@ -15,6 +15,19 @@ include::{snippets}/site-register/response-fields-beneath-data.adoc[]
 include::{snippets}/site-register/response-fields-beneath-response.adoc[]
 
 
+=== SITE PROFILE COMMAND POST API
+==== Curl Request
+include::{snippets}/site-profile-register/curl-request.adoc[]
+==== PATH Parameters
+include::{snippets}/site-profile-register/path-parameters.adoc[]
+==== Request Fields
+include::{snippets}/site-profile-register/request-fields.adoc[]
+==== Http Response
+include::{snippets}/site-profile-register/http-response.adoc[]
+==== Response Fields
+include::{snippets}/site-profile-register/response-fields-beneath-data.adoc[]
+include::{snippets}/site-profile-register/response-fields-beneath-response.adoc[]
+
 
 === SITE QUERY GET API
 ==== Curl Request

@@ -8,8 +8,7 @@ public record SiteCommand(
         String name,
         String baseUrl,
         Origin countryCode,
-        SiteType siteType,
-        SiteProfileCommand siteProfileCommand
+        SiteType siteType
 ) {
 
     public SiteEntity toSiteEntity(){

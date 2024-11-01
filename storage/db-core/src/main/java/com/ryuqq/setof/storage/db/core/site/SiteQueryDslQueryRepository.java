@@ -24,6 +24,32 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     }
 
     @Override
+    public boolean fetchSiteExists(long siteId) {
+        Long findId = queryFactory.select(
+                        siteEntity.id)
+                .from(siteEntity)
+                .where(
+                        siteIdEq(siteId)
+                ).fetchOne();
+
+        return findId != null;
+    }
+
+    @Override
+    public boolean fetchSiteExists(String name, String baseUrl) {
+        Long siteId = queryFactory.select(
+                        siteEntity.id)
+                .from(siteEntity)
+                .where(
+                        siteNameEq(name),
+                        baseUrlEq(baseUrl)
+
+                ).fetchOne();
+
+        return siteId != null;
+    }
+
+    @Override
     public List<SiteContextDto> fetchSites(SiteFilterStorageDto siteFilterStorageDto) {
         return queryFactory.select(
                         new QSiteContextDto(
@@ -85,10 +111,17 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
         return siteEntity.siteType.eq(siteType);
     }
 
-
     private BooleanExpression isSiteIdLt(Long siteId){
         if(siteId !=null) return siteEntity.id.lt(siteId);
         else return null;
+    }
+
+    private BooleanExpression siteNameEq(String name){
+        return siteEntity.name.eq(name);
+    }
+
+    private BooleanExpression baseUrlEq(String baseUrl){
+        return siteEntity.baseUrl.eq(baseUrl);
     }
 
 }

@@ -71,6 +71,7 @@ public class CrawlSiteQueryDslQueryRepository {
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
                                         crawlEndpointEntity.endPointUrl,
+                                        crawlEndpointEntity.parameters,
                                         GroupBy.list(
                                                 new QCrawlTaskDto(
                                                         crawlTaskEntity.endpointId,
