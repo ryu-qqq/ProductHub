@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.core.CrawlType;
 import com.ryuqq.setof.core.SiteType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrawlSiteProfileDto {
@@ -47,8 +48,10 @@ public class CrawlSiteProfileDto {
         return crawlEndPointDtos;
     }
 
-    public void addCrawlEndPoint(CrawlEndPointDto crawlEndPointDto) {
-        this.crawlEndPointDtos.add(crawlEndPointDto);
+    public void setCrawlEndPointDtos(List<CrawlEndPointDto> crawlEndPointDtos) {
+        this.crawlEndPointDtos = crawlEndPointDtos;
     }
+
+
 
 }

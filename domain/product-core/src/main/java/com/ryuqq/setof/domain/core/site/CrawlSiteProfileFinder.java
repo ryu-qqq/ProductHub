@@ -30,20 +30,30 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
     @Override
     public List<CrawlSiteProfile> fetchSiteProfile(long siteId, SiteType siteType) {
-        List<CrawlSiteProfileDto> crawlSiteProfileDtos = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType);
-        Map<Long, CrawlEndPointDto> crawlEndPointMap = fetchAndMapCrawlEndpoints(siteId);
+        Map<Long, CrawlSiteProfileDto> crawlProfileMap = fetchAndMapCrawlSiteProfiles(siteId, siteType);
+        Map<Long, List<CrawlEndPointDto>> crawlEndPointMap = fetchAndMapCrawlEndpoints(siteId);
 
-        crawlSiteProfileDtos.forEach(profileDto ->
-                profileDto.addCrawlEndPoint(crawlEndPointMap.get(profileDto.getMappingId()))
-        );
+        crawlEndPointMap.forEach((aLong, crawlEndPointDto) -> {
+            CrawlSiteProfileDto crawlSiteProfileDto = crawlProfileMap.get(aLong);
+            if(crawlSiteProfileDto != null){
+                crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDto);
+            }
+        });
 
-        return crawlSiteProfileDtos.stream().map(this::toCrawlSiteProfile).toList();
+        return crawlProfileMap.values().stream().map(this::toCrawlSiteProfile).toList();
     }
 
-    private Map<Long, CrawlEndPointDto> fetchAndMapCrawlEndpoints(long siteId) {
+    private Map<Long, CrawlSiteProfileDto> fetchAndMapCrawlSiteProfiles(long siteId, SiteType siteType) {
+        return crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType)
+                .stream()
+                .collect(Collectors.toMap(CrawlSiteProfileDto::getMappingId, Function.identity(), (existing, replacement) -> existing));
+    }
+
+
+    private Map<Long, List<CrawlEndPointDto>> fetchAndMapCrawlEndpoints(long siteId) {
         return crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId)
                 .stream()
-                .collect(Collectors.toMap(CrawlEndPointDto::getMappingId, Function.identity(), (existing, replacement) -> existing));
+                .collect(Collectors.groupingBy(CrawlEndPointDto::getMappingId));
     }
 
     private CrawlSiteProfile toCrawlSiteProfile(CrawlSiteProfileDto crawlSiteProfileDto){

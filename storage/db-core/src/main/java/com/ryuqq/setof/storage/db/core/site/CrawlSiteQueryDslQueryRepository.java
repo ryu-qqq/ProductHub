@@ -32,18 +32,19 @@ public class CrawlSiteQueryDslQueryRepository {
         return
                 queryFactory
                         .selectFrom(siteEntity)
+                        .innerJoin(crawlMappingEntity)
+                            .on(crawlMappingEntity.siteId.eq(siteId))
                         .innerJoin(crawlSettingEntity)
                             .on(crawlSettingEntity.siteId.eq(siteId))
+                            .on(crawlMappingEntity.crawlSettingId.eq(crawlSettingEntity.id))
                         .innerJoin(siteAuthSettingEntity)
                             .on(siteAuthSettingEntity.siteId.eq(siteId))
-                        .innerJoin(crawlMappingEntity)
-                            .on(crawlMappingEntity.crawlSettingId.eq(crawlSettingEntity.id))
                             .on(crawlMappingEntity.authSettingId.eq(siteAuthSettingEntity.id))
                         .where(
                                 siteIdEq(siteId),
                                 siteTypeEq(siteType)
                         ).transform(
-                                GroupBy.groupBy(siteEntity.id).list(
+                                GroupBy.groupBy(crawlMappingEntity.id).list(
                                         new QCrawlSiteProfileDto(
                                                 crawlMappingEntity.id,
                                                 ConstantImpl.create(siteType),

@@ -12,8 +12,8 @@ public class CrawlMappingJpaService implements CrawlMappingPersistenceService{
     }
 
     @Override
-    public long insert(long crawlSettingId, long authSettingId) {
-        return crawlMappingJpaRepository.save(new CrawlMappingEntity(crawlSettingId, authSettingId)).getId();
+    public long insert(long siteId, long crawlSettingId, long authSettingId) {
+        return crawlMappingJpaRepository.save(new CrawlMappingEntity(siteId, crawlSettingId, authSettingId)).getId();
     }
 
 }

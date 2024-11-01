@@ -37,7 +37,7 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
         long crawlSettingId = crawlSettingPersistenceService.insert(crawlSettingCommand.toCrawlSettingEntity(siteId));
         long authSettingId = siteAuthPersistenceService.insert(crawlAuthSettingCommand.toSiteAuthSettingEntity(siteId));
 
-        long mappingId = crawlMappingPersistenceService.insert(crawlSettingId, authSettingId);
+        long mappingId = crawlMappingPersistenceService.insert(siteId, crawlSettingId, authSettingId);
 
         crawlEndpointCommands.forEach(c ->{
             long endpointId = crawlEndPointPersistenceService.insert(c.toCrawlEndpointEntity(siteId, mappingId));
