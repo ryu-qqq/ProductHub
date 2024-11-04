@@ -4,6 +4,9 @@ import com.ryuqq.setof.core.Origin;
 import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.domain.core.site.CrawlSiteProfile;
 import com.ryuqq.setof.domain.core.site.SiteContext;
+import com.ryuqq.setof.domain.core.site.SiteProfile;
+
+import java.util.List;
 
 public record SiteContextResponse(
         long siteId,
@@ -11,15 +14,20 @@ public record SiteContextResponse(
         String baseUrl,
         Origin countryCode,
         SiteType siteType,
-        SiteProfileResponse siteProfile
+        List<SiteProfileResponse> siteProfiles
 ) {
 
     public static SiteContextResponse of(SiteContext siteContext) {
-        SiteProfileResponse siteProfileResponse = switch (siteContext.getSiteType()) {
-            case CRAWL -> CrawlSiteProfileResponse.of((CrawlSiteProfile) siteContext.getSiteProfile());
-            default -> throw new IllegalArgumentException("Unsupported SiteType: " + siteContext.getSiteType());
-        };
+        List<SiteProfileResponse> siteProfileResponses;
 
+        switch (siteContext.getSiteType()) {
+            case CRAWL -> {
+                siteProfileResponses = siteContext.getSiteProfiles().stream()
+                        .map(profile -> (SiteProfileResponse) CrawlSiteProfileResponse.of((CrawlSiteProfile) profile))
+                        .toList();
+            }
+            default -> throw new IllegalArgumentException("Unsupported SiteType: " + siteContext.getSiteType());
+        }
 
         return new SiteContextResponse(
                 siteContext.getSiteId(),
@@ -27,7 +35,7 @@ public record SiteContextResponse(
                 siteContext.getBaseUrl(),
                 siteContext.getCountryCode(),
                 siteContext.getSiteType(),
-                siteProfileResponse
+                siteProfileResponses
         );
     }
 }

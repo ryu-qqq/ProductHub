@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ryuqq.setof.storage.db.core.site.QCrawlEndpointEntity.crawlEndpointEntity;
+import static com.ryuqq.setof.storage.db.core.site.QCrawlMappingEntity.crawlMappingEntity;
 import static com.ryuqq.setof.storage.db.core.site.QCrawlSettingEntity.crawlSettingEntity;
 import static com.ryuqq.setof.storage.db.core.site.QCrawlTaskEntity.crawlTaskEntity;
 import static com.ryuqq.setof.storage.db.core.site.QSiteAuthSettingEntity.siteAuthSettingEntity;
@@ -26,25 +27,26 @@ public class CrawlSiteQueryDslQueryRepository {
         this.queryFactory = queryFactory;
     }
 
-    public Optional<CrawlSiteProfileDto> fetchSiteProfile(long siteId, SiteType siteType) {
+    public List<CrawlSiteProfileDto> fetchSiteProfile(long siteId, SiteType siteType) {
 
-        return Optional.ofNullable(
+        return
                 queryFactory
                         .selectFrom(siteEntity)
+                        .innerJoin(crawlMappingEntity)
+                            .on(crawlMappingEntity.siteId.eq(siteId))
                         .innerJoin(crawlSettingEntity)
                             .on(crawlSettingEntity.siteId.eq(siteId))
-                        .innerJoin(crawlEndpointEntity)
-                            .on(crawlEndpointEntity.siteId.eq(siteId))
+                            .on(crawlMappingEntity.crawlSettingId.eq(crawlSettingEntity.id))
                         .innerJoin(siteAuthSettingEntity)
                             .on(siteAuthSettingEntity.siteId.eq(siteId))
-                        .innerJoin(crawlTaskEntity)
-                            .on(crawlTaskEntity.endpointId.eq(crawlEndpointEntity.id))
+                            .on(crawlMappingEntity.authSettingId.eq(siteAuthSettingEntity.id))
                         .where(
                                 siteIdEq(siteId),
                                 siteTypeEq(siteType)
                         ).transform(
-                                GroupBy.groupBy(siteEntity.id).as(
+                                GroupBy.groupBy(crawlMappingEntity.id).list(
                                         new QCrawlSiteProfileDto(
+                                                crawlMappingEntity.id,
                                                 ConstantImpl.create(siteType),
                                                 crawlSettingEntity.crawlFrequency,
                                                 crawlSettingEntity.crawlType,
@@ -56,8 +58,7 @@ public class CrawlSiteQueryDslQueryRepository {
                                                 )
                                         )
                                 )
-                        ).get(siteId)
-        );
+                        );
     }
 
     public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId){
@@ -72,6 +73,8 @@ public class CrawlSiteQueryDslQueryRepository {
                 ).transform(
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
+                                        crawlTaskEntity.endpointId,
+                                        crawlEndpointEntity.crawlMappingId,
                                         crawlEndpointEntity.endPointUrl,
                                         crawlEndpointEntity.parameters.coalesce(""),
                                         GroupBy.list(

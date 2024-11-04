@@ -12,6 +12,9 @@ public class CrawlEndpointEntity extends BaseEntity {
     @Column(name = "SITE_ID", nullable = false)
     private long siteId;
 
+    @Column(name = "CRAWL_MAPPING_ID", nullable = false)
+    private long crawlMappingId;
+
     @Column(name = "ENDPOINT_URL", nullable = false, length = 255)
     private String endPointUrl;
 
@@ -20,8 +23,9 @@ public class CrawlEndpointEntity extends BaseEntity {
 
     protected CrawlEndpointEntity() {}
 
-    public CrawlEndpointEntity(long siteId, String endPointUrl, String parameters) {
+    public CrawlEndpointEntity(long siteId, long crawlMappingId, String endPointUrl, String parameters) {
         this.siteId = siteId;
+        this.crawlMappingId = crawlMappingId;
         this.endPointUrl = endPointUrl;
         this.parameters = parameters;
     }

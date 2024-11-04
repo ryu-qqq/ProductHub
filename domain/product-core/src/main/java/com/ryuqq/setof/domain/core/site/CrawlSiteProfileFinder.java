@@ -2,7 +2,6 @@ package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.core.CrawlType;
 import com.ryuqq.setof.core.SiteType;
-import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import com.ryuqq.setof.storage.db.core.site.CrawlSiteQueryDslQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlAuthSettingDto;
 import com.ryuqq.setof.storage.db.core.site.dto.CrawlEndPointDto;
@@ -11,15 +10,20 @@ import com.ryuqq.setof.storage.db.core.site.dto.CrawlTaskDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.ryuqq.setof.domain.core.site.SiteErrorConstants.SITE_PROFILE_NOT_FOUND_ERROR_MSG;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
+    private final UserAgentCombinator userAgentCombinator;
     private final CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository;
+    private final List<String> configurationNames = List.of("Mobile-Friendly", "Desktop-Heavy");
 
-    public CrawlSiteProfileFinder(CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository) {
+    public CrawlSiteProfileFinder(UserAgentCombinator userAgentCombinator, CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository) {
+        this.userAgentCombinator = userAgentCombinator;
         this.crawlSiteQueryDslQueryRepository = crawlSiteQueryDslQueryRepository;
     }
 
@@ -29,28 +33,54 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     }
 
     @Override
-    public SiteProfile fetchSiteProfile(long siteId, SiteType siteType) {
-        CrawlSiteProfileDto crawlSiteProfileDto = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType)
-                .orElseThrow(() -> new NotFoundException(SITE_PROFILE_NOT_FOUND_ERROR_MSG + siteId));
-        List<CrawlEndPointDto> crawlEndPointDtos = crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId);
-        crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDtos);
-        return toCrawlSiteProfile(crawlSiteProfileDto);
+    public List<CrawlSiteProfile> fetchSiteProfile(long siteId, SiteType siteType) {
+        Map<Long, CrawlSiteProfileDto> crawlProfileMap = fetchAndMapCrawlSiteProfiles(siteId, siteType);
+        Map<Long, List<CrawlEndPointDto>> crawlEndPointMap = fetchAndMapCrawlEndpoints(siteId);
+
+        crawlEndPointMap.forEach((aLong, crawlEndPointDto) -> {
+            CrawlSiteProfileDto crawlSiteProfileDto = crawlProfileMap.get(aLong);
+            if(crawlSiteProfileDto != null){
+                crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDto);
+            }
+        });
+
+        return crawlProfileMap.entrySet()
+                .stream()
+                .map(entry -> toCrawlSiteProfile(entry.getKey(), entry.getValue()))
+                .toList();
+    }
+
+    private Map<Long, CrawlSiteProfileDto> fetchAndMapCrawlSiteProfiles(long siteId, SiteType siteType) {
+        return crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, siteType)
+                .stream()
+                .collect(Collectors.toMap(CrawlSiteProfileDto::getMappingId, Function.identity(), (existing, replacement) -> existing));
     }
 
 
-    public CrawlSiteProfile toCrawlSiteProfile(CrawlSiteProfileDto crawlSiteProfileDto){
+    private Map<Long, List<CrawlEndPointDto>> fetchAndMapCrawlEndpoints(long siteId) {
+        return crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId)
+                .stream()
+                .collect(Collectors.groupingBy(CrawlEndPointDto::getMappingId));
+    }
+
+    private CrawlSiteProfile toCrawlSiteProfile(long mappingId, CrawlSiteProfileDto crawlSiteProfileDto){
+        String randomConfigName = getRandomConfigurationName();
+        Map<String, String> headers = userAgentCombinator.generateRandomHeaders(randomConfigName);
+
         return new CrawlSiteProfile(
+                mappingId,
                 toCrawlSetting(crawlSiteProfileDto.getCrawlFrequency(), crawlSiteProfileDto.getCrawlType()),
                 toCrawlAuthSetting(crawlSiteProfileDto.getCrawlAuthSettingDto()),
-                toCrawlEndPoints(crawlSiteProfileDto.getCrawlEndPointDtos())
+                toCrawlEndPoints(crawlSiteProfileDto.getCrawlEndPointDtos()),
+                headers
         );
     }
 
-    public CrawlSetting toCrawlSetting(int crawlFrequency, CrawlType crawlType){
+    private CrawlSetting toCrawlSetting(int crawlFrequency, CrawlType crawlType){
         return new CrawlSetting(crawlFrequency, crawlType);
     }
 
-    public CrawlAuthSetting toCrawlAuthSetting(CrawlAuthSettingDto crawlAuthSettingDto){
+    private CrawlAuthSetting toCrawlAuthSetting(CrawlAuthSettingDto crawlAuthSettingDto){
         return new CrawlAuthSetting(
                 crawlAuthSettingDto.getAuthType(),
                 crawlAuthSettingDto.getAuthEndpoint(),
@@ -60,9 +90,10 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     }
 
 
-    public List<CrawlEndpoint> toCrawlEndPoints(List<CrawlEndPointDto> crawlEndPointDtos){
+    private List<CrawlEndpoint> toCrawlEndPoints(List<CrawlEndPointDto> crawlEndPointDtos){
         return crawlEndPointDtos.stream()
                 .map(c -> new CrawlEndpoint(
+                        c.getEndpointId(),
                         c.getEndPointUrl(),
                         c.getParameters(),
                         toCrawlTasks(c.getCrawlTaskDtos())
@@ -70,7 +101,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 .toList();
     }
 
-    public List<CrawlTask> toCrawlTasks(List<CrawlTaskDto> crawlTaskDtos){
+    private List<CrawlTask> toCrawlTasks(List<CrawlTaskDto> crawlTaskDtos){
         return crawlTaskDtos.stream()
                 .map(c -> new CrawlTask(
                         c.getEndpointId(),
@@ -83,6 +114,14 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 ))
                 .toList();
     }
+
+
+    private String getRandomConfigurationName() {
+        Random random = new Random();
+        return configurationNames.get(random.nextInt(configurationNames.size()));
+    }
+
+
 
 
 }

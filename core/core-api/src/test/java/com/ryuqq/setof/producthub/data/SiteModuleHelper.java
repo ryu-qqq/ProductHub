@@ -4,7 +4,9 @@ import com.ryuqq.setof.core.*;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.*;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SiteModuleHelper {
 
@@ -54,13 +56,18 @@ public class SiteModuleHelper {
         );
     }
 
-    public static CrawlSiteProfileResponse toCrawlSiteProfileResponse(){
-        return new CrawlSiteProfileResponse(
+    public static List<SiteProfileResponse> toCrawlSiteProfileResponse(){
+        return List.of(new CrawlSiteProfileResponse(
+        1L,
                 toCrawlSettingResponse(),
                 toCrawlAuthSettingResponse(),
-                toCrawlEndpointResponses()
-        );
+                toCrawlEndpointResponses(),
+                toHeaders()
+        ));
     }
+
+
+
 
     public static CrawlSettingResponse toCrawlSettingResponse(){
         return new CrawlSettingResponse(10, CrawlType.BEAUTIFUL_SOUP);
@@ -71,11 +78,18 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlEndpointResponse> toCrawlEndpointResponses(){
-        return List.of(new CrawlEndpointResponse("/api/v1/product", "",toCrawlTaskResponses()));
+        return List.of(new CrawlEndpointResponse(1L, "/api/v1/product", "",toCrawlTaskResponses()));
     }
 
     public static List<CrawlTaskResponse> toCrawlTaskResponses(){
         return List.of(new CrawlTaskResponse(1L, 1, TaskType.API_CALL, "", ActionType.EXTRACT, "", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
+    }
+
+    public static Map<String, String> toHeaders(){
+        Map<String, String> map = new HashMap<>();
+        map.put("Accept", "text/html,application/xhtml+xml");
+
+        return map;
     }
 
 

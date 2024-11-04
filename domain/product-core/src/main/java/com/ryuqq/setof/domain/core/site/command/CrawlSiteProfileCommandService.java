@@ -11,12 +11,14 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
 
     private final CrawlSettingPersistenceService crawlSettingPersistenceService;
     private final SiteAuthPersistenceService siteAuthPersistenceService;
+    private final CrawlMappingPersistenceService crawlMappingPersistenceService;
     private final CrawlEndPointPersistenceService crawlEndPointPersistenceService;
     private final CrawlTaskPersistenceService crawlTaskPersistenceService;
 
-    public CrawlSiteProfileCommandService(CrawlSettingPersistenceService crawlSettingPersistenceService, SiteAuthPersistenceService siteAuthPersistenceService, CrawlEndPointPersistenceService crawlEndPointPersistenceService, CrawlTaskPersistenceService crawlTaskPersistenceService) {
+    public CrawlSiteProfileCommandService(CrawlSettingPersistenceService crawlSettingPersistenceService, SiteAuthPersistenceService siteAuthPersistenceService, CrawlMappingPersistenceService crawlMappingPersistenceService, CrawlEndPointPersistenceService crawlEndPointPersistenceService, CrawlTaskPersistenceService crawlTaskPersistenceService) {
         this.crawlSettingPersistenceService = crawlSettingPersistenceService;
         this.siteAuthPersistenceService = siteAuthPersistenceService;
+        this.crawlMappingPersistenceService = crawlMappingPersistenceService;
         this.crawlEndPointPersistenceService = crawlEndPointPersistenceService;
         this.crawlTaskPersistenceService = crawlTaskPersistenceService;
     }
@@ -32,10 +34,13 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
         CrawlAuthSettingCommand crawlAuthSettingCommand = siteProfileCommand.crawlAuthSettingCommand();
         List<CrawlEndpointCommand> crawlEndpointCommands = siteProfileCommand.crawlEndpointCommands();
 
-        crawlSettingPersistenceService.insert(crawlSettingCommand.toCrawlSettingEntity(siteId));
-        siteAuthPersistenceService.insert(crawlAuthSettingCommand.toSiteAuthSettingEntity(siteId));
+        long crawlSettingId = crawlSettingPersistenceService.insert(crawlSettingCommand.toCrawlSettingEntity(siteId));
+        long authSettingId = siteAuthPersistenceService.insert(crawlAuthSettingCommand.toSiteAuthSettingEntity(siteId));
+
+        long mappingId = crawlMappingPersistenceService.insert(siteId, crawlSettingId, authSettingId);
+
         crawlEndpointCommands.forEach(c ->{
-            long endpointId = crawlEndPointPersistenceService.insert(c.toCrawlEndpointEntity(siteId));
+            long endpointId = crawlEndPointPersistenceService.insert(c.toCrawlEndpointEntity(siteId, mappingId));
             c.crawlTasks().forEach(ct -> {
                 CrawlTaskEntity crawlTaskEntity = ct.toCrawlTaskEntity(endpointId);
                 crawlTaskPersistenceService.insert(crawlTaskEntity);

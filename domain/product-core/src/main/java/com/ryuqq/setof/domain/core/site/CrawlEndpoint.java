@@ -3,15 +3,20 @@ package com.ryuqq.setof.domain.core.site;
 import java.util.List;
 
 public class CrawlEndpoint {
-
+    private long endpointId;
     private String endPointUrl;
     private String parameters;
     private List<CrawlTask> crawlTasks;
 
-    public CrawlEndpoint(String endPointUrl, String parameters, List<CrawlTask> crawlTasks) {
+    public CrawlEndpoint(long endpointId, String endPointUrl, String parameters, List<CrawlTask> crawlTasks) {
+        this.endpointId = endpointId;
         this.endPointUrl = endPointUrl;
         this.parameters =parameters;
         this.crawlTasks = crawlTasks;
+    }
+
+    public long getEndpointId() {
+        return endpointId;
     }
 
     public String getEndPointUrl() {
