@@ -6,20 +6,25 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CrawlEndPointDto {
-
+    private long endpointId;
     private long mappingId;
     private String endPointUrl;
     private String parameters;
     private List<CrawlTaskDto> crawlTaskDtos;
 
     @QueryProjection
-    public CrawlEndPointDto(long mappingId, String endPointUrl, String parameters, List<CrawlTaskDto> crawlTaskDtos) {
+    public CrawlEndPointDto(long endpointId, long mappingId, String endPointUrl, String parameters, List<CrawlTaskDto> crawlTaskDtos) {
+        this.endpointId = endpointId;
         this.mappingId = mappingId;
         this.endPointUrl = endPointUrl;
         this.parameters =parameters;
         this.crawlTaskDtos = crawlTaskDtos.stream()
                 .sorted(Comparator.comparingInt(CrawlTaskDto::getStepOrder))
                 .toList();
+    }
+
+    public long getEndpointId() {
+        return endpointId;
     }
 
     public long getMappingId() {
@@ -33,6 +38,7 @@ public class CrawlEndPointDto {
     public String getParameters() {
         return parameters;
     }
+
 
     public List<CrawlTaskDto> getCrawlTaskDtos() {
         return crawlTaskDtos;

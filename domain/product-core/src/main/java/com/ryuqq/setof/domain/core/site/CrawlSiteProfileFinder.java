@@ -11,15 +11,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
+    private final UserAgentCombinator userAgentCombinator;
     private final CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository;
+    private final List<String> configurationNames = List.of("Mobile-Friendly", "Desktop-Heavy");
 
-    public CrawlSiteProfileFinder(CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository) {
+    public CrawlSiteProfileFinder(UserAgentCombinator userAgentCombinator, CrawlSiteQueryDslQueryRepository crawlSiteQueryDslQueryRepository) {
+        this.userAgentCombinator = userAgentCombinator;
         this.crawlSiteQueryDslQueryRepository = crawlSiteQueryDslQueryRepository;
     }
 
@@ -40,7 +44,10 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
             }
         });
 
-        return crawlProfileMap.values().stream().map(this::toCrawlSiteProfile).toList();
+        return crawlProfileMap.entrySet()
+                .stream()
+                .map(entry -> toCrawlSiteProfile(entry.getKey(), entry.getValue()))
+                .toList();
     }
 
     private Map<Long, CrawlSiteProfileDto> fetchAndMapCrawlSiteProfiles(long siteId, SiteType siteType) {
@@ -56,11 +63,16 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 .collect(Collectors.groupingBy(CrawlEndPointDto::getMappingId));
     }
 
-    private CrawlSiteProfile toCrawlSiteProfile(CrawlSiteProfileDto crawlSiteProfileDto){
+    private CrawlSiteProfile toCrawlSiteProfile(long mappingId, CrawlSiteProfileDto crawlSiteProfileDto){
+        String randomConfigName = getRandomConfigurationName();
+        Map<String, String> headers = userAgentCombinator.generateRandomHeaders(randomConfigName);
+
         return new CrawlSiteProfile(
+                mappingId,
                 toCrawlSetting(crawlSiteProfileDto.getCrawlFrequency(), crawlSiteProfileDto.getCrawlType()),
                 toCrawlAuthSetting(crawlSiteProfileDto.getCrawlAuthSettingDto()),
-                toCrawlEndPoints(crawlSiteProfileDto.getCrawlEndPointDtos())
+                toCrawlEndPoints(crawlSiteProfileDto.getCrawlEndPointDtos()),
+                headers
         );
     }
 
@@ -81,6 +93,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     private List<CrawlEndpoint> toCrawlEndPoints(List<CrawlEndPointDto> crawlEndPointDtos){
         return crawlEndPointDtos.stream()
                 .map(c -> new CrawlEndpoint(
+                        c.getEndpointId(),
                         c.getEndPointUrl(),
                         c.getParameters(),
                         toCrawlTasks(c.getCrawlTaskDtos())
@@ -101,6 +114,14 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 ))
                 .toList();
     }
+
+
+    private String getRandomConfigurationName() {
+        Random random = new Random();
+        return configurationNames.get(random.nextInt(configurationNames.size()));
+    }
+
+
 
 
 }

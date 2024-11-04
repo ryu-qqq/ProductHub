@@ -4,7 +4,6 @@ import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
 import com.ryuqq.setof.domain.core.site.command.SiteContextCommandFacade;
 import com.ryuqq.setof.domain.core.site.command.SiteProfileCommandFacade;
-import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlSiteProfileRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
@@ -166,12 +165,14 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("countryCode").type(JsonFieldType.STRING).description("사이트 국가 (e.g., KR)"),
                                 fieldWithPath("siteType").type(JsonFieldType.STRING).description("사이트 유형 (e.g., CRAWL)"),
 
+                                fieldWithPath("siteProfiles[].mappingId").type(JsonFieldType.NUMBER).description("사이트 매핑 ID"),
                                 fieldWithPath("siteProfiles[].crawlSetting.crawlFrequency").type(JsonFieldType.NUMBER).description("크롤링 주기"),
                                 fieldWithPath("siteProfiles[].crawlSetting.crawlType").type(JsonFieldType.STRING).description("크롤링 타입 (e.g., BEAUTIFUL_SOUP)"),
                                 fieldWithPath("siteProfiles[].crawlAuthSetting.authType").type(JsonFieldType.STRING).description("인증 타입 (e.g., TOKEN)"),
                                 fieldWithPath("siteProfiles[].crawlAuthSetting.authEndpoint").type(JsonFieldType.STRING).description("인증 URL (e.g., www.set-of.net)"),
                                 fieldWithPath("siteProfiles[].crawlAuthSetting.authHeaders").type(JsonFieldType.STRING).description("헤더 키 (e.g., Authorization)"),
                                 fieldWithPath("siteProfiles[].crawlAuthSetting.authPayload").type(JsonFieldType.STRING).description("토큰 타입 (e.g., Bearer)"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].endpointId").type(JsonFieldType.NUMBER).description("사이트 엔드포인트 ID"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].endPointUrl").type(JsonFieldType.STRING).description("엔드포인트 URL (e.g., /api/v1/product)"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].parameters").type(JsonFieldType.STRING).description("엔드포인트 파라미터"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].endpointId").type(JsonFieldType.NUMBER).description("엔드포인트 ID"),
@@ -180,7 +181,15 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].actionTarget").type(JsonFieldType.STRING).description("타깃"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].actionType").type(JsonFieldType.STRING).description("행동 타입"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
-                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스"),
+
+                                fieldWithPath("siteProfiles[].headers").type(JsonFieldType.OBJECT).description("요청에 사용할 랜덤 헤더 목록"),
+                                fieldWithPath("siteProfiles[].headers.Accept").type(JsonFieldType.STRING).optional().description("Accept 헤더"),
+                                fieldWithPath("siteProfiles[].headers.Accept-Encoding").type(JsonFieldType.STRING).optional().description("Accept-Encoding 헤더"),
+                                fieldWithPath("siteProfiles[].headers.Accept-Language").type(JsonFieldType.STRING).optional().description("Accept-Language 헤더"),
+                                fieldWithPath("siteProfiles[].headers.User-Agent").type(JsonFieldType.STRING).optional().description("User-Agent 헤더"),
+                                fieldWithPath("siteProfiles[].headers.Connection").type(JsonFieldType.STRING).optional().description("Connection 헤더")
+
                         ),
 
                         responseFields(

@@ -4,7 +4,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.core.CrawlType;
 import com.ryuqq.setof.core.SiteType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrawlSiteProfileDto {

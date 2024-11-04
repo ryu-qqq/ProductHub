@@ -59,7 +59,6 @@ public class CrawlSiteQueryDslQueryRepository {
                                         )
                                 )
                         );
-
     }
 
     public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId){
@@ -74,6 +73,7 @@ public class CrawlSiteQueryDslQueryRepository {
                 ).transform(
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
+                                        crawlTaskEntity.endpointId,
                                         crawlEndpointEntity.crawlMappingId,
                                         crawlEndpointEntity.endPointUrl,
                                         crawlEndpointEntity.parameters.coalesce(""),
