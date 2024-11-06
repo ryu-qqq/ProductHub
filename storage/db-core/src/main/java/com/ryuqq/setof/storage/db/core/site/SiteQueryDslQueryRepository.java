@@ -65,7 +65,6 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
                 .where(
                         siteTypeEq(siteFilterStorageDto.siteType()),
                         isSiteIdLt(siteFilterStorageDto.cursorId())
-
                 ).fetch();
     }
 
@@ -123,5 +122,7 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     private BooleanExpression baseUrlEq(String baseUrl){
         return siteEntity.baseUrl.eq(baseUrl);
     }
+
+
 
 }

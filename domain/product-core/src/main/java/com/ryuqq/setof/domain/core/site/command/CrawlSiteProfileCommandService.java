@@ -48,4 +48,15 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
         });
     }
 
+    @Override
+    public void update(long siteId, long mappingId, CrawlSiteProfileCommand siteProfileCommand) {
+        CrawlSettingCommand crawlSettingCommand = siteProfileCommand.crawlSettingCommand();
+        CrawlAuthSettingCommand crawlAuthSettingCommand = siteProfileCommand.crawlAuthSettingCommand();
+        List<CrawlEndpointCommand> crawlEndpointCommands = siteProfileCommand.crawlEndpointCommands();
+
+
+
+
+    }
+
 }

@@ -5,7 +5,7 @@ import com.ryuqq.setof.core.SiteType;
 import java.util.List;
 import java.util.Map;
 
-public class CrawlSiteProfile implements SiteProfile{
+public class CrawlSiteProfile implements SiteProfile {
     private long mappingId;
     private CrawlSetting crawlSetting;
     private CrawlAuthSetting crawlAuthSetting;

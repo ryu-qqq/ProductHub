@@ -1,5 +1,6 @@
 package com.ryuqq.setof.domain.core.site;
 
+import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.SiteQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.dto.SiteContextDto;
 import org.springframework.stereotype.Component;
@@ -11,12 +12,10 @@ public class SiteFinder implements SiteQueryService{
 
     private final SiteQueryRepository siteQueryRepository;
     private final SiteProfileFinderProvider siteProfileFinderProvider;
-    private final SiteContextMapper siteContextMapper;
 
-    public SiteFinder(SiteQueryRepository siteQueryRepository, SiteProfileFinderProvider siteProfileFinderProvider, SiteContextMapper siteContextMapper) {
+    public SiteFinder(SiteQueryRepository siteQueryRepository, SiteProfileFinderProvider siteProfileFinderProvider) {
         this.siteQueryRepository = siteQueryRepository;
         this.siteProfileFinderProvider = siteProfileFinderProvider;
-        this.siteContextMapper = siteContextMapper;
     }
 
     @Override
@@ -46,9 +45,27 @@ public class SiteFinder implements SiteQueryService{
     public SiteContext findSiteContext(long siteId){
         SiteContextDto siteContextDto = siteQueryRepository.fetchSiteContext(siteId).orElseThrow(RuntimeException::new);
         SiteProfileFinder siteProfileFinder = siteProfileFinderProvider.get(siteContextDto.getSiteType());
-        List<? extends SiteProfile> siteProfiles = siteProfileFinder.fetchSiteProfile(siteId, siteContextDto.getSiteType());
+        List<? extends SiteProfile> siteProfiles = siteProfileFinder.fetchSiteProfile(siteId);
         List<SiteProfile> castedSiteProfiles = (List<SiteProfile>) siteProfiles;
-        return siteContextMapper.toSiteContext(siteContextDto, castedSiteProfiles);
+        return toSiteContext(siteContextDto, castedSiteProfiles);
+    }
+
+    public SiteProfile findSiteProfile(SiteType siteType, long siteId, long mappingId){
+        SiteProfileFinder siteProfileFinder = siteProfileFinderProvider.get(siteType);
+        return siteProfileFinder.fetchSiteProfile(siteId, mappingId);
+    }
+
+
+
+    private SiteContext toSiteContext(SiteContextDto siteContextDto, List<SiteProfile> siteProfiles){
+        return new SiteContext(
+                siteContextDto.getSiteId(),
+                siteContextDto.getSiteName(),
+                siteContextDto.getBaseUrl(),
+                siteContextDto.getCountryCode(),
+                siteContextDto.getSiteType(),
+                siteProfiles
+        );
     }
 
 }

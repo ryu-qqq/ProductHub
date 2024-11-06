@@ -58,4 +58,15 @@ public class SiteController {
         return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
     }
 
+    @PutMapping("/site/{siteType}/{siteId}/profile/{mappingId}")
+    public ResponseEntity<ApiResponse<Long>> updateSiteProfile(
+            @PathVariable("siteType") SiteType siteType,
+            @PathVariable("siteId") long siteId,
+            @PathVariable("mappingId") long mappingId,
+            @RequestBody @Valid SiteProfileRequestDto siteProfileRequestDto){
+        siteProfileCommandFacade.update(siteType, siteId, mappingId, siteProfileRequestDto.toSiteProfileCommand());
+        return ResponseEntity.ok(ApiResponse.success(mappingId));
+    }
+
+
 }

@@ -6,7 +6,6 @@ public enum TaskType {
     EXTRACT,
     CLICK,
     INPUT,
-    API_CALL,
     X_COM,
     NONE,
 

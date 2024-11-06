@@ -2,6 +2,8 @@ package com.ryuqq.setof.domain.core.site.command;
 
 import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
+import com.ryuqq.setof.domain.core.site.SiteContext;
+import com.ryuqq.setof.domain.core.site.SiteProfile;
 import com.ryuqq.setof.domain.core.site.SiteQueryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,20 @@ public class SiteProfileCommandFacade {
         return siteId;
 
     }
+
+
+    @Transactional
+    public void update(SiteType siteType, long siteId, long mappingId, SiteProfileCommand siteProfileCommand){
+
+
+        SiteProfileCommandService<SiteProfileCommand> siteProfileCommandSiteProfileCommandService =
+                (SiteProfileCommandService<SiteProfileCommand>) siteProfileCommandProvider.get(siteType);
+
+        siteProfileCommandSiteProfileCommandService.update(siteId, mappingId, siteProfileCommand);
+    }
+
+
+
 
 
 }

@@ -6,4 +6,6 @@ public interface SiteProfileCommandService<T extends SiteProfileCommand> {
 
     SiteType getSiteType();
     void insert(long siteId, T siteProfileCommand);
+    void update(long siteId, long mappingId, T siteProfileCommand);
+
 }

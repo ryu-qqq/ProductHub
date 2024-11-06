@@ -2,35 +2,30 @@ package com.ryuqq.setof.storage.db.core.site.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.core.CrawlType;
-import com.ryuqq.setof.core.SiteType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrawlSiteProfileDto {
 
     private long mappingId;
-    private SiteType siteType;
     private int crawlFrequency;
     private CrawlType crawlType;
     private CrawlAuthSettingDto crawlAuthSettingDto;
     private List<CrawlEndPointDto> crawlEndPointDtos;
 
     @QueryProjection
-    public CrawlSiteProfileDto(long mappingId, SiteType siteType, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto) {
+    public CrawlSiteProfileDto(long mappingId, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto) {
         this.mappingId = mappingId;
-        this.siteType = siteType;
         this.crawlFrequency = crawlFrequency;
         this.crawlType = crawlType;
         this.crawlAuthSettingDto = crawlAuthSettingDto;
+        this.crawlEndPointDtos = new ArrayList<>();
     }
 
     public long getMappingId() {
         return mappingId;
     }
-    public SiteType getSiteType() {
-        return siteType;
-    }
-
     public int getCrawlFrequency() {
         return crawlFrequency;
     }
