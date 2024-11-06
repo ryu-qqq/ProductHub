@@ -138,6 +138,56 @@ class SiteControllerTest extends RestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("사이트 프로필 수정 API")
+    void updateSiteProfile() throws Exception {
+        // given
+        CrawlSiteProfileRequestDto requestDto = SiteModuleHelper.toCrawlSiteProfileRequestDto();
+        when(siteProfileCommandFacade.update(any(), anyLong(), anyLong(), any())).thenReturn(1L);
+
+        // when
+        given()
+                .accept(ContentType.JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestDto)
+                .put("/api/v1/site/{siteType}/{siteId}/profile/{mappingId}", "CRAWL", "1", "1")
+                .then()
+                .status(HttpStatus.OK)
+                .apply(document("site-profile-update", requestPreprocessor(), responsePreprocessor(),
+                        pathParameters(
+                                parameterWithName("siteType").description("Site Type"),
+                                parameterWithName("siteId").description("Site ID"),
+                                parameterWithName("mappingId").description("Mapping ID")
+
+                        ),
+                        requestFields(
+                                fieldWithPath("siteType").type(JsonFieldType.STRING).description("사이트 유형 (e.g., CRAWL)"),
+                                fieldWithPath("crawlSetting.crawlFrequency").type(JsonFieldType.NUMBER).description("크롤링 주기"),
+                                fieldWithPath("crawlSetting.crawlType").type(JsonFieldType.STRING).description("크롤링 타입 (e.g., BEAUTIFUL_SOUP)"),
+                                fieldWithPath("crawlAuthSetting.authType").type(JsonFieldType.STRING).description("인증 타입 (e.g., TOKEN)"),
+                                fieldWithPath("crawlAuthSetting.authEndpoint").type(JsonFieldType.STRING).description("인증 URL (e.g., TOKEN)"),
+                                fieldWithPath("crawlAuthSetting.authHeaders").type(JsonFieldType.STRING).description("인증 헤더 (e.g., Authorization)"),
+                                fieldWithPath("crawlAuthSetting.authPayload").type(JsonFieldType.STRING).description("헤더 페이도드 (e.g., Authorization)"),
+                                fieldWithPath("crawlEndpoints[].endPointUrl").type(JsonFieldType.STRING).description("엔드포인트 URL (e.g., /api/v1/product)"),
+                                fieldWithPath("crawlEndpoints[].parameters").type(JsonFieldType.STRING).description("엔드포인트 파라미터"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].stepOrder").type(JsonFieldType.NUMBER).description("작업 순서"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].taskType").type(JsonFieldType.STRING).description("작업 종류"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].actionTarget").type(JsonFieldType.STRING).description("타깃"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].actionType").type(JsonFieldType.STRING).description("행동 타입"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
+                        ),
+                        responseFields(
+                                beneathPath("data"),
+                                fieldWithPath("siteId").type(JsonFieldType.NUMBER).description("Site ID")
+                        ),
+                        responseFields(
+                                beneathPath("response"),
+                                statusMsg()
+                        )
+                ));
+    }
+
 
     @Test
     @DisplayName("Site 조회 API")

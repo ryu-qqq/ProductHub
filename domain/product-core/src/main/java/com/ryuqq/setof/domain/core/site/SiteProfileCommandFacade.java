@@ -34,12 +34,13 @@ public class SiteProfileCommandFacade {
 
 
     @Transactional
-    public void update(SiteType siteType, long siteId, long mappingId, SiteProfileCommand siteProfileCommand){
+    public long update(SiteType siteType, long siteId, long mappingId, SiteProfileCommand siteProfileCommand){
 
         SiteProfileCommandService<SiteProfileCommand> siteProfileCommandSiteProfileCommandService =
                 (SiteProfileCommandService<SiteProfileCommand>) siteProfileCommandProvider.get(siteType);
 
         siteProfileCommandSiteProfileCommandService.update(siteId, mappingId, siteProfileCommand);
+        return mappingId;
     }
 
 
