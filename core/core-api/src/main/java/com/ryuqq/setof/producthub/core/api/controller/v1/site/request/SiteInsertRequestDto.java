@@ -2,8 +2,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
 import com.ryuqq.setof.core.Origin;
 import com.ryuqq.setof.core.SiteType;
-import com.ryuqq.setof.domain.core.site.command.SiteCommand;
-import jakarta.validation.Valid;
+import com.ryuqq.setof.domain.core.site.SiteCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

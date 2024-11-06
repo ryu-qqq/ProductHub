@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.site.command;
+package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.*;
@@ -14,13 +14,15 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
     private final CrawlMappingPersistenceService crawlMappingPersistenceService;
     private final CrawlEndPointPersistenceService crawlEndPointPersistenceService;
     private final CrawlTaskPersistenceService crawlTaskPersistenceService;
+    private final CrawlSiteProfileFinder crawlSiteProfileFinder;
 
-    public CrawlSiteProfileCommandService(CrawlSettingPersistenceService crawlSettingPersistenceService, SiteAuthPersistenceService siteAuthPersistenceService, CrawlMappingPersistenceService crawlMappingPersistenceService, CrawlEndPointPersistenceService crawlEndPointPersistenceService, CrawlTaskPersistenceService crawlTaskPersistenceService) {
+    public CrawlSiteProfileCommandService(CrawlSettingPersistenceService crawlSettingPersistenceService, SiteAuthPersistenceService siteAuthPersistenceService, CrawlMappingPersistenceService crawlMappingPersistenceService, CrawlEndPointPersistenceService crawlEndPointPersistenceService, CrawlTaskPersistenceService crawlTaskPersistenceService, CrawlSiteProfileFinder crawlSiteProfileFinder) {
         this.crawlSettingPersistenceService = crawlSettingPersistenceService;
         this.siteAuthPersistenceService = siteAuthPersistenceService;
         this.crawlMappingPersistenceService = crawlMappingPersistenceService;
         this.crawlEndPointPersistenceService = crawlEndPointPersistenceService;
         this.crawlTaskPersistenceService = crawlTaskPersistenceService;
+        this.crawlSiteProfileFinder = crawlSiteProfileFinder;
     }
 
     @Override
@@ -50,12 +52,38 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
 
     @Override
     public void update(long siteId, long mappingId, CrawlSiteProfileCommand siteProfileCommand) {
-        CrawlSettingCommand crawlSettingCommand = siteProfileCommand.crawlSettingCommand();
+        CrawlSiteProfile crawlSiteProfile = crawlSiteProfileFinder.fetchSiteProfile(siteId, mappingId);
+
+        CrawlAuthSetting crawlAuthSetting = crawlSiteProfile.getCrawlAuthSetting();
         CrawlAuthSettingCommand crawlAuthSettingCommand = siteProfileCommand.crawlAuthSettingCommand();
+
+        if (crawlAuthSetting.updateIfChanged(crawlAuthSettingCommand)) {
+            siteAuthPersistenceService.update(crawlAuthSetting.getAuthSettingId(), crawlAuthSettingCommand.toSiteAuthSettingEntity(siteId));
+        }
+
+        CrawlSetting crawlSetting = crawlSiteProfile.getCrawlSetting();
+        CrawlSettingCommand crawlSettingCommand = siteProfileCommand.crawlSettingCommand();
+
+        if (crawlSetting.updateIfChanged(crawlSettingCommand)) {
+            crawlSettingPersistenceService.update(crawlSiteProfile.getCrawlSettingId(), crawlSettingCommand.toCrawlSettingEntity(siteId));
+        }
+
+        //Todo:: 현재 크롤링 엔드포인트를 삭제하고 새로 등록해도 큰 문제가 없을듯 하다. 나중에 고도화 작업을 해야햔다.
+        List<CrawlEndpoint> crawlEndpoints = crawlSiteProfile.getCrawlEndpoints();
+        crawlEndpoints.forEach(crawlEndpoint -> {
+            crawlEndPointPersistenceService.delete(mappingId);
+            crawlTaskPersistenceService.delete(crawlEndpoint.getEndpointId());
+        });
+
         List<CrawlEndpointCommand> crawlEndpointCommands = siteProfileCommand.crawlEndpointCommands();
 
-
-
+        crawlEndpointCommands.forEach(c ->{
+            long endpointId = crawlEndPointPersistenceService.insert(c.toCrawlEndpointEntity(siteId, mappingId));
+            c.crawlTasks().forEach(ct -> {
+                CrawlTaskEntity crawlTaskEntity = ct.toCrawlTaskEntity(endpointId);
+                crawlTaskPersistenceService.insert(crawlTaskEntity);
+            });
+        });
 
     }
 

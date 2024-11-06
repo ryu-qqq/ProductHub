@@ -9,14 +9,16 @@ import java.util.List;
 public class CrawlSiteProfileDto {
 
     private long mappingId;
+    private long crawlSettingId;
     private int crawlFrequency;
     private CrawlType crawlType;
     private CrawlAuthSettingDto crawlAuthSettingDto;
     private List<CrawlEndPointDto> crawlEndPointDtos;
 
     @QueryProjection
-    public CrawlSiteProfileDto(long mappingId, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto) {
+    public CrawlSiteProfileDto(long mappingId, long crawlSettingId, int crawlFrequency, CrawlType crawlType, CrawlAuthSettingDto crawlAuthSettingDto) {
         this.mappingId = mappingId;
+        this.crawlSettingId = crawlSettingId;
         this.crawlFrequency = crawlFrequency;
         this.crawlType = crawlType;
         this.crawlAuthSettingDto = crawlAuthSettingDto;
@@ -26,6 +28,11 @@ public class CrawlSiteProfileDto {
     public long getMappingId() {
         return mappingId;
     }
+
+    public long getCrawlSettingId() {
+        return crawlSettingId;
+    }
+
     public int getCrawlFrequency() {
         return crawlFrequency;
     }

@@ -11,7 +11,7 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "DELETE_YN", nullable = false)
     private boolean deleteYn;
@@ -26,6 +26,10 @@ public abstract class BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    protected void delete(){
+        this.deleteYn = true;
     }
 
 

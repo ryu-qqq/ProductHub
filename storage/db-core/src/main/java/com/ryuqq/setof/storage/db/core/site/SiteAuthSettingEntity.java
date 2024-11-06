@@ -35,23 +35,11 @@ public class SiteAuthSettingEntity extends BaseEntity {
         this.authPayload = authPayload;
     }
 
-    public long getSiteId() {
-        return siteId;
+    public void update(SiteAuthSettingEntity siteAuthSettingEntity){
+        this.authType = siteAuthSettingEntity.authType;
+        this.authEndpoint = siteAuthSettingEntity.authEndpoint;
+        this.authHeaders = siteAuthSettingEntity.authHeaders;
+        this.authPayload = siteAuthSettingEntity.authPayload;
     }
 
-    public AuthType getAuthType() {
-        return authType;
-    }
-
-    public String getAuthEndpoint() {
-        return authEndpoint;
-    }
-
-    public String getAuthHeaders() {
-        return authHeaders;
-    }
-
-    public String getAuthPayload() {
-        return authPayload;
-    }
 }

@@ -45,9 +45,11 @@ public class CrawlSiteQueryDslQueryRepository {
                                 GroupBy.groupBy(crawlMappingEntity.id).list(
                                         new QCrawlSiteProfileDto(
                                                 crawlMappingEntity.id,
+                                                crawlSettingEntity.id,
                                                 crawlSettingEntity.crawlFrequency,
                                                 crawlSettingEntity.crawlType,
                                                 new QCrawlAuthSettingDto(
+                                                        siteAuthSettingEntity.id,
                                                         siteAuthSettingEntity.authType,
                                                         siteAuthSettingEntity.authEndpoint,
                                                         siteAuthSettingEntity.authHeaders,
@@ -64,9 +66,11 @@ public class CrawlSiteQueryDslQueryRepository {
                         .select(
                                 new QCrawlSiteProfileDto(
                                         crawlMappingEntity.id,
+                                        crawlSettingEntity.id,
                                         crawlSettingEntity.crawlFrequency,
                                         crawlSettingEntity.crawlType,
                                         new QCrawlAuthSettingDto(
+                                                siteAuthSettingEntity.id,
                                                 siteAuthSettingEntity.authType,
                                                 siteAuthSettingEntity.authEndpoint,
                                                 siteAuthSettingEntity.authHeaders,
@@ -86,7 +90,7 @@ public class CrawlSiteQueryDslQueryRepository {
                         ).fetchOne());
     }
 
-    public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId){
+    public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId, Long mappingId){
         return queryFactory
                 .selectFrom(crawlEndpointEntity)
                 .innerJoin(crawlTaskEntity)
@@ -94,7 +98,8 @@ public class CrawlSiteQueryDslQueryRepository {
                     .on(crawlTaskEntity.deleteYn.eq(false))
                 .where(
                         crawlEndpointEntity.siteId.eq(siteId),
-                        crawlEndpointEntity.deleteYn.eq(false)
+                        crawlEndpointEntity.deleteYn.eq(false),
+                        crawlMappingIdEq(mappingId)
                 ).transform(
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
@@ -124,7 +129,13 @@ public class CrawlSiteQueryDslQueryRepository {
     }
 
     private BooleanExpression mappingIdEq(Long mappingId){
+        if(mappingId == null) return null;
         return crawlMappingEntity.id.eq(mappingId);
+    }
+
+    private BooleanExpression crawlMappingIdEq(Long crawlMappingId){
+        if(crawlMappingId == null) return null;
+        return crawlEndpointEntity.crawlMappingId.eq(crawlMappingId);
     }
 
 }

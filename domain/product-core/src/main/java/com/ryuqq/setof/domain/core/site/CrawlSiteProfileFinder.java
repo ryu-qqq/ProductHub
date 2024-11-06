@@ -57,6 +57,8 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
     public CrawlSiteProfile fetchSiteProfile(long siteId, long mappingId) {
         CrawlSiteProfileDto crawlSiteProfileDto = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, mappingId)
                 .orElseThrow(() -> new NotFoundException(SITE_PROFILE_NOT_FOUND_ERROR_MSG + siteId));
+        List<CrawlEndPointDto> crawlEndPointDtos = crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId, mappingId);
+        crawlSiteProfileDto.setCrawlEndPointDtos(crawlEndPointDtos);
         return toCrawlSiteProfile(mappingId, crawlSiteProfileDto);
 
     }
@@ -69,7 +71,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
 
     private Map<Long, List<CrawlEndPointDto>> fetchAndMapCrawlEndpoints(long siteId) {
-        return crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId)
+        return crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId, null)
                 .stream()
                 .collect(Collectors.groupingBy(CrawlEndPointDto::getMappingId));
     }
@@ -80,6 +82,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
         return new CrawlSiteProfile(
                 mappingId,
+                crawlSiteProfileDto.getCrawlSettingId(),
                 toCrawlSetting(crawlSiteProfileDto.getCrawlFrequency(), crawlSiteProfileDto.getCrawlType()),
                 toCrawlAuthSetting(crawlSiteProfileDto.getCrawlAuthSettingDto()),
                 toCrawlEndPoints(crawlSiteProfileDto.getCrawlEndPointDtos()),
@@ -93,6 +96,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
 
     private CrawlAuthSetting toCrawlAuthSetting(CrawlAuthSettingDto crawlAuthSettingDto){
         return new CrawlAuthSetting(
+                crawlAuthSettingDto.getAuthSettingId(),
                 crawlAuthSettingDto.getAuthType(),
                 crawlAuthSettingDto.getAuthEndpoint(),
                 crawlAuthSettingDto.getAuthHeaders(),

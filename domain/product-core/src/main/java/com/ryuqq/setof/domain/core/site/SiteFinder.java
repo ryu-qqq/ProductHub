@@ -50,13 +50,6 @@ public class SiteFinder implements SiteQueryService{
         return toSiteContext(siteContextDto, castedSiteProfiles);
     }
 
-    public SiteProfile findSiteProfile(SiteType siteType, long siteId, long mappingId){
-        SiteProfileFinder siteProfileFinder = siteProfileFinderProvider.get(siteType);
-        return siteProfileFinder.fetchSiteProfile(siteId, mappingId);
-    }
-
-
-
     private SiteContext toSiteContext(SiteContextDto siteContextDto, List<SiteProfile> siteProfiles){
         return new SiteContext(
                 siteContextDto.getSiteId(),

@@ -5,17 +5,23 @@ import com.ryuqq.setof.core.AuthType;
 
 public class CrawlAuthSettingDto {
 
+    private long authSettingId;
     private AuthType authType;
     private String authEndpoint;
     private String authHeaders;
     private String authPayload;
 
     @QueryProjection
-    public CrawlAuthSettingDto(AuthType authType, String authEndpoint, String authHeaders, String authPayload) {
+    public CrawlAuthSettingDto(long authSettingId, AuthType authType, String authEndpoint, String authHeaders, String authPayload) {
+        this.authSettingId = authSettingId;
         this.authType = authType;
         this.authEndpoint = authEndpoint;
         this.authHeaders = authHeaders;
         this.authPayload = authPayload;
+    }
+
+    public long getAuthSettingId() {
+        return authSettingId;
     }
 
     public AuthType getAuthType() {

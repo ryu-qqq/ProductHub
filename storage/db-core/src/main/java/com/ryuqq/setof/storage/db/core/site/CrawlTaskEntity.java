@@ -44,31 +44,7 @@ public class CrawlTaskEntity extends BaseEntity {
         this.responseMapping = responseMapping;
     }
 
-    public long getEndpointId() {
-        return endpointId;
-    }
-
-    public int getStepOrder() {
-        return stepOrder;
-    }
-
-    public TaskType getTaskType() {
-        return taskType;
-    }
-
-    public String getActionTarget() {
-        return actionTarget;
-    }
-
-    public ActionType getActionType() {
-        return actionType;
-    }
-
-    public String getParams() {
-        return params;
-    }
-
-    public String getResponseMapping() {
-        return responseMapping;
+    public void delete(){
+        super.delete();
     }
 }

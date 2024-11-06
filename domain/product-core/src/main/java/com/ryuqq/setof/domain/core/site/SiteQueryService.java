@@ -10,5 +10,4 @@ public interface SiteQueryService {
     List<Site> findSiteResponse(SiteFilter siteFilter);
     long findSiteCount(SiteFilter siteFilter);
     SiteContext findSiteContext(long siteId);
-    SiteProfile findSiteProfile(SiteType siteType, long siteId, long mappingId);
 }

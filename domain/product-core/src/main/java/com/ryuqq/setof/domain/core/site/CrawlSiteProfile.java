@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class CrawlSiteProfile implements SiteProfile {
     private long mappingId;
+    private long crawlSettingId;
     private CrawlSetting crawlSetting;
     private CrawlAuthSetting crawlAuthSetting;
     private List<CrawlEndpoint> crawlEndpoints;
@@ -17,8 +18,9 @@ public class CrawlSiteProfile implements SiteProfile {
         return SiteType.CRAWL;
     }
 
-    public CrawlSiteProfile(long mappingId, CrawlSetting crawlSetting, CrawlAuthSetting crawlAuthSetting, List<CrawlEndpoint> crawlEndpoints, Map<String, String> headers) {
+    public CrawlSiteProfile(long mappingId, long crawlSettingId, CrawlSetting crawlSetting, CrawlAuthSetting crawlAuthSetting, List<CrawlEndpoint> crawlEndpoints, Map<String, String> headers) {
         this.mappingId = mappingId;
+        this.crawlSettingId= crawlSettingId;
         this.crawlSetting = crawlSetting;
         this.crawlAuthSetting = crawlAuthSetting;
         this.crawlEndpoints = crawlEndpoints;
@@ -27,6 +29,10 @@ public class CrawlSiteProfile implements SiteProfile {
 
     public long getMappingId() {
         return mappingId;
+    }
+
+    public long getCrawlSettingId() {
+        return crawlSettingId;
     }
 
     public CrawlSetting getCrawlSetting() {
