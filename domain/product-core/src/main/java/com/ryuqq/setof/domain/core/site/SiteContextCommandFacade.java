@@ -1,6 +1,5 @@
-package com.ryuqq.setof.domain.core.site.command;
+package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.domain.core.site.SiteQueryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

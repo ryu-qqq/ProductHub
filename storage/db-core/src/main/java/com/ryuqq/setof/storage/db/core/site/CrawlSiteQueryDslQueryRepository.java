@@ -8,6 +8,7 @@ import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.dto.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +28,11 @@ public class CrawlSiteQueryDslQueryRepository {
         this.queryFactory = queryFactory;
     }
 
-    public List<CrawlSiteProfileDto> fetchSiteProfile(long siteId, SiteType siteType) {
+    public List<CrawlSiteProfileDto> fetchSiteProfile(long siteId) {
 
         return
                 queryFactory
-                        .selectFrom(siteEntity)
-                        .innerJoin(crawlMappingEntity)
-                            .on(crawlMappingEntity.siteId.eq(siteId))
+                        .selectFrom(crawlMappingEntity)
                         .innerJoin(crawlSettingEntity)
                             .on(crawlSettingEntity.siteId.eq(siteId))
                             .on(crawlMappingEntity.crawlSettingId.eq(crawlSettingEntity.id))
@@ -41,16 +40,16 @@ public class CrawlSiteQueryDslQueryRepository {
                             .on(siteAuthSettingEntity.siteId.eq(siteId))
                             .on(crawlMappingEntity.authSettingId.eq(siteAuthSettingEntity.id))
                         .where(
-                                siteIdEq(siteId),
-                                siteTypeEq(siteType)
+                                siteIdEq(siteId)
                         ).transform(
                                 GroupBy.groupBy(crawlMappingEntity.id).list(
                                         new QCrawlSiteProfileDto(
                                                 crawlMappingEntity.id,
-                                                ConstantImpl.create(siteType),
+                                                crawlSettingEntity.id,
                                                 crawlSettingEntity.crawlFrequency,
                                                 crawlSettingEntity.crawlType,
                                                 new QCrawlAuthSettingDto(
+                                                        siteAuthSettingEntity.id,
                                                         siteAuthSettingEntity.authType,
                                                         siteAuthSettingEntity.authEndpoint,
                                                         siteAuthSettingEntity.authHeaders,
@@ -61,7 +60,37 @@ public class CrawlSiteQueryDslQueryRepository {
                         );
     }
 
-    public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId){
+    public Optional<CrawlSiteProfileDto> fetchSiteProfile(long siteId, long mappingId) {
+        return
+                Optional.ofNullable(queryFactory
+                        .select(
+                                new QCrawlSiteProfileDto(
+                                        crawlMappingEntity.id,
+                                        crawlSettingEntity.id,
+                                        crawlSettingEntity.crawlFrequency,
+                                        crawlSettingEntity.crawlType,
+                                        new QCrawlAuthSettingDto(
+                                                siteAuthSettingEntity.id,
+                                                siteAuthSettingEntity.authType,
+                                                siteAuthSettingEntity.authEndpoint,
+                                                siteAuthSettingEntity.authHeaders,
+                                                siteAuthSettingEntity.authPayload
+                                        )
+                                )
+                        )
+                        .from(crawlMappingEntity)
+                        .innerJoin(crawlSettingEntity)
+                        .on(crawlSettingEntity.siteId.eq(siteId))
+                        .on(crawlMappingEntity.crawlSettingId.eq(crawlSettingEntity.id))
+                        .innerJoin(siteAuthSettingEntity)
+                        .on(siteAuthSettingEntity.siteId.eq(siteId))
+                        .on(crawlMappingEntity.authSettingId.eq(siteAuthSettingEntity.id))
+                        .where(
+                                siteIdEq(siteId), mappingIdEq(mappingId)
+                        ).fetchOne());
+    }
+
+    public List<CrawlEndPointDto> fetchCrawlEndPoints(long siteId, Long mappingId){
         return queryFactory
                 .selectFrom(crawlEndpointEntity)
                 .innerJoin(crawlTaskEntity)
@@ -69,7 +98,8 @@ public class CrawlSiteQueryDslQueryRepository {
                     .on(crawlTaskEntity.deleteYn.eq(false))
                 .where(
                         crawlEndpointEntity.siteId.eq(siteId),
-                        crawlEndpointEntity.deleteYn.eq(false)
+                        crawlEndpointEntity.deleteYn.eq(false),
+                        crawlMappingIdEq(mappingId)
                 ).transform(
                         GroupBy.groupBy(crawlEndpointEntity.id).list(
                                 new QCrawlEndPointDto(
@@ -95,13 +125,17 @@ public class CrawlSiteQueryDslQueryRepository {
 
 
     private BooleanExpression siteIdEq(long siteId){
-        return siteEntity.id.eq(siteId);
+        return crawlMappingEntity.siteId.eq(siteId);
     }
 
-    private BooleanExpression siteTypeEq(SiteType siteType){
-        return siteEntity.siteType.eq(siteType);
+    private BooleanExpression mappingIdEq(Long mappingId){
+        if(mappingId == null) return null;
+        return crawlMappingEntity.id.eq(mappingId);
     }
 
-
+    private BooleanExpression crawlMappingIdEq(Long crawlMappingId){
+        if(crawlMappingId == null) return null;
+        return crawlEndpointEntity.crawlMappingId.eq(crawlMappingId);
+    }
 
 }

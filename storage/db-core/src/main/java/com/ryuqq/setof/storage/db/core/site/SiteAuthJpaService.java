@@ -16,4 +16,11 @@ public class SiteAuthJpaService implements SiteAuthPersistenceService{
         return siteAuthSettingJpaRepository.save(siteAuthSettingEntity).getId();
     }
 
+    @Override
+    public void update(long siteAuthSettingId, SiteAuthSettingEntity siteAuthSettingEntity) {
+        siteAuthSettingJpaRepository.findById(siteAuthSettingId).ifPresent(entity -> {
+            entity.update(siteAuthSettingEntity);
+        });
+    }
+
 }

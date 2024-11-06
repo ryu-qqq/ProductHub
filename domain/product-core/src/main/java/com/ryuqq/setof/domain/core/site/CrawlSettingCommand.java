@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.site.command;
+package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.core.CrawlType;
 import com.ryuqq.setof.storage.db.core.site.CrawlSettingEntity;

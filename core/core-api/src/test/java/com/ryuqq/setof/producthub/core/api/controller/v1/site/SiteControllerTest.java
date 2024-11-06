@@ -2,8 +2,8 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
-import com.ryuqq.setof.domain.core.site.command.SiteContextCommandFacade;
-import com.ryuqq.setof.domain.core.site.command.SiteProfileCommandFacade;
+import com.ryuqq.setof.domain.core.site.SiteContextCommandFacade;
+import com.ryuqq.setof.domain.core.site.SiteProfileCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlSiteProfileRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;

@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.command.CrawlEndpointCommand;
-import com.ryuqq.setof.domain.core.site.command.CrawlTaskCommand;
+import com.ryuqq.setof.domain.core.site.CrawlEndpointCommand;
+import com.ryuqq.setof.domain.core.site.CrawlTaskCommand;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

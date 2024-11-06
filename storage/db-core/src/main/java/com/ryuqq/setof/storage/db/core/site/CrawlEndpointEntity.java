@@ -30,8 +30,8 @@ public class CrawlEndpointEntity extends BaseEntity {
         this.parameters = parameters;
     }
 
-    public long getSiteId() {
-        return siteId;
+    public void delete(){
+        super.delete();
     }
 
 }

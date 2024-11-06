@@ -38,7 +38,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlTaskRequestDto> toCrawlTaskRequestDtos(){
-        return List.of(new CrawlTaskRequestDto(1, TaskType.API_CALL, "", ActionType.EXTRACT, "{}", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
+        return List.of(new CrawlTaskRequestDto(1, TaskType.NONE, "", ActionType.SAVE_S3, "{}", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
     }
 
     public static SiteResponse toSiteResponse(){
@@ -82,7 +82,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlTaskResponse> toCrawlTaskResponses(){
-        return List.of(new CrawlTaskResponse(1L, 1, TaskType.API_CALL, "", ActionType.EXTRACT, "", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
+        return List.of(new CrawlTaskResponse(1L, 1, TaskType.INPUT, "", ActionType.SAVE_S3, "", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
     }
 
     public static Map<String, String> toHeaders(){

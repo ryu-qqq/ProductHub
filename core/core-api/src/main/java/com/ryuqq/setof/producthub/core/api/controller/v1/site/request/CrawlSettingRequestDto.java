@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
 import com.ryuqq.setof.core.CrawlType;
-import com.ryuqq.setof.domain.core.site.command.CrawlSettingCommand;
+import com.ryuqq.setof.domain.core.site.CrawlSettingCommand;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 

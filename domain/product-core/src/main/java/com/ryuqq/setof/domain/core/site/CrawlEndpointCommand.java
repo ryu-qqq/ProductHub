@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.site.command;
+package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.storage.db.core.site.CrawlEndpointEntity;
 
@@ -11,7 +11,7 @@ public record CrawlEndpointCommand(
 ) {
 
     public CrawlEndpointEntity toCrawlEndpointEntity(long siteId, long mappingId) {
-        return new CrawlEndpointEntity(siteId, mappingId, parameters, endPointUrl);
+        return new CrawlEndpointEntity(siteId, mappingId, endPointUrl, parameters);
     }
 
 }

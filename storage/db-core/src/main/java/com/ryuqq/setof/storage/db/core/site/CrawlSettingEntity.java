@@ -26,15 +26,9 @@ public class CrawlSettingEntity extends BaseEntity {
         this.crawlType = crawlType;
     }
 
-    public long getSiteId() {
-        return siteId;
+    public void update(CrawlSettingEntity crawlSettingEntity){
+        this.crawlFrequency = crawlSettingEntity.crawlFrequency;
+        this.crawlType = crawlSettingEntity.crawlType;
     }
 
-    public int getCrawlFrequency() {
-        return crawlFrequency;
-    }
-
-    public CrawlType getCrawlType() {
-        return crawlType;
-    }
 }

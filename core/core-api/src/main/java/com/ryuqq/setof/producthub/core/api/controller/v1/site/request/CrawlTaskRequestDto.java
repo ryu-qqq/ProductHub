@@ -2,7 +2,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
 import com.ryuqq.setof.core.ActionType;
 import com.ryuqq.setof.core.TaskType;
-import com.ryuqq.setof.domain.core.site.command.CrawlTaskCommand;
+import com.ryuqq.setof.domain.core.site.CrawlTaskCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

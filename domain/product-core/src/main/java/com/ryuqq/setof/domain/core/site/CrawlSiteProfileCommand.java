@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.site.command;
+package com.ryuqq.setof.domain.core.site;
 
 import java.util.List;
 

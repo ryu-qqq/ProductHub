@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
 import com.ryuqq.setof.core.AuthType;
-import com.ryuqq.setof.domain.core.site.command.CrawlAuthSettingCommand;
+import com.ryuqq.setof.domain.core.site.CrawlAuthSettingCommand;
 import jakarta.validation.constraints.NotNull;
 
 public record CrawlAuthSettingRequestDto(
