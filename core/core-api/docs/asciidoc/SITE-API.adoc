@@ -28,6 +28,21 @@ include::{snippets}/site-profile-register/http-response.adoc[]
 include::{snippets}/site-profile-register/response-fields-beneath-data.adoc[]
 include::{snippets}/site-profile-register/response-fields-beneath-response.adoc[]
 
+=== SITE PROFILE COMMAND PUT API
+==== Curl Request
+include::{snippets}/site-profile-update/curl-request.adoc[]
+==== PATH Parameters
+include::{snippets}/site-profile-update/path-parameters.adoc[]
+==== Request Fields
+include::{snippets}/site-profile-update/request-fields.adoc[]
+==== Http Response
+include::{snippets}/site-profile-update/http-response.adoc[]
+==== Response Fields
+include::{snippets}/site-profile-update/response-fields-beneath-data.adoc[]
+include::{snippets}/site-profile-update/response-fields-beneath-response.adoc[]
+
+
+
 
 === SITE QUERY GET API
 ==== Curl Request
