@@ -2,25 +2,25 @@ package com.ryuqq.setof.storage.db.core.site.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.core.ActionType;
-import com.ryuqq.setof.core.TaskType;
+import com.ryuqq.setof.core.ProcessType;
 
 public class CrawlTaskDto {
 
     long endpointId;
-    private int stepOrder;
-    private TaskType taskType;
-    private String actionTarget;
-    private ActionType actionType;
-    private String params;
-    private String responseMapping;
+    private final int stepOrder;
+    private final ProcessType type;
+    private final String target;
+    private final ActionType action;
+    private final String params;
+    private final String responseMapping;
 
     @QueryProjection
-    public CrawlTaskDto(long endpointId, int stepOrder, TaskType taskType, String actionTarget, ActionType actionType, String params, String responseMapping) {
+    public CrawlTaskDto(long endpointId, int stepOrder, ProcessType type, String target, ActionType action, String params, String responseMapping) {
         this.endpointId = endpointId;
         this.stepOrder = stepOrder;
-        this.taskType = taskType;
-        this.actionTarget = actionTarget;
-        this.actionType = actionType;
+        this.type = type;
+        this.target = target;
+        this.action = action;
         this.params = params;
         this.responseMapping = responseMapping;
     }
@@ -33,16 +33,16 @@ public class CrawlTaskDto {
         return stepOrder;
     }
 
-    public TaskType getTaskType() {
-        return taskType;
+    public ProcessType getType() {
+        return type;
     }
 
-    public String getActionTarget() {
-        return actionTarget;
+    public String getTarget() {
+        return target;
     }
 
-    public ActionType getActionType() {
-        return actionType;
+    public ActionType getAction() {
+        return action;
     }
 
     public String getParams() {

@@ -121,9 +121,9 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                 .map(c -> new CrawlTask(
                         c.getEndpointId(),
                         c.getStepOrder(),
-                        c.getTaskType(),
-                        c.getActionTarget(),
-                        c.getActionType(),
+                        c.getType(),
+                        c.getTarget(),
+                        c.getAction(),
                         c.getParams(),
                         c.getResponseMapping()
                 ))

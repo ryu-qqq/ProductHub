@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
 import com.ryuqq.setof.core.ActionType;
-import com.ryuqq.setof.core.TaskType;
+import com.ryuqq.setof.core.ProcessType;
 import com.ryuqq.setof.domain.core.site.CrawlTaskCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +11,10 @@ public record CrawlTaskRequestDto(
         @Positive(message = "Step order must be a positive integer.")
         int stepOrder,
         @NotNull(message = "Task Type cannot be null. Use None for Nothing to do")
-        TaskType taskType,
-        String actionTarget,
+        ProcessType type,
+        String target,
         @NotNull(message = "Action Type cannot be null. Use None for Nothing to do")
-        ActionType actionType,
+        ActionType action,
         @NotBlank(message = "Params cannot be empty. Use '{}' for empty JSON.")
         String params,
         @NotBlank(message = "Response mapping cannot be empty. Use '{}' for empty JSON.")
@@ -24,9 +24,9 @@ public record CrawlTaskRequestDto(
     public CrawlTaskCommand toCrawlTaskCommand(){
         return new CrawlTaskCommand(
                 stepOrder,
-                taskType,
-                actionTarget,
-                actionType,
+                type,
+                target,
+                action,
                 params,
                 responseMapping
         );

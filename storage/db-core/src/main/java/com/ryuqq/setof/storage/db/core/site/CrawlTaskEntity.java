@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.site;
 
 import com.ryuqq.setof.core.ActionType;
-import com.ryuqq.setof.core.TaskType;
+import com.ryuqq.setof.core.ProcessType;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 
@@ -16,8 +16,8 @@ public class CrawlTaskEntity extends BaseEntity {
     private int stepOrder;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TASK_TYPE", nullable = true, length = 20)
-    private TaskType taskType;
+    @Column(name = "PROCESS_TYPE", nullable = true, length = 20)
+    private ProcessType processType;
 
     @Column(name = "ACTION_TARGET", nullable = true, length = 255)
     private String actionTarget;
@@ -34,10 +34,10 @@ public class CrawlTaskEntity extends BaseEntity {
 
     protected CrawlTaskEntity() {}
 
-    public CrawlTaskEntity(long endpointId, int stepOrder, TaskType taskType, String actionTarget, ActionType actionType, String params, String responseMapping) {
+    public CrawlTaskEntity(long endpointId, int stepOrder, ProcessType processType, String actionTarget, ActionType actionType, String params, String responseMapping) {
         this.endpointId = endpointId;
         this.stepOrder = stepOrder;
-        this.taskType = taskType;
+        this.processType = processType;
         this.actionTarget = actionTarget;
         this.actionType = actionType;
         this.params = params;

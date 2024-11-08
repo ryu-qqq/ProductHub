@@ -18,11 +18,4 @@ public class CrawlProductEntity extends BaseEntity {
     @Column(name = "PRODUCT_GROUP_ID")
     private Long productGroupId;
 
-    @Column(name = "BRAND_ID")
-    private String brandId;
-
-    @Column(name = "CATEGORY_ID")
-    private String categoryId;
-
-
 }

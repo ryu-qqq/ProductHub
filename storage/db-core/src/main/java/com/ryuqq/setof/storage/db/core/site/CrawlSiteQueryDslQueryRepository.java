@@ -111,7 +111,7 @@ public class CrawlSiteQueryDslQueryRepository {
                                                 new QCrawlTaskDto(
                                                         crawlTaskEntity.endpointId,
                                                         crawlTaskEntity.stepOrder,
-                                                        crawlTaskEntity.taskType,
+                                                        crawlTaskEntity.processType,
                                                         crawlTaskEntity.actionTarget.coalesce(""),
                                                         crawlTaskEntity.actionType,
                                                         crawlTaskEntity.params.coalesce(""),
