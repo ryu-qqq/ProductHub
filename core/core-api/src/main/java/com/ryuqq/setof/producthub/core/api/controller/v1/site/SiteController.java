@@ -2,9 +2,12 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
 import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.domain.core.generic.Slice;
+import com.ryuqq.setof.domain.core.site.CrawlProductCommand;
+import com.ryuqq.setof.domain.core.site.CrawlProductCommandService;
 import com.ryuqq.setof.domain.core.site.SiteContextCommandFacade;
 import com.ryuqq.setof.domain.core.site.SiteProfileCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteGetRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteProfileRequestDto;
@@ -16,6 +19,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.ryuqq.setof.producthub.core.api.controller.config.EndPointsConstants.BASE_END_POINT_V1;
 
 @RequestMapping(BASE_END_POINT_V1)
@@ -25,11 +30,13 @@ public class SiteController {
     private final SiteQueryFacade siteQueryFacade;
     private final SiteContextCommandFacade siteContextCommandFacade;
     private final SiteProfileCommandFacade siteProfileCommandFacade;
+    private final CrawlProductCommandService crawlProductCommandService;
 
-    public SiteController(SiteQueryFacade siteQueryFacade, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade) {
+    public SiteController(SiteQueryFacade siteQueryFacade, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade, CrawlProductCommandService crawlProductCommandService) {
         this.siteQueryFacade = siteQueryFacade;
         this.siteContextCommandFacade = siteContextCommandFacade;
         this.siteProfileCommandFacade = siteProfileCommandFacade;
+        this.crawlProductCommandService = crawlProductCommandService;
     }
 
     @GetMapping("/site")
@@ -66,6 +73,15 @@ public class SiteController {
             @RequestBody @Valid SiteProfileRequestDto siteProfileRequestDto){
         siteProfileCommandFacade.update(siteType, siteId, mappingId, siteProfileRequestDto.toSiteProfileCommand());
         return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
+    }
+
+
+    @PostMapping("/site/{siteType}/crawl/product")
+    public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerCrawlProducts(
+            @RequestBody List<CrawlProductInsertRequestDto> crawlProductInsertRequests){
+        List<CrawlProductCommand> crawlProductCommands = crawlProductInsertRequests.stream().map(CrawlProductInsertRequestDto::toCrawlProductCommand).toList();
+        crawlProductCommandService.inserts(crawlProductCommands);
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 
 

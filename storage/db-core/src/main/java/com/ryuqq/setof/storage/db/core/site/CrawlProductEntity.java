@@ -18,4 +18,26 @@ public class CrawlProductEntity extends BaseEntity {
     @Column(name = "PRODUCT_GROUP_ID")
     private Long productGroupId;
 
+    @Column(name = "PRODUCT_NAME")
+    private String productName;
+
+    private CrawlProductEntity() {}
+
+    public CrawlProductEntity(long siteId, String productName, String siteProductId) {
+        this.siteId = siteId;
+        this.productName = productName;
+        this.siteProductId = siteProductId;
+    }
+
+    protected long getSiteId() {
+        return siteId;
+    }
+
+    protected String getSiteProductId() {
+        return siteProductId;
+    }
+
+    protected String getProductName() {
+        return productName;
+    }
 }
