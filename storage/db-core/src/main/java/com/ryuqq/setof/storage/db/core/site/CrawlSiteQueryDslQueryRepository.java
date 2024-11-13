@@ -115,6 +115,7 @@ public class CrawlSiteQueryDslQueryRepository {
                                                         crawlTaskEntity.actionTarget.coalesce(""),
                                                         crawlTaskEntity.actionType,
                                                         crawlTaskEntity.params.coalesce(""),
+                                                        crawlTaskEntity.endPointUrl.coalesce(""),
                                                         crawlTaskEntity.responseMapping.coalesce("")
                                                 )
                                         )

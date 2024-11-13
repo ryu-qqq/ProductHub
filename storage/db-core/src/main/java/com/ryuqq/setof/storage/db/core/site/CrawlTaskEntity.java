@@ -29,18 +29,22 @@ public class CrawlTaskEntity extends BaseEntity {
     @Column(name = "PARAMS", nullable = true)
     private String params;
 
+    @Column(name = "ENDPOINT_URL", nullable = true)
+    private String endPointUrl;
+
     @Column(name = "RESPONSE_MAPPING", nullable = true)
     private String responseMapping;
 
     protected CrawlTaskEntity() {}
 
-    public CrawlTaskEntity(long endpointId, int stepOrder, ProcessType processType, String actionTarget, ActionType actionType, String params, String responseMapping) {
+    public CrawlTaskEntity(long endpointId, int stepOrder, ProcessType processType, String actionTarget, ActionType actionType, String params, String endPointUrl, String responseMapping) {
         this.endpointId = endpointId;
         this.stepOrder = stepOrder;
         this.processType = processType;
         this.actionTarget = actionTarget;
         this.actionType = actionType;
         this.params = params;
+        this.endPointUrl = endPointUrl;
         this.responseMapping = responseMapping;
     }
 

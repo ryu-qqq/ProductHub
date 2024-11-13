@@ -5,6 +5,7 @@ spring:
     import:
       - logging.yml
       - db-core.yml
+      - cache-core.yml
   web.resources.add-mappings: false
   profiles:
     active: local

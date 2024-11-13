@@ -11,6 +11,7 @@ public record CrawlTaskResponse(
         String target,
         ActionType action,
         String params,
+        String endPointUrl,
         String responseMapping
 ) {
 
@@ -22,6 +23,7 @@ public record CrawlTaskResponse(
                 crawlTask.getTarget(),
                 crawlTask.getAction(),
                 crawlTask.getParams(),
+                crawlTask.getEndPointUrl(),
                 crawlTask.getResponseMapping()
         );
     }

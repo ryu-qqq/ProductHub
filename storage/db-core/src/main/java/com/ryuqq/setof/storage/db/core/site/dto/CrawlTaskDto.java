@@ -12,16 +12,18 @@ public class CrawlTaskDto {
     private final String target;
     private final ActionType action;
     private final String params;
+    private final String endPointUrl;
     private final String responseMapping;
 
     @QueryProjection
-    public CrawlTaskDto(long endpointId, int stepOrder, ProcessType type, String target, ActionType action, String params, String responseMapping) {
+    public CrawlTaskDto(long endpointId, int stepOrder, ProcessType type, String target, ActionType action, String params, String endPointUrl, String responseMapping) {
         this.endpointId = endpointId;
         this.stepOrder = stepOrder;
         this.type = type;
         this.target = target;
         this.action = action;
         this.params = params;
+        this.endPointUrl = endPointUrl;
         this.responseMapping = responseMapping;
     }
 
@@ -47,6 +49,10 @@ public class CrawlTaskDto {
 
     public String getParams() {
         return params;
+    }
+
+    public String getEndPointUrl() {
+        return endPointUrl;
     }
 
     public String getResponseMapping() {

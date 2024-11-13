@@ -114,8 +114,4 @@ public class GlobalExceptionController {
                 .body(ApiResponse.error(new ErrorMessage(errorType, errorMsg)));
     }
 
-
-
-
-
 }

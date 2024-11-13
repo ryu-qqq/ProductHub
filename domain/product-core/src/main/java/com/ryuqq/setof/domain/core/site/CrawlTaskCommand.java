@@ -10,11 +10,12 @@ public record CrawlTaskCommand(
         String target,
         ActionType action,
         String params,
+        String endPointUrl,
         String responseMapping
 )
 {
     public CrawlTaskEntity toCrawlTaskEntity(long endpointId) {
-        return new CrawlTaskEntity(endpointId, stepOrder, type, target, action, params, responseMapping);
+        return new CrawlTaskEntity(endpointId, stepOrder, type, target, action, params, endPointUrl, responseMapping);
     }
 
 }

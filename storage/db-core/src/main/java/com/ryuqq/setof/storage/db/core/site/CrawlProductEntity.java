@@ -21,23 +21,35 @@ public class CrawlProductEntity extends BaseEntity {
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
-    private CrawlProductEntity() {}
+    public CrawlProductEntity() {}
 
     public CrawlProductEntity(long siteId, String productName, String siteProductId) {
         this.siteId = siteId;
         this.productName = productName;
         this.siteProductId = siteProductId;
+        this.productGroupId = null;
     }
 
-    protected long getSiteId() {
+
+
+    public long getSiteId() {
         return siteId;
     }
 
-    protected String getSiteProductId() {
+    public String getSiteProductId() {
         return siteProductId;
     }
 
-    protected String getProductName() {
+    public String getProductName() {
         return productName;
     }
+
+    public Long getProductGroupId() {
+        return productGroupId;
+    }
+
+    public void setProductGroupId(Long productGroupId) {
+        this.productGroupId = productGroupId;
+    }
+
 }

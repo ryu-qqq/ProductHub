@@ -38,7 +38,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlTaskRequestDto> toCrawlTaskRequestDtos(){
-        return List.of(new CrawlTaskRequestDto(1, ProcessType.PROCESSING, "", ActionType.SAVE_S3, "{}", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
+        return List.of(new CrawlTaskRequestDto(1, ProcessType.PROCESSING, "", ActionType.SAVE_S3, "{}", "","{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
     }
 
     public static SiteResponse toSiteResponse(){
@@ -67,8 +67,6 @@ public class SiteModuleHelper {
     }
 
 
-
-
     public static CrawlSettingResponse toCrawlSettingResponse(){
         return new CrawlSettingResponse(10, CrawlType.BEAUTIFUL_SOUP);
     }
@@ -82,7 +80,7 @@ public class SiteModuleHelper {
     }
 
     public static List<CrawlTaskResponse> toCrawlTaskResponses(){
-        return List.of(new CrawlTaskResponse(1L, 1, ProcessType.PROCESSING, "", ActionType.SAVE_S3, "", "{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
+        return List.of(new CrawlTaskResponse(1L, 1, ProcessType.PROCESSING, "", ActionType.SAVE_S3, "", "","{\"brands\": \"$.english.*[*].{'brandNo': brandNo, 'brandNameEng': brandNameEng, 'brandNameKor': brandNameKor}\"}"));
     }
 
     public static Map<String, String> toHeaders(){
@@ -91,6 +89,16 @@ public class SiteModuleHelper {
 
         return map;
     }
+
+    public static List<CrawlProductInsertRequestDto> toCrawlProductInsertRequestDto(){
+        return List.of(new CrawlProductInsertRequestDto(1L, SiteName.MUSTIT, 11111L, "테스트 상품"));
+    }
+
+
+    public static List<CrawlProductResponse> toCrawlProductResponse(){
+        return List.of(new CrawlProductResponse(1L, 1L, SiteName.MUSTIT, "1", "테스트 상품",1L));
+    }
+
 
 
 }

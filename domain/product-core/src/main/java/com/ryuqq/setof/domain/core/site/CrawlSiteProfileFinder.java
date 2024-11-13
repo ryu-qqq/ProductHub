@@ -125,6 +125,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder{
                         c.getTarget(),
                         c.getAction(),
                         c.getParams(),
+                        c.getEndPointUrl(),
                         c.getResponseMapping()
                 ))
                 .toList();

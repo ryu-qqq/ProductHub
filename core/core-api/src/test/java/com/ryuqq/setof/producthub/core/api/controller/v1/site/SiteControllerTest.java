@@ -2,12 +2,16 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
+import com.ryuqq.setof.domain.core.site.CrawlProductCommandService;
 import com.ryuqq.setof.domain.core.site.SiteContextCommandFacade;
 import com.ryuqq.setof.domain.core.site.SiteProfileCommandFacade;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.CrawlSiteProfileRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.request.SiteInsertRequestDto;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.CrawlProductResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.response.SiteResponse;
+import com.ryuqq.setof.producthub.core.api.controller.v1.site.service.CrawlProductQueryFacade;
 import com.ryuqq.setof.producthub.core.api.controller.v1.site.service.SiteQueryFacade;
 import com.ryuqq.setof.producthub.data.SiteModuleHelper;
 import com.ryuqq.setof.test.api.RestDocsTest;
@@ -29,7 +33,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -47,6 +51,12 @@ class SiteControllerTest extends RestDocsTest {
 
     @Mock
     private SiteProfileCommandFacade siteProfileCommandFacade;
+
+    @Mock
+    private CrawlProductCommandService crawlProductCommandService;
+
+    @Mock
+    private CrawlProductQueryFacade crawlProductQueryFacade;
 
     @InjectMocks
     private SiteController siteController;
@@ -125,6 +135,7 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].target").type(JsonFieldType.STRING).description("타깃"),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].action").type(JsonFieldType.STRING).description("행동 타입"),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].endPointUrl").type(JsonFieldType.STRING).description("태스크의 엔트포인트 URL").optional(),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
                         ),
                         responseFields(
@@ -175,6 +186,7 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].target").type(JsonFieldType.STRING).description("타깃"),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].action").type(JsonFieldType.STRING).description("행동 타입"),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
+                                fieldWithPath("crawlEndpoints[].crawlTasks[].endPointUrl").type(JsonFieldType.STRING).description("태스크의 엔트포인트 URL").optional(),
                                 fieldWithPath("crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스")
                         ),
                         responseFields(
@@ -231,6 +243,7 @@ class SiteControllerTest extends RestDocsTest {
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].target").type(JsonFieldType.STRING).description("타깃"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].action").type(JsonFieldType.STRING).description("행동 타입"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].params").type(JsonFieldType.STRING).description("필요 파라미터"),
+                                fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].endPointUrl").type(JsonFieldType.STRING).description("태스크 엔드포인트 URL"),
                                 fieldWithPath("siteProfiles[].crawlEndpoints[].crawlTasks[].responseMapping").type(JsonFieldType.STRING).description("추출 리스폰스"),
 
                                 fieldWithPath("siteProfiles[].headers").type(JsonFieldType.OBJECT).description("요청에 사용할 랜덤 헤더 목록"),
@@ -300,10 +313,91 @@ class SiteControllerTest extends RestDocsTest {
                                 statusMsg()
                         )
                 ));
-
-
     }
 
 
+    @Test
+    @DisplayName("Crawl Products 등록  API")
+    void registerCrawlProducts() {
+        // given
+        List<CrawlProductInsertRequestDto> crawlProductInsertRequestDto = SiteModuleHelper.toCrawlProductInsertRequestDto();
+
+        doNothing().when(crawlProductCommandService).inserts(any());
+
+        // when
+        given()
+                .accept(ContentType.JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(crawlProductInsertRequestDto) // 요청 Body 설정
+                .post("/api/v1/site/crawl/product")
+                .then()
+                .status(HttpStatus.OK)
+                .apply(document("crawl-products-inserts", requestPreprocessor(), responsePreprocessor(),
+                        requestFields(
+                                fieldWithPath("[].siteId").type(JsonFieldType.NUMBER).description("크롤링 사이트 ID"),
+                                fieldWithPath("[].siteName").type(JsonFieldType.STRING).description("크롤링 사이트 명"),
+                                fieldWithPath("[].siteProductId").type(JsonFieldType.NUMBER).description("크롤링 사이트 ID"),
+                                fieldWithPath("[].productName").type(JsonFieldType.STRING).description("크롤링 상품 명")
+                        ),
+                        responseFields(
+                                beneathPath("response"),
+                                statusMsg()
+                        )
+                ));
+
+        verify(crawlProductCommandService).inserts(any());
+    }
+
+
+    @Test
+    @DisplayName("Crawl Product 리스트 조회 API")
+    void getCrawlProducts() {
+        // given
+        List<CrawlProductResponse> results = SiteModuleHelper.toCrawlProductResponse();
+
+        Slice<CrawlProductResponse> slice = SliceUtils.toSlice(results, 20, 1);
+        slice.setCursor(1L);
+        when(crawlProductQueryFacade.getCrawlProducts(any())).thenReturn(slice);
+
+        // when
+        given()
+                .accept(ContentType.JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .queryParam("isProductGroupIdNull", false)
+                .get("/api/v1/site/crawl/product")
+                .then()
+                .status(HttpStatus.OK)
+                .apply(document("crawl-products-get", requestPreprocessor(), responsePreprocessor(),
+                        queryParameters(
+                                parameterWithName("isProductGroupIdNull").description("Product Group Id null 여부"),
+                                parameterWithName("pageSize").optional().description("페이지 크기 (기본값: 20)").attributes(key("default").value("20")),
+                                parameterWithName("cursorId").optional().description("커서 ID (페이징에 사용)")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("siteResponse"),
+                                fieldWithPath("content[].crawlProductId").type(JsonFieldType.NUMBER).description("크롤링 프로덕트 ID"),
+                                fieldWithPath("content[].siteId").type(JsonFieldType.NUMBER).description("사이트 ID"),
+                                fieldWithPath("content[].siteName").type(JsonFieldType.STRING).description("사이트 명"),
+                                fieldWithPath("content[].siteProductId").type(JsonFieldType.STRING).description("크롤링 사이트 상품 ID"),
+                                fieldWithPath("content[].productName").type(JsonFieldType.STRING).description("크롤링 상품 명"),
+                                fieldWithPath("content[].productGroupId").type(JsonFieldType.NUMBER).description("상품 그룹 ID"),
+
+                                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                                fieldWithPath("sort").type(JsonFieldType.STRING).description("정렬 여부"),
+                                fieldWithPath("size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지의 요소 개수"),
+                                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("페이지 비어있는지 여부"),
+                                fieldWithPath("cursor").type(JsonFieldType.NUMBER).description("다음 페이지를 위한 커서"),
+                                fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 요소 개수")
+
+                        ),
+
+                        responseFields(
+                                beneathPath("response"),
+                                statusMsg()
+                        )
+                ));
+    }
 
 }
