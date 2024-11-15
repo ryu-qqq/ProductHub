@@ -25,4 +25,16 @@ public class ProductOptionEntity extends BaseEntity {
         this.optionGroupId = optionGroupId;
         this.optionDetailId = optionDetailId;
     }
+
+    protected long getProductId() {
+        return productId;
+    }
+
+    protected long getOptionGroupId() {
+        return optionGroupId;
+    }
+
+    protected long getOptionDetailId() {
+        return optionDetailId;
+    }
 }

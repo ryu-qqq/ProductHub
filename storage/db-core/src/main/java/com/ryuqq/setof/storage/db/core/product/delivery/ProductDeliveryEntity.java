@@ -50,4 +50,35 @@ public class ProductDeliveryEntity extends BaseEntity {
         this.returnExchangeAreaDomestic = returnExchangeAreaDomestic;
     }
 
+    protected long getProductGroupId() {
+        return productGroupId;
+    }
+
+    protected String getDeliveryArea() {
+        return deliveryArea;
+    }
+
+    protected BigDecimal getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    protected int getDeliveryPeriodAverage() {
+        return deliveryPeriodAverage;
+    }
+
+    protected ReturnMethod getReturnMethodDomestic() {
+        return returnMethodDomestic;
+    }
+
+    protected ShipmentCompanyCode getReturnCourierDomestic() {
+        return returnCourierDomestic;
+    }
+
+    protected BigDecimal getReturnChargeDomestic() {
+        return returnChargeDomestic;
+    }
+
+    protected String getReturnExchangeAreaDomestic() {
+        return returnExchangeAreaDomestic;
+    }
 }

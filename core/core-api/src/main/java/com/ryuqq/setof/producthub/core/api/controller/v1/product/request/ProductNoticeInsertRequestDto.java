@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.Origin;
-import com.ryuqq.setof.domain.core.product.command.ProductNoticeCommand;
+import com.ryuqq.setof.domain.core.product.ProductNoticeCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

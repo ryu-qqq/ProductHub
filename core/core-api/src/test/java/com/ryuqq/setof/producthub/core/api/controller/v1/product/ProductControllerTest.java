@@ -4,7 +4,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
-import com.ryuqq.setof.domain.core.product.command.ProductGroupInsertFacade;
+import com.ryuqq.setof.domain.core.product.ProductGroupCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.service.ProductGroupQueryFacade;
@@ -40,7 +40,7 @@ class ProductControllerTest extends RestDocsTest {
 
 
     @Mock
-    private ProductGroupInsertFacade productGroupInsertFacade;
+    private ProductGroupCommandFacade productGroupCommandFacade;
 
     @Mock
     private ProductGroupQueryFacade productGroupQueryFacade;
@@ -59,7 +59,7 @@ class ProductControllerTest extends RestDocsTest {
     void registerProductGroup() throws Exception {
         // given
         ProductGroupCommandContextRequestDto requestDto = ProductModuleHelper.toProductGroupCommandContextRequestDto();
-        when(productGroupInsertFacade.insert(any())).thenReturn(1L);
+        when(productGroupCommandFacade.insert(any())).thenReturn(1L);
 
         // when
         given()
@@ -84,6 +84,7 @@ class ProductControllerTest extends RestDocsTest {
                             fieldWithPath("productGroup.currentPrice").type(JsonFieldType.NUMBER).description("현재 가격"),
                             fieldWithPath("productGroup.soldOutYn").type(JsonFieldType.BOOLEAN).description("품절 여부"),
                             fieldWithPath("productGroup.displayYn").type(JsonFieldType.BOOLEAN).description("노출 여부"),
+                            fieldWithPath("productGroup.keywords").type(JsonFieldType.STRING).description("검색 단어 색인"),
 
                             fieldWithPath("productNotice.material").type(JsonFieldType.STRING).description("제품 소재"),
                             fieldWithPath("productNotice.color").type(JsonFieldType.STRING).description("제품 색상"),
@@ -202,6 +203,7 @@ class ProductControllerTest extends RestDocsTest {
                                 fieldWithPath("content[].productGroup.soldOutYn").type(JsonFieldType.BOOLEAN).description("품절 여부 (true: 품절)"),
                                 fieldWithPath("content[].productGroup.displayYn").type(JsonFieldType.BOOLEAN).description("노출 여부 (true: 노출)"),
                                 fieldWithPath("content[].productGroup.productStatus").type(JsonFieldType.STRING).description("상품 상태"),
+                                fieldWithPath("content[].productGroup.keywords").type(JsonFieldType.STRING).description("상품 검색 색인 단어"),
                                 fieldWithPath("content[].productDelivery.deliveryArea").type(JsonFieldType.STRING).description("배송 지역"),
                                 fieldWithPath("content[].productDelivery.deliveryFee").type(JsonFieldType.NUMBER).description("배송비"),
                                 fieldWithPath("content[].productDelivery.deliveryPeriodAverage").type(JsonFieldType.NUMBER).description("평균 배송 기간"),

@@ -66,3 +66,26 @@ include::{snippets}/sites-get/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/sites-get/response-fields-siteResponse.adoc[]
 include::{snippets}/sites-get/response-fields-beneath-response.adoc[]
+
+
+=== CRAWL PRODUCT QUERY GET API
+==== Curl Request
+include::{snippets}/crawl-products-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/crawl-products-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/crawl-products-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/crawl-products-get/response-fields-siteResponse.adoc[]
+include::{snippets}/crawl-products-get/response-fields-beneath-response.adoc[]
+
+
+=== CRAWL PRODUCT COMMAND POST API
+==== Curl Request
+include::{snippets}/crawl-products-inserts/curl-request.adoc[]
+==== Request Fields
+include::{snippets}/crawl-products-inserts/request-fields.adoc[]
+==== Http Response
+include::{snippets}/crawl-products-inserts/http-response.adoc[]
+==== Response Fields
+include::{snippets}/crawl-products-inserts/response-fields-beneath-response.adoc[]

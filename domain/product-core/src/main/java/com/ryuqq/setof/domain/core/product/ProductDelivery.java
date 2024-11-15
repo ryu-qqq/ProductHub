@@ -8,14 +8,14 @@ import java.util.Objects;
 
 public class ProductDelivery {
 
-    private long productGroupId;
-    private String deliveryArea;
-    private BigDecimal deliveryFee;
-    private int deliveryPeriodAverage;
-    private ReturnMethod returnMethodDomestic;
-    private ShipmentCompanyCode returnCourierDomestic;
-    private BigDecimal returnChargeDomestic;
-    private String returnExchangeAreaDomestic;
+    private final long productGroupId;
+    private final String deliveryArea;
+    private final BigDecimal deliveryFee;
+    private final int deliveryPeriodAverage;
+    private final ReturnMethod returnMethodDomestic;
+    private final ShipmentCompanyCode returnCourierDomestic;
+    private final BigDecimal returnChargeDomestic;
+    private final String returnExchangeAreaDomestic;
 
     public ProductDelivery(long productGroupId, String deliveryArea, BigDecimal deliveryFee, int deliveryPeriodAverage, ReturnMethod returnMethodDomestic, ShipmentCompanyCode returnCourierDomestic, BigDecimal returnChargeDomestic, String returnExchangeAreaDomestic) {
         this.productGroupId = productGroupId;

@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.product.command;
+package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.core.ManagementType;
 import com.ryuqq.setof.core.OptionType;
@@ -23,14 +23,23 @@ public record ProductGroupCommand(
         BigDecimal currentPrice,
         boolean soldOutYn,
         boolean displayYn,
-        ProductStatus productStatus
+        ProductStatus productStatus,
+        String keywords
 ) {
 
     public ProductGroupEntity toEntity(){
         return new ProductGroupEntity(
                 sellerId, categoryId, brandId, productGroupName, styleCode, productCondition, managementType,
                 optionType, regularPrice, currentPrice, calculateDiscountRate(regularPrice, currentPrice),
-                soldOutYn, displayYn, productStatus
+                soldOutYn, displayYn, productStatus, keywords
+        );
+    }
+
+    public ProductGroupEntity toEntity(long productGroupId){
+        return new ProductGroupEntity(productGroupId,
+                sellerId, categoryId, brandId, productGroupName, styleCode, productCondition, managementType,
+                optionType, regularPrice, currentPrice, calculateDiscountRate(regularPrice, currentPrice),
+                soldOutYn, displayYn, productStatus, keywords
         );
     }
 

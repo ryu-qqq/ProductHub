@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
-import com.ryuqq.setof.domain.core.product.command.OptionCommand;
-import com.ryuqq.setof.domain.core.product.command.ProductCommand;
+import com.ryuqq.setof.domain.core.product.OptionCommand;
+import com.ryuqq.setof.domain.core.product.ProductCommand;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Max;

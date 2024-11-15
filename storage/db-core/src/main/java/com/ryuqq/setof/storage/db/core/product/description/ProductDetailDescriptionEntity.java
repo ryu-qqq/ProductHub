@@ -23,4 +23,12 @@ public class ProductDetailDescriptionEntity extends BaseEntity {
         this.productGroupId = productGroupId;
         this.detailDescription = detailDescription;
     }
+
+    protected long getProductGroupId() {
+        return productGroupId;
+    }
+
+    protected String getDetailDescription() {
+        return detailDescription;
+    }
 }

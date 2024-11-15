@@ -1,7 +1,9 @@
-package com.ryuqq.setof.domain.core.product.command;
+package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.option.detail.OptionDetailPersistenceService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OptionDetailCommandService {
@@ -15,4 +17,9 @@ public class OptionDetailCommandService {
     public long insert(long optionGroupId, OptionCommand optionCommand) {
         return optionDetailPersistenceService.insert(optionCommand.toDetailEntity(optionGroupId));
     }
+
+    public void deleteAll(List<Long> optionDetailIds){
+        optionDetailPersistenceService.deleteAll(optionDetailIds);
+    }
+
 }

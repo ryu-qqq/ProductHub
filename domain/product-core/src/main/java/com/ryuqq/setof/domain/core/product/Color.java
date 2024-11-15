@@ -3,8 +3,8 @@ package com.ryuqq.setof.domain.core.product;
 import java.util.Objects;
 
 public class Color {
-    private long colorId;
-    private String colorName;
+    private final long colorId;
+    private final String colorName;
 
     public Color(long colorId, String colorName) {
         this.colorId = colorId;

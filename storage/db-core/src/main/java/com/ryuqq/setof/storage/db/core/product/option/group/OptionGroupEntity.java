@@ -14,8 +14,15 @@ public class OptionGroupEntity extends BaseEntity {
 
     protected OptionGroupEntity() {}
 
+
     public OptionGroupEntity(OptionName optionName) {
         this.optionName = optionName;
+    }
+
+    public OptionGroupEntity(long id, OptionName optionName, boolean deleteYn) {
+        this.id = id;
+        this.optionName = optionName;
+        this.deleteYn = deleteYn;
     }
 
     public OptionName getOptionName() {

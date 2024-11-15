@@ -6,16 +6,16 @@ import java.util.Objects;
 
 public class ProductNotice {
 
-    private long productGroupId;
-    private String material;
-    private String color;
-    private String size;
-    private String maker;
-    private Origin origin;
-    private String washingMethod;
-    private String yearMonth;
-    private String assuranceStandard;
-    private String asPhone;
+    private final long productGroupId;
+    private final String material;
+    private final String color;
+    private final String size;
+    private final String maker;
+    private final Origin origin;
+    private final String washingMethod;
+    private final String yearMonth;
+    private final String assuranceStandard;
+    private final String asPhone;
 
     public ProductNotice(long productGroupId, String material, String color, String size, String maker, Origin origin, String washingMethod, String yearMonth, String assuranceStandard, String asPhone) {
         this.productGroupId = productGroupId;
@@ -69,6 +69,9 @@ public class ProductNotice {
     public String getAsPhone() {
         return asPhone;
     }
+
+
+
 
     @Override
     public boolean equals(Object object) {

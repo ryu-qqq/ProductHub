@@ -24,7 +24,8 @@ public record ProductGroupResponse(
         PriceResponse price,
         boolean soldOutYn,
         boolean displayYn,
-        ProductStatus productStatus
+        ProductStatus productStatus,
+        String keywords
 ) {}
 
 

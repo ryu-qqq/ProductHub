@@ -1,6 +1,6 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
-import com.ryuqq.setof.domain.core.product.command.*;
+import com.ryuqq.setof.domain.core.product.*;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.validator.ProductGroupCommandValidate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +24,7 @@ public record ProductGroupCommandContextRequestDto(
         ProductDeliveryRequestDto productDelivery,
 
         @NotNull(message = "Product Image List cannot be null.")
-        @Size(min = 1, message = "Product Image List cannot be empty.")
+        @Size(min = 1, max = 10, message = "Product Image List cannot be empty.")
         @Valid
         List<ProductGroupImageRequestDto> productImageList,
 

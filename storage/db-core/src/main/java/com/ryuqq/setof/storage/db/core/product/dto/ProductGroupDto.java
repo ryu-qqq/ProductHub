@@ -26,11 +26,12 @@ public class ProductGroupDto {
     private boolean soldOutYn;
     private boolean displayYn;
     private ProductStatus productStatus;
+    private String keywords;
 
     protected ProductGroupDto() {}
 
     @QueryProjection
-    public ProductGroupDto(long productGroupId, long sellerId, CategoryDto categoryDto, BrandDto brandDto, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus) {
+    public ProductGroupDto(long productGroupId, long sellerId, CategoryDto categoryDto, BrandDto brandDto, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords) {
         this.productGroupId = productGroupId;
         this.sellerId = sellerId;
         this.categoryDto = categoryDto;
@@ -46,6 +47,7 @@ public class ProductGroupDto {
         this.soldOutYn = soldOutYn;
         this.displayYn = displayYn;
         this.productStatus = productStatus;
+        this.keywords = keywords;
     }
 
     public long getProductGroupId() {
@@ -106,6 +108,10 @@ public class ProductGroupDto {
 
     public ProductStatus getProductStatus() {
         return productStatus;
+    }
+
+    public String getKeywords() {
+        return keywords;
     }
 
 }

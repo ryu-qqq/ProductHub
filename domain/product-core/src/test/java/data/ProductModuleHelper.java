@@ -1,7 +1,7 @@
 package data;
 
 import com.ryuqq.setof.core.*;
-import com.ryuqq.setof.domain.core.product.command.*;
+import com.ryuqq.setof.domain.core.product.*;
 
 import java.math.BigDecimal;
 import java.util.List;

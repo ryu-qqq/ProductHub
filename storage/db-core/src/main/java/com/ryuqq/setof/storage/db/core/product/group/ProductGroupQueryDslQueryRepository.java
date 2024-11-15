@@ -14,6 +14,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ryuqq.setof.storage.db.core.brand.QBrandEntity.brandEntity;
 import static com.ryuqq.setof.storage.db.core.category.QCategoryEntity.categoryEntity;
@@ -33,6 +34,13 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
     }
 
     @Override
+    public Optional<ProductGroupContextDto> fetchProductGroupContext(long productGroupId) {
+        List<ProductGroupContextDto> productGroupContextDtos = fetchProductGroupContextsWithNoOffset(List.of(productGroupId));
+        if(!productGroupContextDtos.isEmpty()) return Optional.of(productGroupContextDtos.getFirst());
+        return Optional.empty();
+    }
+
+    @Override
     public List<ProductGroupContextDto> fetchProductGroupContexts(ProductGroupStorageFilterDto filter) {
         List<Long> productGroupIds = fetchProductGroupIdsWithNoOffset(filter);
         return fetchProductGroupContextsWithNoOffset(productGroupIds);
@@ -40,7 +48,7 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
 
     @Override
     public long fetchProductGroupCount(ProductGroupStorageFilterDto filter) {
-        Long count =  queryFactory.select(
+        Long count = queryFactory.select(
                         productGroupEntity.count()
                 )
                 .from(productGroupEntity)
@@ -110,7 +118,8 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
                                         productGroupEntity.discountRate,
                                         productGroupEntity.soldOutYn,
                                         productGroupEntity.displayYn,
-                                        productGroupEntity.productStatus
+                                        productGroupEntity.productStatus,
+                                        productGroupEntity.keywords
                                         ),
                                 new QProductNoticeDto(
                                         productNoticeEntity.material,
@@ -134,17 +143,17 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
                                 ),
                                 GroupBy.list(
                                         new QProductGroupImageDto(
+                                                productGroupImageEntity.id,
+                                                productGroupImageEntity.productGroupId,
                                                 productGroupImageEntity.productImageType,
-                                                productGroupImageEntity.imageUrl
+                                                productGroupImageEntity.imageUrl.coalesce(""),
+                                                productGroupImageEntity.originUrl.coalesce("")
                                         )
                                 ),
                                 new QProductDetailDescriptionDto(
                                         productDetailDescriptionEntity.detailDescription
                                 )
                         )));
-
-
-
     }
 
 

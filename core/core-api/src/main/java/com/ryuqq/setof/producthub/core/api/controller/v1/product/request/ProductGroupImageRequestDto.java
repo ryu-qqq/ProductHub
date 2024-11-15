@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.ProductImageType;
-import com.ryuqq.setof.domain.core.product.command.ProductGroupImageCommand;
+import com.ryuqq.setof.domain.core.product.ProductGroupImageCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

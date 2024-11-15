@@ -45,7 +45,8 @@ public record ProductGroupContextResponse(
                 toPriceResponse(productGroup.getPrice()),
                 productGroup.isSoldOutYn(),
                 productGroup.isDisplayYn(),
-                productGroup.getProductStatus()
+                productGroup.getProductStatus(),
+                productGroup.getKeywords()
                 );
     }
 

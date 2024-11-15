@@ -54,4 +54,44 @@ public class ProductNoticeEntity  extends BaseEntity {
         this.asPhone = asPhone;
     }
 
+    protected long getProductGroupId() {
+        return productGroupId;
+    }
+
+    protected String getMaterial() {
+        return material;
+    }
+
+    protected String getColor() {
+        return color;
+    }
+
+    protected String getSize() {
+        return size;
+    }
+
+    protected String getMaker() {
+        return maker;
+    }
+
+    protected Origin getOrigin() {
+        return origin;
+    }
+
+    protected String getWashingMethod() {
+        return washingMethod;
+    }
+
+    protected String getYearMonth() {
+        return yearMonth;
+    }
+
+    protected String getAssuranceStandard() {
+        return assuranceStandard;
+    }
+
+    protected String getAsPhone() {
+        return asPhone;
+    }
+
 }
