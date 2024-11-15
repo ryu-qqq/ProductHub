@@ -1,0 +1,12 @@
+---
+
+spring:
+  config:
+    activate.on-profile: local
+  data:
+    elasticsearch:
+      rest:
+        uris: "http://localhost:9200"
+
+
+---

@@ -33,8 +33,9 @@ public class ProductController {
     }
 
     @PutMapping("/product/group/{productGroupId}")
-    public ResponseEntity<ApiResponse<Long>> updateProductGroups(@PathVariable("productGroupId") long productGroupId, @RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(productGroupCommandFacade.update(productGroupId, productGroupCommandContextRequestDto.toProductGroupCommandContext())));
+    public ResponseEntity<ApiResponse<ProductGroupInsertResponseDto>> updateProductGroups(@PathVariable("productGroupId") long productGroupId, @RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
+        productGroupCommandFacade.update(productGroupId, productGroupCommandContextRequestDto.toProductGroupCommandContext());
+        return ResponseEntity.ok(ApiResponse.success(new ProductGroupInsertResponseDto(productGroupId)));
     }
 
     @GetMapping("/product/group")
@@ -43,9 +44,8 @@ public class ProductController {
     }
 
     @GetMapping("/product/group/{productGroupId}")
-    public ResponseEntity<ApiResponse<Slice<ProductGroupContextResponse>>> getProductGroup(@PathVariable("productGroupId") long productGroupId){
+    public ResponseEntity<ApiResponse<ProductGroupContextResponse>> getProductGroup(@PathVariable("productGroupId") long productGroupId){
         return ResponseEntity.ok(ApiResponse.success(null));
     }
-
 
 }

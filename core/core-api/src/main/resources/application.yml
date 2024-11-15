@@ -6,6 +6,7 @@ spring:
       - logging.yml
       - db-core.yml
       - cache-core.yml
+      - index-core.yml
   web.resources.add-mappings: false
   profiles:
     active: local
