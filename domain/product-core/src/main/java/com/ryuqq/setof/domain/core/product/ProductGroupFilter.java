@@ -34,4 +34,6 @@ public record ProductGroupFilter(
         return new ProductGroupStorageFilterDto(productStatus, managementType, categoryIds, productGroupIds, brandIds, colorIds, sellerId, cursorId, styleCode, pageSize,
                 soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate);
     }
+
+
 }

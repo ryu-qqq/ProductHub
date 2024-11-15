@@ -2,7 +2,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
 import com.ryuqq.setof.core.ReturnMethod;
 import com.ryuqq.setof.core.ShipmentCompanyCode;
-import com.ryuqq.setof.domain.core.product.command.ProductDeliveryCommand;
+import com.ryuqq.setof.domain.core.product.ProductDeliveryCommand;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;

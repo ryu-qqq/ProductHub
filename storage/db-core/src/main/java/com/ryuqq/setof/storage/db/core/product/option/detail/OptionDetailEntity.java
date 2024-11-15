@@ -22,5 +22,12 @@ public class OptionDetailEntity extends BaseEntity {
         this.optionValue = optionValue;
     }
 
+    public OptionDetailEntity(long id, long optionGroupId, String optionValue, boolean deleteYn) {
+        this.id =id;
+        this.optionGroupId = optionGroupId;
+        this.optionValue = optionValue;
+        this.deleteYn = deleteYn;
+    }
+
 }
 

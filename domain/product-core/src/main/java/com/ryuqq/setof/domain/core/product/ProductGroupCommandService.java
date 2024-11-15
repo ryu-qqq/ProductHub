@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.product.command;
+package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.brand.BrandFinder;
 import com.ryuqq.setof.domain.core.category.CategoryFinder;
@@ -22,6 +22,16 @@ public class ProductGroupCommandService {
     public long insert(ProductGroupCommand productGroupCommand) {
         validate(productGroupCommand.brandId(), productGroupCommand.categoryId());
         return productGroupPersistenceService.insert(productGroupCommand.toEntity());
+    }
+
+    public void update(ProductGroup productGroup, ProductGroupCommand productGroupCommand) {
+        validate(productGroupCommand.brandId(), productGroupCommand.categoryId());
+        ProductGroupUpdater updater = new ProductGroupUpdater(productGroup);
+
+        if (updater.hasUpdates(productGroupCommand)) {
+            productGroupPersistenceService.update(productGroupCommand.toEntity(productGroup.getProductGroupId()));
+        }
+
     }
 
     private void validate(long brandId, long categoryId) {

@@ -36,4 +36,33 @@ public class ProductEntity extends BaseEntity {
         this.additionalPrice = additionalPrice;
     }
 
+    public ProductEntity(long id, long productGroupId, boolean soldOutYn, boolean displayYn, int quantity, BigDecimal additionalPrice, boolean deleteYn) {
+        this.id = id;
+        this.productGroupId = productGroupId;
+        this.soldOutYn = soldOutYn;
+        this.displayYn = displayYn;
+        this.quantity = quantity;
+        this.additionalPrice = additionalPrice;
+        this.deleteYn = deleteYn;
+    }
+
+    public long getProductGroupId() {
+        return productGroupId;
+    }
+
+    public boolean isSoldOutYn() {
+        return soldOutYn;
+    }
+
+    public boolean isDisplayYn() {
+        return displayYn;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public BigDecimal getAdditionalPrice() {
+        return additionalPrice;
+    }
 }

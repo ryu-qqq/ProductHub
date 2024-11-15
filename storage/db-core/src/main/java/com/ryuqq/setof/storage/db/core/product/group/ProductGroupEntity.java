@@ -59,9 +59,12 @@ public class ProductGroupEntity extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private ProductStatus productStatus;
 
+    @Column(name = "KEYWORDS",  length =255, nullable = true)
+    private String keywords;
+
     protected ProductGroupEntity() {}
 
-    public ProductGroupEntity(long sellerId, long categoryId, long brandId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus) {
+    public ProductGroupEntity(long sellerId, long categoryId, long brandId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords) {
         this.sellerId = sellerId;
         this.categoryId = categoryId;
         this.brandId = brandId;
@@ -76,7 +79,87 @@ public class ProductGroupEntity extends BaseEntity {
         this.soldOutYn = soldOutYn;
         this.displayYn = displayYn;
         this.productStatus = productStatus;
+        this.keywords = keywords;
+    }
+
+    public ProductGroupEntity(long productGroupId, long sellerId, long categoryId, long brandId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords) {
+        this.id = productGroupId;
+        this.sellerId = sellerId;
+        this.categoryId = categoryId;
+        this.brandId = brandId;
+        this.productGroupName = productGroupName;
+        this.styleCode = styleCode;
+        this.productCondition = productCondition;
+        this.managementType = managementType;
+        this.optionType = optionType;
+        this.regularPrice = regularPrice;
+        this.currentPrice = currentPrice;
+        this.discountRate = discountRate;
+        this.soldOutYn = soldOutYn;
+        this.displayYn = displayYn;
+        this.productStatus = productStatus;
+        this.keywords = keywords;
     }
 
 
+
+    protected long getSellerId() {
+        return sellerId;
+    }
+
+    protected long getCategoryId() {
+        return categoryId;
+    }
+
+    protected long getBrandId() {
+        return brandId;
+    }
+
+    protected String getProductGroupName() {
+        return productGroupName;
+    }
+
+    protected String getStyleCode() {
+        return styleCode;
+    }
+
+    protected ProductCondition getProductCondition() {
+        return productCondition;
+    }
+
+    protected ManagementType getManagementType() {
+        return managementType;
+    }
+
+    protected OptionType getOptionType() {
+        return optionType;
+    }
+
+    protected BigDecimal getRegularPrice() {
+        return regularPrice;
+    }
+
+    protected BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    protected int getDiscountRate() {
+        return discountRate;
+    }
+
+    protected boolean isSoldOutYn() {
+        return soldOutYn;
+    }
+
+    protected boolean isDisplayYn() {
+        return displayYn;
+    }
+
+    protected ProductStatus getProductStatus() {
+        return productStatus;
+    }
+
+    protected String getKeywords() {
+        return keywords;
+    }
 }

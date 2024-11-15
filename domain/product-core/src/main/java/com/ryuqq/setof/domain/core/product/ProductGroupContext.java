@@ -7,11 +7,11 @@ import java.util.Set;
 
 public class ProductGroupContext {
 
-    private ProductGroup productGroup;
-    private ProductDelivery delivery;
-    private ProductNotice notice;
-    private List<ProductGroupImage> images;
-    private ProductDetailDescription detailDescription;
+    private final ProductGroup productGroup;
+    private final ProductDelivery delivery;
+    private final ProductNotice notice;
+    private final List<ProductGroupImage> images;
+    private final ProductDetailDescription detailDescription;
     private Set<Product> products;
 
     public ProductGroupContext(ProductGroup productGroup, ProductDelivery delivery, ProductNotice notice, List<ProductGroupImage> images, ProductDetailDescription detailDescription, Set<Product> products) {

@@ -11,22 +11,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProductGroup {
-    private long productGroupId;
-    private long sellerId;
-    private Color color;
+    private final long productGroupId;
+    private final long sellerId;
+    private final Color color;
     private List<CategoryRecord> categories;
-    private BrandRecord brand;
-    private String productGroupName;
-    private String styleCode;
-    private ProductCondition productCondition;
-    private ManagementType managementType;
-    private OptionType optionType;
-    private Price price;
-    private boolean soldOutYn;
-    private boolean displayYn;
-    private ProductStatus productStatus;
+    private final BrandRecord brand;
+    private final String productGroupName;
+    private final String styleCode;
+    private final ProductCondition productCondition;
+    private final ManagementType managementType;
+    private final OptionType optionType;
+    private final Price price;
+    private final boolean soldOutYn;
+    private final boolean displayYn;
+    private final ProductStatus productStatus;
+    private final String keywords;
 
-    public ProductGroup(long productGroupId, long sellerId, Color color, List<CategoryRecord> categories, BrandRecord brand, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, Price price, boolean soldOutYn, boolean displayYn, ProductStatus productStatus) {
+    public ProductGroup(long productGroupId, long sellerId, Color color, List<CategoryRecord> categories, BrandRecord brand, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, Price price, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords) {
         this.productGroupId = productGroupId;
         this.sellerId = sellerId;
         this.color = color;
@@ -41,6 +42,7 @@ public class ProductGroup {
         this.soldOutYn = soldOutYn;
         this.displayYn = displayYn;
         this.productStatus = productStatus;
+        this.keywords = keywords;
     }
 
     public long getProductGroupId() {
@@ -101,6 +103,10 @@ public class ProductGroup {
 
     public void setCategories(List<CategoryRecord> categories) {
         this.categories = categories;
+    }
+
+    public String getKeywords() {
+        return keywords;
     }
 
     @Override

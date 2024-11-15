@@ -5,4 +5,12 @@ public enum ProductImageType {
     DETAIL;
 
 
+    public boolean isMain(){
+        return this == MAIN;
+    }
+
+    public boolean isDetail(){
+        return this == DETAIL;
+    }
+
 }

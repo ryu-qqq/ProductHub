@@ -14,7 +14,7 @@ public abstract class BaseEntity {
     protected Long id;
 
     @Column(name = "DELETE_YN", nullable = false)
-    private boolean deleteYn;
+    protected boolean deleteYn;
 
     @CreationTimestamp
     @Column(name = "INSERT_TIME", nullable = false)
@@ -26,6 +26,10 @@ public abstract class BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public boolean isDeleteYn() {
+        return deleteYn;
     }
 
     protected void delete(){

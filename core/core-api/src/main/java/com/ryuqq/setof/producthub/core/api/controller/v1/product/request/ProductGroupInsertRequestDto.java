@@ -4,7 +4,7 @@ import com.ryuqq.setof.core.ManagementType;
 import com.ryuqq.setof.core.OptionType;
 import com.ryuqq.setof.core.ProductCondition;
 import com.ryuqq.setof.core.ProductStatus;
-import com.ryuqq.setof.domain.core.product.command.ProductGroupCommand;
+import com.ryuqq.setof.domain.core.product.ProductGroupCommand;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -49,11 +49,13 @@ public record ProductGroupInsertRequestDto(
         BigDecimal currentPrice,
 
         boolean soldOutYn,
-        boolean displayYn
+        boolean displayYn,
+        String keywords
 ) {
     public ProductGroupCommand toProductGroupCommand() {
         return new ProductGroupCommand(brandId, categoryId, sellerId, productGroupName,
                 styleCode, productCondition, managementType, optionType, regularPrice, currentPrice,
-                soldOutYn, displayYn, ProductStatus.WAITING);
+                soldOutYn, displayYn, ProductStatus.WAITING, keywords);
     }
+
 }

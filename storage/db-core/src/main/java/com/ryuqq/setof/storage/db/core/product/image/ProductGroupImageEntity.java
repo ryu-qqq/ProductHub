@@ -18,11 +18,47 @@ public class ProductGroupImageEntity extends BaseEntity {
     @Column(name = "IMAGE_URL", length = 255, nullable = false)
     private String imageUrl;
 
+
+    @Column(name = "ORIGIN_URL", length = 255, nullable = false)
+    private String originUrl;
+
     protected ProductGroupImageEntity() {}
 
-    public ProductGroupImageEntity(long productGroupId, ProductImageType productImageType, String imageUrl) {
+    public ProductGroupImageEntity(long id, long productGroupId, ProductImageType productImageType, String imageUrl, String originUrl, boolean deleteYn) {
+        this.id = id;
         this.productGroupId = productGroupId;
         this.productImageType = productImageType;
         this.imageUrl = imageUrl;
+        this.originUrl = originUrl;
+        this.deleteYn = deleteYn;
     }
+
+    public ProductGroupImageEntity(long productGroupId, ProductImageType productImageType, String imageUrl, String originUrl) {
+        this.productGroupId = productGroupId;
+        this.productImageType = productImageType;
+        this.imageUrl = imageUrl;
+        this.originUrl = originUrl;
+    }
+
+
+    protected long getProductGroupId() {
+        return productGroupId;
+    }
+
+    protected ProductImageType getProductImageType() {
+        return productImageType;
+    }
+
+    protected String getImageUrl() {
+        return imageUrl;
+    }
+
+    protected String getOriginUrl() {
+        return originUrl;
+    }
+
+    public void delete(){
+        super.delete();
+    }
+
 }

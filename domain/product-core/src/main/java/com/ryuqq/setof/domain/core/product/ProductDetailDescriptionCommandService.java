@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.product.command;
+package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionJpaService;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,10 @@ public class ProductDetailDescriptionCommandService {
 
     public void insert(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
         productDetailDescriptionJpaService.insert(productDetailDescriptionCommand.toEntity(productGroupId));
+    }
+
+    public void update(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
+        productDetailDescriptionJpaService.update(productDetailDescriptionCommand.toEntity(productGroupId));
     }
 
 }

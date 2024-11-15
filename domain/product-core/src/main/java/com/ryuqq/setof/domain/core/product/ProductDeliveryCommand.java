@@ -1,4 +1,4 @@
-package com.ryuqq.setof.domain.core.product.command;
+package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.core.ReturnMethod;
 import com.ryuqq.setof.core.ShipmentCompanyCode;
