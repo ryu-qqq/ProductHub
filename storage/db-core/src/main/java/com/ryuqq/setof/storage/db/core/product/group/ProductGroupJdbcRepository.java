@@ -1,5 +1,6 @@
 package com.ryuqq.setof.storage.db.core.product.group;
 
+import com.ryuqq.setof.enums.core.ProductStatus;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,6 @@ public class ProductGroupJdbcRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    // 1. 배치 인서트 메서드
     public int[] batchInsertProductGroups(List<ProductGroupEntity> productGroups) {
         String sql = "INSERT INTO PRODUCT_GROUP " +
                 "(SELLER_ID, CATEGORY_ID, BRAND_ID, PRODUCT_GROUP_NAME, STYLE_CODE, PRODUCT_CONDITION, " +
@@ -52,7 +52,6 @@ public class ProductGroupJdbcRepository {
         return namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
     }
 
-    // 2. 배치 업데이트 메서드
     public int[] batchUpdateProductGroups(List<ProductGroupEntity> productGroups) {
         String sql = "UPDATE PRODUCT_GROUP " +
                 "SET CATEGORY_ID = :categoryId, " +
@@ -69,12 +68,12 @@ public class ProductGroupJdbcRepository {
                 "DISPLAY_YN = :displayYn, " +
                 "PRODUCT_STATUS = :productStatus, " +
                 "KEYWORDS = :keywords " +
-                "WHERE SELLER_ID = :sellerId";
+                "WHERE PRODUCT_GROUP_ID = :productGroupId";
 
         List<Map<String, Object>> batchValues = productGroups.stream()
                 .map(group -> {
                     MapSqlParameterSource params = new MapSqlParameterSource()
-                            .addValue("sellerId", group.getSellerId())
+                            .addValue("productGroupId", group.getId())
                             .addValue("categoryId", group.getCategoryId())
                             .addValue("brandId", group.getBrandId())
                             .addValue("productGroupName", group.getProductGroupName())
@@ -95,4 +94,22 @@ public class ProductGroupJdbcRepository {
 
         return namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
     }
+
+
+    public void updatesProductStatus(List<Long> productGroupIds, ProductStatus productStatus){
+        String sql = "UPDATE PRODUCT_GROUP " +
+                "SET PRODUCT_STATUS = :productStatus " +
+                "WHERE ID = :productGroupId";
+
+        List<Map<String, Object>> batchValues = productGroupIds.stream()
+                .map(aLong -> {
+                    MapSqlParameterSource params = new MapSqlParameterSource()
+                            .addValue("productStatus", productStatus.name())
+                            .addValue("productGroupId", aLong);
+                    return params.getValues();
+                })
+                .toList();
+        namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+    }
+
 }

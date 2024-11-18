@@ -1,11 +1,15 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupContextDto;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupQueryRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.ryuqq.setof.domain.core.product.ProductErrorConstants.PRODUCT_GROUP_NOT_FOUND_ERROR_MSG;
@@ -22,6 +26,12 @@ public class ProductGroupFinder implements ProductGroupQueryService {
         this.productGroupContextMapper = productGroupContextMapper;
         this.productGroupQueryRepository = productGroupQueryRepository;
         this.productFinder = productFinder;
+    }
+
+    @Override
+    public ProductStatus findProductStatus(long productGroupId) {
+        return productGroupQueryRepository.fetchProductStatus(productGroupId)
+                .orElseThrow(() -> new NotFoundException(PRODUCT_GROUP_NOT_FOUND_ERROR_MSG + productGroupId));
     }
 
     @Override

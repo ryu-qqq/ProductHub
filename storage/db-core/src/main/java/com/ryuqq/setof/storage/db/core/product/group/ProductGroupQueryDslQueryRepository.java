@@ -1,15 +1,14 @@
 package com.ryuqq.setof.storage.db.core.product.group;
 
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryuqq.setof.enums.core.ManagementType;
 import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.brand.dto.QBrandDto;
 import com.ryuqq.setof.storage.db.core.category.dto.QCategoryDto;
 import com.ryuqq.setof.storage.db.core.product.dto.*;
 import org.springframework.stereotype.Repository;
-
-import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,6 +30,27 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
 
     public ProductGroupQueryDslQueryRepository(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
+    }
+
+    @Override
+    public List<Long> fetchProductGroupIds(ProductStatus productStatus, int pageSize) {
+        return queryFactory.select(
+                        productGroupEntity.id
+                ).from(productGroupEntity)
+                .where(productStatusEq(productStatus))
+                .limit(pageSize)
+                .fetch();
+    }
+
+    @Override
+    public Optional<ProductStatus> fetchProductStatus(long productGroupId) {
+        return Optional.ofNullable(
+                queryFactory.select(
+                                productGroupEntity.productStatus
+                        ).from(productGroupEntity)
+                            .where(productGroupIdEq(productGroupId))
+                            .fetchOne()
+        );
     }
 
     @Override
@@ -179,6 +199,10 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
                 .orderBy(productGroupEntity.id.desc())
                 .limit(filter.pageSize())
                 .fetch();
+    }
+
+    private BooleanExpression productGroupIdEq(long productGroupId) {
+        return productGroupEntity.id.eq(productGroupId);
     }
 
     private BooleanExpression productGroupIdIn(List<Long> productGroupIds) {

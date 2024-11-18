@@ -2,23 +2,26 @@ package com.ryuqq.setof.storage.db.index.product;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
 
 import java.util.List;
 
-@Document(indexName = "product-group-command-context")
+@Document(indexName = "product-group-command-context", writeTypeHint = WriteTypeHint.FALSE)
 public class ProductGroupCommandContextDocument {
 
     @Id
-    private Long productGroupId;
-    private final ProductGroupCommandDocument productGroupCommandDocument;
-    private final ProductNoticeDocument productNotice;
-    private final ProductDeliveryDocument productDelivery;
-    private final List<ProductGroupImageDocument> productImages;
-    private final ProductDetailDescriptionDocument detailDescription;
-    private final List<ProductCommandDocument> products;
+    private String productGroupId;
+    private ProductGroupCommandDocument productGroupCommandDocument;
+    private ProductNoticeDocument productNotice;
+    private ProductDeliveryDocument productDelivery;
+    private List<ProductGroupImageDocument> productImages;
+    private ProductDetailDescriptionDocument detailDescription;
+    private List<ProductCommandDocument> products;
+
+    protected ProductGroupCommandContextDocument(){};
 
     public ProductGroupCommandContextDocument(Long productGroupId, ProductGroupCommandDocument productGroupCommandDocument, ProductNoticeDocument productNotice, ProductDeliveryDocument productDelivery, List<ProductGroupImageDocument> productImages, ProductDetailDescriptionDocument detailDescription, List<ProductCommandDocument> products) {
-        this.productGroupId = productGroupId;
+        this.productGroupId = String.valueOf(productGroupId);
         this.productGroupCommandDocument = productGroupCommandDocument;
         this.productNotice = productNotice;
         this.productDelivery = productDelivery;
@@ -27,7 +30,7 @@ public class ProductGroupCommandContextDocument {
         this.products = products;
     }
 
-    public Long getProductGroupId() {
+    public String getProductGroupId() {
         return productGroupId;
     }
 

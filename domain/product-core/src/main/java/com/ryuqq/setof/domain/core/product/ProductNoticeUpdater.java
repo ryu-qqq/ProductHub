@@ -24,7 +24,6 @@ public class ProductNoticeUpdater {
                 isUpdateAsPhone(command.asPhone());
     }
 
-
     public boolean isUpdateMaterial(String newMaterial) {
         return !Objects.equals(productNotice.getMaterial(), newMaterial);
     }

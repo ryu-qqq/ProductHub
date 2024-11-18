@@ -28,7 +28,6 @@ public class ProductGroupCommandFacade {
     public long insert(ProductGroupCommandContext context) {
         long productGroupId = productGroupCommandService.insert(context.productGroupCommand());
 
-
         productNoticeCommandService.insert(productGroupId, context.productNoticeCommand());
         productDeliveryCommandService.insert(productGroupId, context.productDeliveryCommand());
         productGroupImageCommandService.inserts(productGroupId, context.productGroupImageCommands());

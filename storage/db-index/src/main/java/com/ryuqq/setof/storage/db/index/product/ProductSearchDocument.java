@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class ProductSearchDocument {
 
     @Id
-    private Long productGroupId;
+    private String productGroupId;
     private String productName;
     private String brandName;
     private String category;

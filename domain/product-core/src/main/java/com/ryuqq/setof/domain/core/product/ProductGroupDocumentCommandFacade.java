@@ -1,5 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.index.product.ProductGroupDocumentCommandService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,15 @@ public class ProductGroupDocumentCommandFacade {
         return productGroupId;
     }
 
+
     @Transactional
     public long update(long productGroupId, ProductGroupCommandContext context) {
-        productGroupQueryService.findProductGroupContext(productGroupId);
-        productGroupDocumentCommandService.insert(context.toDocument(productGroupId));
+        ProductStatus productStatus = productGroupQueryService.findProductStatus(productGroupId);
+
         return productGroupId;
     }
+
+
 
 
 }

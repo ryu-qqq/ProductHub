@@ -50,7 +50,7 @@ public record ProductGroupCommandContext(
                 productNoticeCommand.color(),
                 productNoticeCommand.size(),
                 productNoticeCommand.maker(),
-                productNoticeCommand.origin().name(),
+                productNoticeCommand.origin(),
                 productNoticeCommand.washingMethod(),
                 productNoticeCommand.yearMonth(),
                 productNoticeCommand.assuranceStandard(),
@@ -63,8 +63,8 @@ public record ProductGroupCommandContext(
                 productDeliveryCommand.deliveryArea(),
                 productDeliveryCommand.deliveryFee(),
                 productDeliveryCommand.deliveryPeriodAverage(),
-                productDeliveryCommand.returnMethodDomestic().name(),
-                productDeliveryCommand.returnCourierDomestic().name(),
+                productDeliveryCommand.returnMethodDomestic(),
+                productDeliveryCommand.returnCourierDomestic(),
                 productDeliveryCommand.returnChargeDomestic(),
                 productDeliveryCommand.returnExchangeAreaDomestic()
         );
@@ -73,7 +73,8 @@ public record ProductGroupCommandContext(
 
     private List<ProductGroupImageDocument> toImageDocument() {
         return productGroupImageCommands.stream().map(command -> new ProductGroupImageDocument(
-                command.productImageType().name(),
+                command.productImageType(),
+                command.imageUrl(),
                 command.imageUrl())
         ).toList();
     }
@@ -94,7 +95,7 @@ public record ProductGroupCommandContext(
 
     private List<OptionDocument> toOptionDocuments(List<OptionCommand> optionCommands) {
         return optionCommands.stream().map(command -> new OptionDocument(
-                command.name().name(),
+                command.name(),
                 command.value()
         )).toList();
     }

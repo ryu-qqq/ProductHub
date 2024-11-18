@@ -1,5 +1,6 @@
 package com.ryuqq.setof.storage.db.core.product.group;
 
+import com.ryuqq.setof.enums.core.ProductStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +41,14 @@ public class ProductGroupJpaService implements ProductGroupPersistenceService {
         }
     }
 
+    @Override
+    public void updateProductStatus(long productGroupId, ProductStatus productStatus) {
+        productGroupJdbcRepository.updatesProductStatus(List.of(productGroupId), productStatus);
+    }
+
+    @Override
+    public void updatesProductStatus(List<Long> productGroupIds, ProductStatus productStatus) {
+        productGroupJdbcRepository.updatesProductStatus(productGroupIds, productStatus);
+    }
 
 }

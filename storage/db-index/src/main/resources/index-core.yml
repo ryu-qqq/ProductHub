@@ -3,8 +3,12 @@ spring:
     activate.on-profile: local
   data:
     elasticsearch:
+      mappings:
+        enabled: false
       rest:
         uris: "http://localhost:9200"
-
+      repositories:
+        enabled: true
 
 ---
+

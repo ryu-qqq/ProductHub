@@ -1,6 +1,7 @@
 package com.ryuqq.setof.storage.db.core.site;
 
-import com.ryuqq.setof.core.*;
+import com.ryuqq.setof.enums.core.*;
+
 import com.ryuqq.setof.enums.core.EntityType;
 import com.ryuqq.setof.enums.core.RequestType;
 import com.ryuqq.setof.enums.core.SyncStatus;
@@ -33,7 +34,7 @@ public class ExternalRequest extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SyncStatus status;
 
-    @Column(name = "STATUS", length = 255, nullable = false)
+    @Column(name = "REQUEST_BY", length = 255, nullable = false)
     private String requestBy;
 
     protected ExternalRequest() {}
