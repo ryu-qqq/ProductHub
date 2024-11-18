@@ -9,6 +9,7 @@ ProductHub/
 ├── core/                            # 코어 모듈 폴더
 │   ├── build/                       # 코어 모듈 빌드 폴더
 │   ├── core-api/                    # 공통 API 구성 요소 및 인터페이스 모듈
+│   ├── core-batch/                    # 공통 배치 구성 요소 및 인터페이스 모듈
 │   └── core-enum/                   # 공통 Enum 정의 모듈
 ├── domain/                          # 도메인 모듈 폴더
 │   ├── build/                       # 도메인 모듈 빌드 폴더
@@ -16,6 +17,8 @@ ProductHub/
 ├── storage/                         # 데이터 저장소 관련 모듈
 │   ├── build/                       # 데이터 저장소 모듈 빌드 폴더
 │   └── db-core/                     # 데이터베이스 접근 및 엔티티 관리 모듈
+│   └── db-cache/                     # REDIS 접근 및 캐시 관리 모듈
+│   └── db-index/                     # NOSQL(ElasticSearch) 접근 및 도큐먼트 관리 모듈
 ├── support/                         # 지원 모듈 폴더
 │   ├── build/                       # 지원 모듈 빌드 폴더
 │   ├── logging/                     # 로깅 모듈
