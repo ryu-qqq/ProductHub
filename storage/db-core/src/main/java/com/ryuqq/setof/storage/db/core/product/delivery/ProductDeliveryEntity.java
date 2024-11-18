@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.product.delivery;
 
-import com.ryuqq.setof.core.ReturnMethod;
-import com.ryuqq.setof.core.ShipmentCompanyCode;
+import com.ryuqq.setof.enums.core.ReturnMethod;
+import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 

@@ -1,9 +1,10 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ManagementType;
-import com.ryuqq.setof.core.OptionType;
-import com.ryuqq.setof.core.ProductCondition;
-import com.ryuqq.setof.core.ProductStatus;
+import com.ryuqq.setof.enums.core.ManagementType;
+import com.ryuqq.setof.enums.core.OptionType;
+import com.ryuqq.setof.enums.core.ProductCondition;
+import com.ryuqq.setof.enums.core.ProductStatus;
+import com.ryuqq.setof.domain.core.generic.Money;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -45,8 +46,8 @@ public class ProductGroupUpdater {
     }
 
     public boolean isUpdatePrice(BigDecimal newRegularPrice, BigDecimal newCurrentPrice) {
-        return !Objects.equals(productGroup.getPrice().getRegularPrice(), newRegularPrice) ||
-                !Objects.equals(productGroup.getPrice().getCurrentPrice(), newCurrentPrice);
+        return !Objects.equals(productGroup.getPrice().getRegularPrice(), Money.wons(newRegularPrice)) ||
+                !Objects.equals(productGroup.getPrice().getCurrentPrice(), Money.wons(newCurrentPrice));
     }
 
     public boolean isUpdateSoldOutStatus(boolean newSoldOutYn) {

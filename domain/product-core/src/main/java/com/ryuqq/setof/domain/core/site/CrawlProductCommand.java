@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.core.SiteName;
+import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.storage.db.core.site.CrawlProductEntity;
 
 public record CrawlProductCommand(

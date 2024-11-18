@@ -32,8 +32,8 @@ public class ProductGroupCommandFacade {
         productDeliveryCommandService.insert(productGroupId, context.productDeliveryCommand());
         productGroupImageCommandService.inserts(productGroupId, context.productGroupImageCommands());
         productDetailDescriptionCommandService.insert(productGroupId, context.productDetailDescriptionCommand());
-
         productCommandFacade.insert(productGroupId, context.productCommands());
+
         return productGroupId;
     }
 

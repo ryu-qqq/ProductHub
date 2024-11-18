@@ -2,6 +2,7 @@ package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.brand.BrandFinder;
 import com.ryuqq.setof.domain.core.category.CategoryFinder;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceService;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticePersistenceService;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,12 @@ public class ProductGroupCommandService {
         if (updater.hasUpdates(productGroupCommand)) {
             productGroupPersistenceService.update(productGroupCommand.toEntity(productGroup.getProductGroupId()));
         }
-
     }
+
+    public void updateProductStatus(long productGroupId, ProductStatus productStatus){
+        productGroupPersistenceService.updateProductStatus(productGroupId, productStatus);
+    }
+
 
     private void validate(long brandId, long categoryId) {
         boolean brandExist = brandFinder.brandExist(brandId);

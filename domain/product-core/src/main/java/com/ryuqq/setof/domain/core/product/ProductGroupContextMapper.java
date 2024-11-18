@@ -7,7 +7,7 @@ import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
 import com.ryuqq.setof.storage.db.core.product.dto.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Component
@@ -27,7 +27,7 @@ public class ProductGroupContextMapper {
                 toProductNotice(productGroupId, dto.getProductNoticeDto()),
                 toProductGroupImages(productGroupId, dto.getProductGroupImageDtos()),
                 toProductDetailDescription(productGroupId, dto.getProductDetailDescriptionDto()),
-                Collections.emptySet()
+                new LinkedHashSet<>()
         );
     }
 

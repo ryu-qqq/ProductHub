@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.product.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ryuqq.setof.core.OptionName;
+import com.ryuqq.setof.enums.core.OptionName;
 
 import java.math.BigDecimal;
 

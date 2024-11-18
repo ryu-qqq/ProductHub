@@ -1,7 +1,8 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ReturnMethod;
-import com.ryuqq.setof.core.ShipmentCompanyCode;
+import com.ryuqq.setof.enums.core.ReturnMethod;
+import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
+import com.ryuqq.setof.domain.core.generic.Money;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -19,7 +20,7 @@ public class ProductDeliveryUpdater {
     }
 
     public boolean isUpdateDeliveryFee(BigDecimal newDeliveryFee) {
-        return productDelivery.getDeliveryFee().compareTo(newDeliveryFee) != 0;
+        return Objects.equals(productDelivery.getDeliveryFee(), Money.wons(newDeliveryFee));
     }
 
     public boolean isUpdateDeliveryPeriodAverage(int newDeliveryPeriodAverage) {
@@ -35,7 +36,7 @@ public class ProductDeliveryUpdater {
     }
 
     public boolean isUpdateReturnChargeDomestic(BigDecimal newReturnChargeDomestic) {
-        return productDelivery.getReturnChargeDomestic().compareTo(newReturnChargeDomestic) != 0;
+        return Objects.equals(productDelivery.getReturnChargeDomestic(), Money.wons(newReturnChargeDomestic));
     }
 
     public boolean isUpdateReturnExchangeAreaDomestic(String newReturnExchangeAreaDomestic) {

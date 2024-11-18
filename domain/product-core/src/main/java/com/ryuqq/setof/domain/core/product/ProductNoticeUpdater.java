@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.Origin;
+import com.ryuqq.setof.enums.core.Origin;
 
 import java.util.Objects;
 
@@ -23,7 +23,6 @@ public class ProductNoticeUpdater {
                 isUpdateAssuranceStandard(command.assuranceStandard()) ||
                 isUpdateAsPhone(command.asPhone());
     }
-
 
     public boolean isUpdateMaterial(String newMaterial) {
         return !Objects.equals(productNotice.getMaterial(), newMaterial);

@@ -1,5 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
+import com.ryuqq.setof.domain.core.generic.Money;
 import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class Product {
     private final boolean displayYn;
     private final String option;
     private final Set<Option> options;
-    private final BigDecimal additionalPrice;
+    private final Money additionalPrice;
     private boolean deleteYn;
 
 
@@ -27,7 +28,7 @@ public class Product {
         this.displayYn = displayYn;
         this.option = option;
         this.options = options;
-        this.additionalPrice = additionalPrice;
+        this.additionalPrice = Money.wons(additionalPrice);
         this.deleteYn= false;
     }
 
@@ -61,7 +62,7 @@ public class Product {
         return options;
     }
 
-    public BigDecimal getAdditionalPrice() {
+    public Money getAdditionalPrice() {
         return additionalPrice;
     }
 
@@ -77,12 +78,12 @@ public class Product {
         return this.isSoldOutYn() != command.soldOutYn() ||
                 this.isDisplayYn() != command.displayYn() ||
                 this.getQuantity() != command.quantity() ||
-                !this.getAdditionalPrice().equals(command.additionalPrice());
+                !this.getAdditionalPrice().equals(Money.wons(command.additionalPrice()));
     }
 
 
     public ProductEntity toEntity(){
-        return new ProductEntity(productGroupId, soldOutYn, displayYn, quantity, additionalPrice);
+        return new ProductEntity(productId, productGroupId, soldOutYn, displayYn, quantity, additionalPrice.getAmount(), deleteYn);
     }
 
     @Override

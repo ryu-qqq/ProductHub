@@ -15,6 +15,6 @@ public class BooleanToIntegerConverter implements AttributeConverter<Boolean, In
 
     @Override
     public Boolean convertToEntityAttribute(Integer dbData) {
-        return dbData != null && dbData == 1;
+        return dbData != null && dbData == 0;
     }
 }

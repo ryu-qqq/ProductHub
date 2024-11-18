@@ -1,6 +1,6 @@
 package com.ryuqq.setof.storage.db.core.brand;
 
-import com.ryuqq.setof.core.LanguageCode;
+import com.ryuqq.setof.enums.core.LanguageCode;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

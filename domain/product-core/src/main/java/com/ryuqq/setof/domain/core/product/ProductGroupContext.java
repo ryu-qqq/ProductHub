@@ -1,6 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -12,9 +13,9 @@ public class ProductGroupContext {
     private final ProductNotice notice;
     private final List<ProductGroupImage> images;
     private final ProductDetailDescription detailDescription;
-    private Set<Product> products;
+    private LinkedHashSet<Product> products;
 
-    public ProductGroupContext(ProductGroup productGroup, ProductDelivery delivery, ProductNotice notice, List<ProductGroupImage> images, ProductDetailDescription detailDescription, Set<Product> products) {
+    public ProductGroupContext(ProductGroup productGroup, ProductDelivery delivery, ProductNotice notice, List<ProductGroupImage> images, ProductDetailDescription detailDescription, LinkedHashSet<Product> products) {
         this.productGroup = productGroup;
         this.delivery = delivery;
         this.notice = notice;
@@ -47,7 +48,7 @@ public class ProductGroupContext {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(LinkedHashSet<Product> products) {
         this.products = products;
     }
 

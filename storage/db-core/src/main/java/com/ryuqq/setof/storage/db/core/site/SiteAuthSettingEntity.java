@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.site;
 
 
-import com.ryuqq.setof.core.AuthType;
+import com.ryuqq.setof.enums.core.AuthType;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 

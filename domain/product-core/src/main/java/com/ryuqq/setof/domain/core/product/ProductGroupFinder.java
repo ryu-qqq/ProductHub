@@ -1,11 +1,15 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupContextDto;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupQueryRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.ryuqq.setof.domain.core.product.ProductErrorConstants.PRODUCT_GROUP_NOT_FOUND_ERROR_MSG;
@@ -22,6 +26,12 @@ public class ProductGroupFinder implements ProductGroupQueryService {
         this.productGroupContextMapper = productGroupContextMapper;
         this.productGroupQueryRepository = productGroupQueryRepository;
         this.productFinder = productFinder;
+    }
+
+    @Override
+    public ProductStatus findProductStatus(long productGroupId) {
+        return productGroupQueryRepository.fetchProductStatus(productGroupId)
+                .orElseThrow(() -> new NotFoundException(PRODUCT_GROUP_NOT_FOUND_ERROR_MSG + productGroupId));
     }
 
     @Override
@@ -61,13 +71,13 @@ public class ProductGroupFinder implements ProductGroupQueryService {
     }
 
     private void setProductContexts(List<ProductGroupContext> productGroups, Set<Product> products) {
-        Map<Long, Set<Product>> productGroupIdMap = products.stream()
+        Map<Long, LinkedHashSet<Product>> productGroupIdMap = products.stream()
                 .collect(Collectors.groupingBy(Product::getProductGroupId, Collectors.toCollection(LinkedHashSet::new)));
 
         productGroups.forEach(productGroupContext -> {
-            Set<Product> value = productGroupIdMap.getOrDefault(
+            LinkedHashSet<Product> value = productGroupIdMap.getOrDefault(
                     productGroupContext.getProductGroup().getProductGroupId(),
-                    Collections.emptySet());
+                    new LinkedHashSet<>());
 
             productGroupContext.setProducts(value);
         });

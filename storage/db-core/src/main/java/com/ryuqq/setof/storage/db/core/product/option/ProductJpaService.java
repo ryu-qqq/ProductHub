@@ -25,4 +25,10 @@ public class ProductJpaService implements ProductPersistenceService{
         productJdbcRepository.batchUpdateProducts(productEntities);
     }
 
+    @Override
+    public void deleteAll(List<Long> productIds) {
+        productJdbcRepository.softDeleteAll(productIds);
+    }
+
+
 }

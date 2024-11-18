@@ -47,9 +47,11 @@ public class ProductQueryDslQueryRepository implements ProductQueryRepository {
                     .on(productOptionEntity.deleteYn.eq(false))
                 .leftJoin(optionGroupEntity)
                     .on(optionGroupEntity.id.eq(productOptionEntity.optionGroupId))
+                    .on(optionGroupEntity.deleteYn.eq(false))
                 .leftJoin(optionDetailEntity)
                     .on(optionDetailEntity.id.eq(productOptionEntity.optionDetailId))
-                .where(productGroupIdIn(productGroupIds))
+                    .on(optionDetailEntity.deleteYn.eq(false))
+                .where(productGroupIdIn(productGroupIds), productEntity.deleteYn.eq(false))
                 .fetch();
 
     }

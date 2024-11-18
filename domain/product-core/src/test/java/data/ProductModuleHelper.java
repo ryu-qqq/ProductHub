@@ -1,6 +1,6 @@
 package data;
 
-import com.ryuqq.setof.core.*;
+import com.ryuqq.setof.enums.core.*;
 import com.ryuqq.setof.domain.core.product.*;
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ public class ProductModuleHelper {
     public static ProductGroupCommand createProductGroupCommand() {
         return new ProductGroupCommand(
                 1L, 1L, 1L, "Test Product Group", "STYLE123", ProductCondition.NEW, ManagementType.MENUAL,
-                OptionType.OPTION_TWO, BigDecimal.valueOf(100000), BigDecimal.valueOf(90000), false, true, ProductStatus.WAITING
+                OptionType.OPTION_TWO, BigDecimal.valueOf(100000), BigDecimal.valueOf(90000), false, true, ProductStatus.WAITING, ""
         );
     }
 

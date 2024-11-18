@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.site;
 
-import com.ryuqq.setof.core.Origin;
-import com.ryuqq.setof.core.SiteType;
+import com.ryuqq.setof.enums.core.Origin;
+import com.ryuqq.setof.enums.core.SiteType;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 

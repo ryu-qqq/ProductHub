@@ -38,6 +38,11 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
 
 
 storage:
@@ -65,5 +70,4 @@ storage:
         cacheServerConfiguration: true
         elideSetAutoCommits: true
         maintainTimeStats: false
-
 ---
