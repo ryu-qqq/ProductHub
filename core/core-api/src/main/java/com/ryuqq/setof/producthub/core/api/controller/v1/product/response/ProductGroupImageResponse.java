@@ -1,6 +1,6 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.response;
 
-import com.ryuqq.setof.core.ProductImageType;
+import com.ryuqq.setof.enums.core.ProductImageType;
 
 public record ProductGroupImageResponse(
         ProductImageType productImageType,

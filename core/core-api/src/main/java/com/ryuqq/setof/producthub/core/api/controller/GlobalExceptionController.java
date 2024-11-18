@@ -8,15 +8,18 @@ import com.ryuqq.setof.producthub.core.api.controller.support.ErrorMessage;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -54,12 +57,27 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String errorMsg = e.getBindingResult().getFieldErrors().stream()
+        String filedErrorMsg = e.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining(", "));
 
+        String classObjectErrorMsg = e.getBindingResult().getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .findFirst()
+                .orElse("Validation error occurred");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(filedErrorMsg);
+        sb.append(classObjectErrorMsg);
+
+        String errorMsg = sb.toString();
+
         log.warn(ERROR_LOG_MSG_FORMAT, errorMsg, e);
         ErrorType errorType = ErrorType.of(HttpStatus.BAD_REQUEST.value());
+
+        if(errorMsg.isBlank()){
+            errorMsg = e.getMessage();
+        }
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

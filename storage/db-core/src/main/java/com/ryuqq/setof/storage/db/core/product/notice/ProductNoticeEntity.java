@@ -1,6 +1,6 @@
 package com.ryuqq.setof.storage.db.core.product.notice;
 
-import com.ryuqq.setof.core.Origin;
+import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 

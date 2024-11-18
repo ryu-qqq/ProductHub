@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ProductImageType;
+import com.ryuqq.setof.enums.core.ProductImageType;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 
 import java.util.Objects;

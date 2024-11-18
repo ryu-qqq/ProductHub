@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.Origin;
+import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
 
 public record ProductNoticeCommand(

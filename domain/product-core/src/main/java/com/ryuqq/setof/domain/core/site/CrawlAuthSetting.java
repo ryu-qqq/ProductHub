@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.core.AuthType;
+import com.ryuqq.setof.enums.core.AuthType;
 
 public class CrawlAuthSetting {
 

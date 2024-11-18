@@ -1,6 +1,5 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.SiteQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.dto.SiteContextDto;
 import org.springframework.stereotype.Component;

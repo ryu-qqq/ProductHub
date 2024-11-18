@@ -1,9 +1,9 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ManagementType;
-import com.ryuqq.setof.core.OptionType;
-import com.ryuqq.setof.core.ProductCondition;
-import com.ryuqq.setof.core.ProductStatus;
+import com.ryuqq.setof.enums.core.ManagementType;
+import com.ryuqq.setof.enums.core.OptionType;
+import com.ryuqq.setof.enums.core.ProductCondition;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.domain.core.brand.BrandRecord;
 import com.ryuqq.setof.domain.core.category.CategoryRecord;
 

@@ -64,11 +64,11 @@ public record ProductGroupContextResponse(
     private static ProductDeliveryResponse toProductDeliveryResponse(ProductDelivery delivery) {
         return new ProductDeliveryResponse(
                 delivery.getDeliveryArea(),
-                delivery.getDeliveryFee(),
+                delivery.getDeliveryFee().getAmount(),
                 delivery.getDeliveryPeriodAverage(),
                 delivery.getReturnMethodDomestic(),
                 delivery.getReturnCourierDomestic(),
-                delivery.getReturnChargeDomestic(),
+                delivery.getReturnChargeDomestic().getAmount(),
                 delivery.getReturnExchangeAreaDomestic()
         );
     }
@@ -106,7 +106,7 @@ public record ProductGroupContextResponse(
                 product.getOptions().stream()
                         .map(ProductGroupContextResponse::toProductOptionResponse)
                         .collect(Collectors.toSet()),
-                product.getAdditionalPrice()
+                product.getAdditionalPrice().getAmount()
         );
     }
 

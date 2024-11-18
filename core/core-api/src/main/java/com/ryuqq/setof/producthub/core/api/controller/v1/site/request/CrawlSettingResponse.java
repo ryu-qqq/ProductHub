@@ -1,6 +1,6 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
-import com.ryuqq.setof.core.CrawlType;
+import com.ryuqq.setof.enums.core.CrawlType;
 import com.ryuqq.setof.domain.core.site.CrawlSetting;
 
 public record CrawlSettingResponse(

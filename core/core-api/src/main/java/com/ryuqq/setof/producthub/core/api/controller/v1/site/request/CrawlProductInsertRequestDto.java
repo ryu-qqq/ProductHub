@@ -1,6 +1,6 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
-import com.ryuqq.setof.core.SiteName;
+import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.domain.core.site.CrawlProductCommand;
 
 public record CrawlProductInsertRequestDto(

@@ -21,41 +21,44 @@ public class ProductCommandFacade {
     }
 
     public void insert(long productGroupId, List<ProductCommand> productCommands) {
-        Map<Long, List<OptionCommand>> optionMap = new LinkedHashMap<>();
-
-        productCommands.forEach(productCommand -> {
-            ProductEntity productEntity = productCommand.toEntity(productGroupId);
-            long productId = productPersistenceService.insert(productEntity);
-
-            if (!productCommand.options().isEmpty()) {
-                optionMap.put(productId, productCommand.options());
-            }
-        });
+        Map<Long, List<OptionCommand>> optionMap = createOptionMap(productGroupId, productCommands);
 
         if (!optionMap.isEmpty()) {
-            productOptionCommandService.inserts(optionMap);
+            productOptionCommandService.processOptionCommands(optionMap);
         }
     }
 
     public void update(long productGroupId, Set<Product> existingProducts, List<ProductCommand> productCommands) {
         ProductUpdater productUpdater = new ProductUpdater(existingProducts, productCommands, productGroupId);
 
-        List<ProductCommand> optionUpdaters = productUpdater.getOptionUpdaters();
-        Map<Long, List<OptionCommand>> optionMap = new LinkedHashMap<>();
+        Map<Long, List<OptionCommand>> optionMap = createOptionMap(productGroupId, productUpdater.getOptionUpdaters());
+        if (!optionMap.isEmpty()) {
+            productOptionCommandService.processOptionCommands(optionMap);
+        }
 
-        optionUpdaters.forEach(productCommand -> {
-            long productId = productPersistenceService.insert(productCommand.toEntity(productGroupId));
-            optionMap.put(productId, productCommand.options());
-            productOptionCommandService.inserts(optionMap);
-        });
-
-        List<Product> productsToUpdate = productUpdater.getProductsToUpdate();
-
-        List<Product> toDeleteList = productsToUpdate.stream()
+        List<Long> toDeleteIds = productUpdater.getProductsToUpdate().stream()
                 .filter(Product::isDeleteYn)
+                .map(Product::getProductId)
                 .toList();
 
-        productOptionCommandService.deletes(toDeleteList);
+        List<ProductEntity> productEntities = productUpdater.getProductsToUpdate().stream()
+                .map(Product::toEntity)
+                .toList();
+
+        productPersistenceService.updateAll(productEntities);
+        productOptionCommandService.deleteOptions(toDeleteIds);
     }
+
+    private Map<Long, List<OptionCommand>> createOptionMap(long productGroupId, List<ProductCommand> productCommands) {
+        Map<Long, List<OptionCommand>> optionMap = new LinkedHashMap<>();
+        productCommands.forEach(productCommand -> {
+            long productId = productPersistenceService.insert(productCommand.toEntity(productGroupId));
+            if (!productCommand.options().isEmpty()) {
+                optionMap.put(productId, productCommand.options());
+            }
+        });
+        return optionMap;
+    }
+
 
 }

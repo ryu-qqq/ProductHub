@@ -1,6 +1,6 @@
 package com.ryuqq.setof.storage.db.core.site;
 
-import com.ryuqq.setof.core.CrawlType;
+import com.ryuqq.setof.enums.core.CrawlType;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
 import jakarta.persistence.*;
 

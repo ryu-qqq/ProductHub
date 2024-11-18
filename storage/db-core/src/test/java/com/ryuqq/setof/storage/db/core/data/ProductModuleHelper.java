@@ -1,8 +1,8 @@
 package com.ryuqq.setof.storage.db.core.data;
 
-import com.ryuqq.setof.core.OptionName;
-import com.ryuqq.setof.core.OptionType;
-import com.ryuqq.setof.core.ProductImageType;
+import com.ryuqq.setof.enums.core.OptionName;
+import com.ryuqq.setof.enums.core.OptionType;
+import com.ryuqq.setof.enums.core.ProductImageType;
 import com.ryuqq.setof.storage.db.core.data.utils.EasyRandomUtils;
 import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
 import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
@@ -10,7 +10,6 @@ import com.ryuqq.setof.storage.db.core.product.group.ProductGroupEntity;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
 import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
-import com.ryuqq.setof.storage.db.core.product.option.detail.OptionDetailEntity;
 import com.ryuqq.setof.storage.db.core.product.option.group.OptionGroupEntity;
 import org.jeasy.random.EasyRandom;
 

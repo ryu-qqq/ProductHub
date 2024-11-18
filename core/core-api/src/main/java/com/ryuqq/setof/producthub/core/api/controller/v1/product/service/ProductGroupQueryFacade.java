@@ -28,8 +28,13 @@ public class ProductGroupQueryFacade {
 
     public Slice<ProductGroupContextResponse> getProductGroupContexts(ProductGroupFilter productGroupFilter){
         List<Long> categoryIds = getChildrenCategoryIds(productGroupFilter.categoryId());
-        List<ProductGroupContext> productGroupContexts = productGroupQueryService.findProductGroupContexts(productGroupFilter, categoryIds);
         long productGroupCount = productGroupQueryService.findProductGroupCount(productGroupFilter, categoryIds);
+
+        if(productGroupCount == 0){
+            return productGroupContextSliceMapper.toSlice(List.of(), productGroupFilter.pageSize(), productGroupCount);
+        }
+
+        List<ProductGroupContext> productGroupContexts = productGroupQueryService.findProductGroupContexts(productGroupFilter, categoryIds);
 
         Set<Long> categoryIdSet = extractCategoryIdsFromProductGroups(productGroupContexts);
         setCategories(productGroupContexts, categoryIdSet);

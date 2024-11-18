@@ -20,7 +20,7 @@ public class ProductMapper {
     }
 
     private Map<Long, Set<Option>> getGroupedOptions(List<ProductContextDto> products) {
-        Map<Long, Set<Option>> groupedOptions = new HashMap<>();
+        Map<Long, Set<Option>> groupedOptions = new LinkedHashMap<>();
         for (ProductContextDto p : products) {
             groupedOptions
                     .computeIfAbsent(p.getProductId(), k -> new HashSet<>())
@@ -31,10 +31,10 @@ public class ProductMapper {
 
 
     private Set<Product> setOption(Map<Long, Set<Option>> groupedOptions, Map<Long, ProductContextDto> productMap) {
-        List<Product> responses = groupedOptions.entrySet().stream().map(entry -> {
-
-                    Long productId = entry.getKey();
-                    Set<Option> options = entry.getValue();
+        List<Product> responses = productMap.values().stream()
+                .map(productContextDto -> {
+                    Long productId = productContextDto.getProductId();
+                    Set<Option> options = groupedOptions.getOrDefault(productId, Set.of());
 
                     Set<Option> filteredOptions = options.stream()
                             .filter(option -> option.getOptionGroupId() != null && option.getOptionGroupId() != 0)
@@ -44,23 +44,18 @@ public class ProductMapper {
                         filteredOptions.addAll(options);
                     }
 
-                    ProductContextDto productContextDto = productMap.get(productId);
-                    if (productContextDto != null) {
-                        return new Product(
-                                productContextDto.getProductGroupId(),
-                                productContextDto.getProductId(),
-                                productContextDto.getQuantity(),
-                                productContextDto.isSoldOutYn(),
-                                productContextDto.isDisplayYn(),
-                                getOptionName(filteredOptions),
-                                filteredOptions,
-                                productContextDto.getAdditionalPrice()
-                        );
-                    }
-                    return null;
+                    return new Product(
+                            productContextDto.getProductGroupId(),
+                            productContextDto.getProductId(),
+                            productContextDto.getQuantity(),
+                            productContextDto.isSoldOutYn(),
+                            productContextDto.isDisplayYn(),
+                            getOptionName(filteredOptions),
+                            filteredOptions,
+                            productContextDto.getAdditionalPrice()
+                    );
                 })
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparingLong(Product::getProductId))
                 .toList();
 
         return new LinkedHashSet<>(responses);

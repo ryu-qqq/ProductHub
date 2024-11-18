@@ -3,7 +3,7 @@ package com.ryuqq.setof.storage.db.core.site;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryuqq.setof.core.SiteType;
+import com.ryuqq.setof.enums.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.dto.QSiteContextDto;
 import com.ryuqq.setof.storage.db.core.site.dto.SiteContextDto;
 import com.ryuqq.setof.storage.db.core.site.dto.SiteFilterStorageDto;

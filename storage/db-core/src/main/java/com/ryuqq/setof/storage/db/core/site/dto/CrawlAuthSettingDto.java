@@ -1,7 +1,7 @@
 package com.ryuqq.setof.storage.db.core.site.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ryuqq.setof.core.AuthType;
+import com.ryuqq.setof.enums.core.AuthType;
 
 public class CrawlAuthSettingDto {
 

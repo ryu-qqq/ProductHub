@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.core.CategoryType;
-import com.ryuqq.setof.core.TargetGroup;
+import com.ryuqq.setof.enums.core.CategoryType;
+import com.ryuqq.setof.enums.core.TargetGroup;
 import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
 
 public record CategoryRecord(

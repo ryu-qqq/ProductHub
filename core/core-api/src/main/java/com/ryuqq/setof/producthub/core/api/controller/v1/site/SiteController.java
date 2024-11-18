@@ -1,6 +1,6 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site;
 
-import com.ryuqq.setof.core.SiteType;
+import com.ryuqq.setof.enums.core.SiteType;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.SiteContextCommandFacade;
 import com.ryuqq.setof.domain.core.site.SiteProfileCommandFacade;

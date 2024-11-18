@@ -61,13 +61,13 @@ public class ProductGroupFinder implements ProductGroupQueryService {
     }
 
     private void setProductContexts(List<ProductGroupContext> productGroups, Set<Product> products) {
-        Map<Long, Set<Product>> productGroupIdMap = products.stream()
+        Map<Long, LinkedHashSet<Product>> productGroupIdMap = products.stream()
                 .collect(Collectors.groupingBy(Product::getProductGroupId, Collectors.toCollection(LinkedHashSet::new)));
 
         productGroups.forEach(productGroupContext -> {
-            Set<Product> value = productGroupIdMap.getOrDefault(
+            LinkedHashSet<Product> value = productGroupIdMap.getOrDefault(
                     productGroupContext.getProductGroup().getProductGroupId(),
-                    Collections.emptySet());
+                    new LinkedHashSet<>());
 
             productGroupContext.setProducts(value);
         });

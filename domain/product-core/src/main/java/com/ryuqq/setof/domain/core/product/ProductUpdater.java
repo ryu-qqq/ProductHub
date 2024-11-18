@@ -16,7 +16,16 @@ public class ProductUpdater {
         Map<String, Product> existingProductMap = existingProducts.stream()
                 .collect(Collectors.toMap(Product::getOption, Function.identity()));
 
+        if(existingProductMap.isEmpty()){
+            existingProducts.stream().findFirst().ifPresent(product -> {
+                product.delete();
+                productsToUpdate.add(product);
+            });
+        }
+
         for (ProductCommand command : productCommands) {
+            String option = command.getOption();
+            System.out.println("option = " + option);
             Product existingProduct = existingProductMap.get(command.getOption());
 
             if (existingProduct != null) {

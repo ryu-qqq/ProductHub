@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ManagementType;
-import com.ryuqq.setof.core.ProductStatus;
+import com.ryuqq.setof.enums.core.ManagementType;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupStorageFilterDto;
 import org.springframework.format.annotation.DateTimeFormat;
 

@@ -1,8 +1,8 @@
 package com.ryuqq.setof.storage.db.core.site.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ryuqq.setof.core.ActionType;
-import com.ryuqq.setof.core.ProcessType;
+import com.ryuqq.setof.enums.core.ActionType;
+import com.ryuqq.setof.enums.core.ProcessType;
 
 public class CrawlTaskDto {
 

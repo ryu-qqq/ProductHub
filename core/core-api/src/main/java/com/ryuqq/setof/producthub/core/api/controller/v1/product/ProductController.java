@@ -2,6 +2,7 @@ package com.ryuqq.setof.producthub.core.api.controller.v1.product;
 
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.product.ProductGroupCommandFacade;
+import com.ryuqq.setof.domain.core.product.ProductGroupDocumentCommandFacade;
 import com.ryuqq.setof.producthub.core.api.controller.support.ApiResponse;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupGetRequestDto;
@@ -18,25 +19,29 @@ import static com.ryuqq.setof.producthub.core.api.controller.config.EndPointsCon
 @RestController
 public class ProductController {
 
-    private final ProductGroupCommandFacade productGroupCommandFacade;
+    private final ProductGroupDocumentCommandFacade productGroupDocumentCommandFacade;
     private final ProductGroupQueryFacade productGroupQueryFacade;
 
-    public ProductController(ProductGroupCommandFacade productGroupCommandFacade, ProductGroupQueryFacade productGroupQueryFacade) {
-        this.productGroupCommandFacade = productGroupCommandFacade;
+    public ProductController(ProductGroupDocumentCommandFacade productGroupDocumentCommandFacade, ProductGroupQueryFacade productGroupQueryFacade) {
+        this.productGroupDocumentCommandFacade = productGroupDocumentCommandFacade;
         this.productGroupQueryFacade = productGroupQueryFacade;
     }
 
+
     @PostMapping("/product/group")
     public ResponseEntity<ApiResponse<ProductGroupInsertResponseDto>> registerProductGroup(@RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
-        long productGroupId = productGroupCommandFacade.insert(productGroupCommandContextRequestDto.toProductGroupCommandContext());
+        long productGroupId = productGroupDocumentCommandFacade.insert(productGroupCommandContextRequestDto.toProductGroupCommandContext());
         return ResponseEntity.ok(ApiResponse.success(new ProductGroupInsertResponseDto(productGroupId)));
     }
 
+
+
     @PutMapping("/product/group/{productGroupId}")
     public ResponseEntity<ApiResponse<ProductGroupInsertResponseDto>> updateProductGroups(@PathVariable("productGroupId") long productGroupId, @RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
-        productGroupCommandFacade.update(productGroupId, productGroupCommandContextRequestDto.toProductGroupCommandContext());
+        productGroupDocumentCommandFacade.update(productGroupId, productGroupCommandContextRequestDto.toProductGroupCommandContext());
         return ResponseEntity.ok(ApiResponse.success(new ProductGroupInsertResponseDto(productGroupId)));
     }
+
 
     @GetMapping("/product/group")
     public ResponseEntity<ApiResponse<Slice<ProductGroupContextResponse>>> getProductGroups(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){

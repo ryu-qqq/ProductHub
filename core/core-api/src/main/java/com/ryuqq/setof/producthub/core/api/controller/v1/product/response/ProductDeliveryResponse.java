@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.response;
 
-import com.ryuqq.setof.core.ReturnMethod;
-import com.ryuqq.setof.core.ShipmentCompanyCode;
+import com.ryuqq.setof.enums.core.ReturnMethod;
+import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
 
 import java.math.BigDecimal;
 

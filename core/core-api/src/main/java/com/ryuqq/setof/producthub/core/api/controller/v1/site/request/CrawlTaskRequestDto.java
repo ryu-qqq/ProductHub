@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.site.request;
 
-import com.ryuqq.setof.core.ActionType;
-import com.ryuqq.setof.core.ProcessType;
+import com.ryuqq.setof.enums.core.ActionType;
+import com.ryuqq.setof.enums.core.ProcessType;
 import com.ryuqq.setof.domain.core.site.CrawlTaskCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

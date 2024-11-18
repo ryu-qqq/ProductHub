@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.core.SiteType;
+import com.ryuqq.setof.enums.core.SiteType;
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

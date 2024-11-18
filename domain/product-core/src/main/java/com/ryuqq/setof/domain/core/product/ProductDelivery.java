@@ -1,7 +1,8 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.ReturnMethod;
-import com.ryuqq.setof.core.ShipmentCompanyCode;
+import com.ryuqq.setof.enums.core.ReturnMethod;
+import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
+import com.ryuqq.setof.domain.core.generic.Money;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -10,21 +11,21 @@ public class ProductDelivery {
 
     private final long productGroupId;
     private final String deliveryArea;
-    private final BigDecimal deliveryFee;
+    private final Money deliveryFee;
     private final int deliveryPeriodAverage;
     private final ReturnMethod returnMethodDomestic;
     private final ShipmentCompanyCode returnCourierDomestic;
-    private final BigDecimal returnChargeDomestic;
+    private final Money returnChargeDomestic;
     private final String returnExchangeAreaDomestic;
 
     public ProductDelivery(long productGroupId, String deliveryArea, BigDecimal deliveryFee, int deliveryPeriodAverage, ReturnMethod returnMethodDomestic, ShipmentCompanyCode returnCourierDomestic, BigDecimal returnChargeDomestic, String returnExchangeAreaDomestic) {
         this.productGroupId = productGroupId;
         this.deliveryArea = deliveryArea;
-        this.deliveryFee = deliveryFee;
+        this.deliveryFee = Money.wons(deliveryFee);
         this.deliveryPeriodAverage = deliveryPeriodAverage;
         this.returnMethodDomestic = returnMethodDomestic;
         this.returnCourierDomestic = returnCourierDomestic;
-        this.returnChargeDomestic = returnChargeDomestic;
+        this.returnChargeDomestic = Money.wons(returnChargeDomestic);
         this.returnExchangeAreaDomestic = returnExchangeAreaDomestic;
     }
 
@@ -36,7 +37,7 @@ public class ProductDelivery {
         return deliveryArea;
     }
 
-    public BigDecimal getDeliveryFee() {
+    public Money getDeliveryFee() {
         return deliveryFee;
     }
 
@@ -52,7 +53,7 @@ public class ProductDelivery {
         return returnCourierDomestic;
     }
 
-    public BigDecimal getReturnChargeDomestic() {
+    public Money getReturnChargeDomestic() {
         return returnChargeDomestic;
     }
 

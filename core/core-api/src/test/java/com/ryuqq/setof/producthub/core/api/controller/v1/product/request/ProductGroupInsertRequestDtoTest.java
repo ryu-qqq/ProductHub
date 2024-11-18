@@ -1,11 +1,10 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.request;
 
-import com.ryuqq.setof.core.ProductCondition;
+import com.ryuqq.setof.enums.core.ProductCondition;
 import com.ryuqq.setof.producthub.data.ProductModuleHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
 

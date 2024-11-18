@@ -1,7 +1,7 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product;
 
 
-import com.ryuqq.setof.core.OptionType;
+import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
 import com.ryuqq.setof.domain.core.product.ProductGroupCommandFacade;

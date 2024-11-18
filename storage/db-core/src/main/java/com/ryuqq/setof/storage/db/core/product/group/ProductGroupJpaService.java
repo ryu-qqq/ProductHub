@@ -27,8 +27,8 @@ public class ProductGroupJpaService implements ProductGroupPersistenceService {
     }
 
     @Override
-    public void update(ProductGroupEntity productDeliveryEntity) {
-        updateAll(List.of(productDeliveryEntity));
+    public void update(ProductGroupEntity productGroupEntity) {
+        updateAll(List.of(productGroupEntity));
     }
 
 

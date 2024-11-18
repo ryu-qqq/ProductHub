@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.core.OptionName;
+import com.ryuqq.setof.enums.core.OptionName;
 import com.ryuqq.setof.storage.db.core.product.option.detail.OptionDetailEntity;
 import com.ryuqq.setof.storage.db.core.product.option.group.OptionGroupEntity;
 

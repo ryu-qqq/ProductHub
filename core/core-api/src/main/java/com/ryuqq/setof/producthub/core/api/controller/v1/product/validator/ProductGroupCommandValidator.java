@@ -1,8 +1,8 @@
 package com.ryuqq.setof.producthub.core.api.controller.v1.product.validator;
 
-import com.ryuqq.setof.core.OptionName;
-import com.ryuqq.setof.core.OptionType;
-import com.ryuqq.setof.core.ProductImageType;
+import com.ryuqq.setof.enums.core.OptionName;
+import com.ryuqq.setof.enums.core.OptionType;
+import com.ryuqq.setof.enums.core.ProductImageType;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductGroupImageRequestDto;
 import com.ryuqq.setof.producthub.core.api.controller.v1.product.request.ProductInsertRequestDto;
@@ -62,7 +62,7 @@ public class ProductGroupCommandValidator implements ConstraintValidator<Product
             }
             case OPTION_ONE -> {
                 Set<OptionName> optionNames = toOptionNameSet(options);
-                if (optionNames.size() != 1) {
+                if (optionNames.size() != 1 || options.size() > 1) {
                     addConstraintViolation(context, "One step option type should have only one unique OptionName.");
                     return false;
                 }

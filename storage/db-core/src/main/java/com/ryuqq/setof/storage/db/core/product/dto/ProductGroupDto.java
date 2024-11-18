@@ -1,10 +1,10 @@
 package com.ryuqq.setof.storage.db.core.product.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ryuqq.setof.core.ManagementType;
-import com.ryuqq.setof.core.OptionType;
-import com.ryuqq.setof.core.ProductCondition;
-import com.ryuqq.setof.core.ProductStatus;
+import com.ryuqq.setof.enums.core.ManagementType;
+import com.ryuqq.setof.enums.core.OptionType;
+import com.ryuqq.setof.enums.core.ProductCondition;
+import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
 import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
 

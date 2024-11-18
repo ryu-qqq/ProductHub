@@ -1,14 +1,11 @@
 package com.ryuqq.setof.storage.db.core.site;
 
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryuqq.setof.core.SiteType;
 import com.ryuqq.setof.storage.db.core.site.dto.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +14,6 @@ import static com.ryuqq.setof.storage.db.core.site.QCrawlMappingEntity.crawlMapp
 import static com.ryuqq.setof.storage.db.core.site.QCrawlSettingEntity.crawlSettingEntity;
 import static com.ryuqq.setof.storage.db.core.site.QCrawlTaskEntity.crawlTaskEntity;
 import static com.ryuqq.setof.storage.db.core.site.QSiteAuthSettingEntity.siteAuthSettingEntity;
-import static com.ryuqq.setof.storage.db.core.site.QSiteEntity.siteEntity;
 
 @Repository
 public class CrawlSiteQueryDslQueryRepository {

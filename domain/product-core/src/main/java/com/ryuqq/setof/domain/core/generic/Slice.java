@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.generic;
 
-import com.ryuqq.setof.core.Sort;
+import com.ryuqq.setof.enums.core.Sort;
 
 import java.util.List;
 
