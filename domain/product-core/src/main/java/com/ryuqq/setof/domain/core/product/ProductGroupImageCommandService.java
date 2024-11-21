@@ -4,6 +4,7 @@ import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImagePersistenceService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,12 +27,17 @@ public class ProductGroupImageCommandService {
         productGroupImagePersistenceService.insertAll(productGroupImageEntities);
     }
 
-    public void updates(long productGroupId, List<ProductGroupImageCommand> productGroupImageCommands) {
-        List<ProductGroupImage> productGroupImages = productGroupImageFinder.getProductGroupImages(productGroupId);
-        ProductGroupImageUpdater productGroupImageUpdater = new ProductGroupImageUpdater(productGroupId, productGroupImages, productGroupImageCommands);
+    public void updateAndInserts(long productGroupId, List<ProductGroupImageCommand> productGroupImageCommands) {
+        List<ProductGroupImageEntity> toInsert = new ArrayList<>();
+        List<ProductGroupImageEntity> toUpdate = new ArrayList<>();
 
-        List<ProductGroupImageEntity> toInsert = productGroupImageUpdater.getToInsert();
-        List<ProductGroupImageEntity> toUpdate = productGroupImageUpdater.getToUpdate();
+        for(ProductGroupImageCommand command : productGroupImageCommands) {
+            if(command.id() != null){
+                toUpdate.add(command.toEntity(productGroupId));
+            }else{
+                toInsert.add(command.toEntity(productGroupId));
+            }
+        }
 
         if(!toInsert.isEmpty()){
             productGroupImagePersistenceService.insertAll(toInsert);

@@ -10,7 +10,9 @@ import com.ryuqq.setof.domain.core.site.SiteProfileCommand;
         property = "siteType"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CrawlSiteProfileRequestDto.class, name = "CRAWL")
+        @JsonSubTypes.Type(value = CrawlSiteProfileRequestDto.class, name = "CRAWL"),
+        @JsonSubTypes.Type(value = ExternalSiteProfileRequestDto.class, name = "SYNC"),
+
 })
 public interface SiteProfileRequestDto {
     SiteProfileCommand toSiteProfileCommand();

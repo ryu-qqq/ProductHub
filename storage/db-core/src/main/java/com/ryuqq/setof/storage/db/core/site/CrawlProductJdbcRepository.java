@@ -17,7 +17,7 @@ public class CrawlProductJdbcRepository implements CrawlProductPersistenceServic
     }
 
     @Override
-    public void saveAll(List<CrawlProductEntity> crawlProductEntities) {
+    public void batchInsertCrawlProducts(List<CrawlProductEntity> crawlProductEntities) {
         String sql = "INSERT INTO CRAWL_PRODUCT (SITE_ID, SITE_PRODUCT_ID, PRODUCT_GROUP_ID, PRODUCT_NAME) " +
                 "VALUES (:siteId, :siteProductId, :productGroupId, :productName) " +
                 "ON DUPLICATE KEY UPDATE " +

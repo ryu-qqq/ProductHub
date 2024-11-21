@@ -19,7 +19,6 @@ public class Product {
     private final Money additionalPrice;
     private boolean deleteYn;
 
-
     public Product(Long productGroupId, Long productId, int quantity, boolean soldOutYn, boolean displayYn, String option, Set<Option> options, BigDecimal additionalPrice) {
         this.productGroupId = productGroupId;
         this.productId = productId;
@@ -31,7 +30,6 @@ public class Product {
         this.additionalPrice = Money.wons(additionalPrice);
         this.deleteYn= false;
     }
-
 
 
     public Long getProductGroupId() {
@@ -72,13 +70,6 @@ public class Product {
 
     public void delete(){
         this.deleteYn = true;
-    }
-
-    public boolean requiresUpdate(ProductCommand command) {
-        return this.isSoldOutYn() != command.soldOutYn() ||
-                this.isDisplayYn() != command.displayYn() ||
-                this.getQuantity() != command.quantity() ||
-                !this.getAdditionalPrice().equals(Money.wons(command.additionalPrice()));
     }
 
 

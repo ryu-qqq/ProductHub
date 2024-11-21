@@ -10,7 +10,7 @@ public class ApplicationException extends RuntimeException{
     private BindingResult errors;
 
 
-    protected ApplicationException(int value, String message) {
+    public ApplicationException(int value, String message) {
         super(message);
         this.errorType = ErrorType.of(value);
     }

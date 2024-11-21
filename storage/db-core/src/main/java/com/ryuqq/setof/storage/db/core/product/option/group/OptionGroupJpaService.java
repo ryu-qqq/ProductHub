@@ -15,4 +15,5 @@ public class OptionGroupJpaService implements OptionGroupPersistenceService{
     public long insert(OptionGroupEntity optionGroupEntity) {
         return optionGroupJpaRepository.save(optionGroupEntity).getId();
     }
+
 }

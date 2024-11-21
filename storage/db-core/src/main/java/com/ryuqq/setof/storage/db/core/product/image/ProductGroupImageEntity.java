@@ -18,7 +18,6 @@ public class ProductGroupImageEntity extends BaseEntity {
     @Column(name = "IMAGE_URL", length = 255, nullable = false)
     private String imageUrl;
 
-
     @Column(name = "ORIGIN_URL", length = 255, nullable = false)
     private String originUrl;
 

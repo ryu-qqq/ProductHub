@@ -6,14 +6,16 @@ public class BrandDto {
 
     private final long id;
     private final String brandName;
+    private final String brandNameKr;
     private final String brandIconImageUrl;
     private final boolean displayYn;
 
 
     @QueryProjection
-    public BrandDto(long id, String brandName, String brandIconImageUrl, boolean displayYn) {
+    public BrandDto(long id, String brandName, String brandNameKr, String brandIconImageUrl, boolean displayYn) {
         this.id = id;
         this.brandName = brandName;
+        this.brandNameKr = brandNameKr;
         this.brandIconImageUrl = brandIconImageUrl;
         this.displayYn = displayYn;
     }
@@ -24,6 +26,10 @@ public class BrandDto {
 
     public String getBrandName() {
         return brandName;
+    }
+
+    public String getBrandNameKr() {
+        return brandNameKr;
     }
 
     public String getBrandIconImageUrl() {

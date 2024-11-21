@@ -29,9 +29,7 @@ public class SiteProfileCommandFacade {
                 (SiteProfileCommandService<SiteProfileCommand>) siteProfileCommandProvider.get(siteType);
         siteProfileCommandSiteProfileCommandService.insert(siteId, siteProfileCommand);
         return siteId;
-
     }
-
 
     @Transactional
     public long update(SiteType siteType, long siteId, long mappingId, SiteProfileCommand siteProfileCommand){
@@ -42,9 +40,6 @@ public class SiteProfileCommandFacade {
         siteProfileCommandSiteProfileCommandService.update(siteId, mappingId, siteProfileCommand);
         return mappingId;
     }
-
-
-
 
 
 }

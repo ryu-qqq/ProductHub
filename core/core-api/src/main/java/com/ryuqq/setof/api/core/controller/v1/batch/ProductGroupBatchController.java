@@ -2,7 +2,7 @@ package com.ryuqq.setof.api.core.controller.v1.batch;
 
 
 import com.ryuqq.setof.api.core.controller.support.ApiResponse;
-import com.ryuqq.setof.batch.core.ProductGroupBatchService;
+import com.ryuqq.setof.batch.core.product.ProductGroupBatchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class ProductGroupBatchController {
     }
 
     @PostMapping("/product-insert-trigger")
-    public ResponseEntity<ApiResponse<String>> triggerBatchJob() {
+    public ResponseEntity<ApiResponse<String>> triggerProductInsertBatchJob() {
         return ResponseEntity.ok(ApiResponse.success(productGroupBatchService.executeProductGroupInsertJob()));
     }
 

@@ -31,7 +31,7 @@ public record ProductInsertRequestDto(
                 .map(ProductOptionInsertRequestDto::toOption)
                 .toList();
 
-        return new ProductCommand(soldOutYn, displayYn, quantity, additionalPrice, optionCommands);
+        return new ProductCommand(null, soldOutYn, displayYn, quantity, additionalPrice, optionCommands, false);
     }
 
 

@@ -14,6 +14,7 @@ public class ColorModuleHelper {
     public static ColorEntity toColorWithNoId(){
         Map<String, Object> stringObjectMap = new HashMap<>();
         stringObjectMap.put("colorName", "Black");
+        stringObjectMap.put("rgbCode", "#000000");
 
         EasyRandom instance = EasyRandomUtils.getInstanceWithNoId(stringObjectMap);
         return instance.nextObject(ColorEntity.class);

@@ -63,7 +63,6 @@ public class ProductGroupFinder implements ProductGroupQueryService {
         return productGroupQueryRepository.fetchProductGroupCount(productGroupFilter.toProductGroupStorageFilterDto(categoryIds));
     }
 
-
     private List<Long> getProductGroupIds(List<ProductGroupContext> productGroupContexts) {
         return productGroupContexts.stream()
                 .map(productGroupContext -> productGroupContext.getProductGroup().getProductGroupId())

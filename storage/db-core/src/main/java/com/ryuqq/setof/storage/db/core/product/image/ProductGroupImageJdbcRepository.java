@@ -39,7 +39,8 @@ public class ProductGroupImageJdbcRepository {
         String sql = "UPDATE PRODUCT_GROUP_IMAGE " +
                 "SET IMAGE_URL = :imageUrl, " +
                 "ORIGIN_URL = :originUrl, " +
-                "DELETE_YN = :deleteYn, " +
+                "PRODUCT_GROUP_IMAGE_TYPE = :productGroupImageType, " +
+                "DELETE_YN = :deleteYn " +
                 "WHERE ID = :id";
 
         List<Map<String, Object>> batchValues = productGroupImageEntities.stream()
@@ -47,6 +48,7 @@ public class ProductGroupImageJdbcRepository {
                     MapSqlParameterSource params = new MapSqlParameterSource()
                             .addValue("imageUrl", image.getImageUrl())
                             .addValue("originUrl", image.getOriginUrl())
+                            .addValue("productGroupImageType", image.getProductImageType().name())
                             .addValue("deleteYn", image.isDeleteYn())
                             .addValue("id", image.getId());
                     return params.getValues();

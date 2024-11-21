@@ -9,18 +9,25 @@ import java.util.List;
 @Component
 public class ProductGroupImageFinder {
 
-    private final ProductGroupImageMapper productGroupImageMapper;
     private final ProductGroupImageQueryRepository productGroupImageQueryRepository;
 
-    public ProductGroupImageFinder(ProductGroupImageMapper productGroupImageMapper, ProductGroupImageQueryRepository productGroupImageQueryRepository) {
-        this.productGroupImageMapper = productGroupImageMapper;
+    public ProductGroupImageFinder(ProductGroupImageQueryRepository productGroupImageQueryRepository) {
         this.productGroupImageQueryRepository = productGroupImageQueryRepository;
     }
 
 
     public List<ProductGroupImage> getProductGroupImages(long productGroupId){
-        List<ProductGroupImageDto> productGroupImageDtos = productGroupImageQueryRepository.fetchProductGroupImages(productGroupId);
-        return productGroupImageMapper.toProductGroupImages(productGroupId, productGroupImageDtos);
+        List<ProductGroupImageDto> images = productGroupImageQueryRepository.fetchProductGroupImages(productGroupId);
+        return images.stream()
+                .map(dto ->
+                        new ProductGroupImage(
+                                dto.getProductGroupImageId(),
+                                productGroupId,
+                                dto.getProductImageType(),
+                                dto.getImageUrl(),
+                                dto.getOriginUrl())
+                )
+                .toList();
     }
 
 }

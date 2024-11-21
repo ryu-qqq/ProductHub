@@ -16,12 +16,8 @@ public class ProductDeliveryCommandService {
         productNoticePersistenceService.insert(productDeliveryCommand.toEntity(productGroupId));
     }
 
-    public void update(ProductDelivery productDelivery, ProductDeliveryCommand productDeliveryCommand) {
-        ProductDeliveryUpdater updater = new ProductDeliveryUpdater(productDelivery);
-
-        if (updater.hasUpdates(productDeliveryCommand)) {
-            productNoticePersistenceService.update(productDeliveryCommand.toEntity(productDelivery.getProductGroupId()));
-        }
+    public void update(long productGroupId, ProductDeliveryCommand productDeliveryCommand) {
+        productNoticePersistenceService.update(productDeliveryCommand.toEntity(productGroupId));
     }
 
 }

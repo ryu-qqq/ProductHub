@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public interface ProductGroupQueryRepository {
 
-    List<Long> fetchProductGroupIds(ProductStatus productStatus, int pageSize);
+    List<Long> fetchProductGroupIds(ProductStatus productStatus, Long cursorId, int pageSize);
+    List<ProductGroupEntity> fetchProductGroupEntitiesByStatus(ProductStatus productStatus, int pageSize);
+
+
+
     Optional<ProductStatus> fetchProductStatus(long productGroupId);
     Optional<ProductGroupContextDto> fetchProductGroupContext(long productGroup);
     List<ProductGroupContextDto> fetchProductGroupContexts(ProductGroupStorageFilterDto productGroupStorageFilterDto);

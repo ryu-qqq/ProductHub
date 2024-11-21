@@ -39,6 +39,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
                                 new QBrandDto(
                                         brandEntity.id,
                                         brandEntity.brandName,
+                                        brandEntity.brandNameKr,
                                         brandEntity.brandIconImageUrl.coalesce(""),
                                         brandEntity.displayYn
                                 )
@@ -68,6 +69,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
                         new QBrandDto(
                                 brandEntity.id,
                                 brandEntity.brandName,
+                                brandEntity.brandNameKr,
                                 brandEntity.brandIconImageUrl.coalesce(""),
                                 brandEntity.displayYn
                         )

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CrawlProductPersistenceService {
 
-    void saveAll(List<CrawlProductEntity> crawlProductEntities);
+    void batchInsertCrawlProducts(List<CrawlProductEntity> crawlProductEntities);
 }

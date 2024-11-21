@@ -1,7 +1,9 @@
 package com.ryuqq.setof.storage.db.core.site;
 
 import com.ryuqq.setof.storage.db.core.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Table(name = "USER_AGENTS")
 @Entity

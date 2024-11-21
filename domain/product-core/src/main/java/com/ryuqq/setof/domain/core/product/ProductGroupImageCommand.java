@@ -4,11 +4,14 @@ import com.ryuqq.setof.enums.core.ProductImageType;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 
 public record ProductGroupImageCommand(
+        Long id,
         ProductImageType productImageType,
-        String imageUrl
+        String imageUrl,
+        boolean deleteYn
 ) {
 
     public ProductGroupImageEntity toEntity(long productGroupId) {
-        return new ProductGroupImageEntity(productGroupId, productImageType, imageUrl, imageUrl);
+        if(id == null) return new ProductGroupImageEntity(productGroupId, productImageType, imageUrl, imageUrl);
+        else return new ProductGroupImageEntity(id, productGroupId, productImageType, imageUrl, imageUrl, deleteYn);
     }
 }

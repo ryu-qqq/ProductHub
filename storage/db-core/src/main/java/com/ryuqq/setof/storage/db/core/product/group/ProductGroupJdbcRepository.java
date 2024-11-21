@@ -68,7 +68,7 @@ public class ProductGroupJdbcRepository {
                 "DISPLAY_YN = :displayYn, " +
                 "PRODUCT_STATUS = :productStatus, " +
                 "KEYWORDS = :keywords " +
-                "WHERE PRODUCT_GROUP_ID = :productGroupId";
+                "WHERE ID = :productGroupId";
 
         List<Map<String, Object>> batchValues = productGroups.stream()
                 .map(group -> {
@@ -95,7 +95,6 @@ public class ProductGroupJdbcRepository {
         return namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
     }
 
-
     public void updatesProductStatus(List<Long> productGroupIds, ProductStatus productStatus){
         String sql = "UPDATE PRODUCT_GROUP " +
                 "SET PRODUCT_STATUS = :productStatus " +
@@ -111,5 +110,6 @@ public class ProductGroupJdbcRepository {
                 .toList();
         namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
     }
+
 
 }

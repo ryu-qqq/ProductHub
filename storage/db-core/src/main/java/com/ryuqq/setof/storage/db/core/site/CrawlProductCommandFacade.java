@@ -25,15 +25,13 @@ public class CrawlProductCommandFacade {
             String cacheKey = generateCacheKey(entity.getSiteId(), entity.getSiteProductId());
 
             if (!crawlProductCacheService.productExists(cacheKey)) {
-
                 crawlProductCacheService.saveProduct(cacheKey, entity.getProductName());
-
                 entitiesToSave.add(entity);
             }
         }
 
         if (!entitiesToSave.isEmpty()) {
-            crawlProductPersistenceService.saveAll(entitiesToSave);
+            crawlProductPersistenceService.batchInsertCrawlProducts(entitiesToSave);
         }
     }
 

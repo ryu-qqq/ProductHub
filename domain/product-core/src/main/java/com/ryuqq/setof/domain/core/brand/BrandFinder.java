@@ -3,6 +3,7 @@ package com.ryuqq.setof.domain.core.brand;
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import com.ryuqq.setof.storage.db.core.brand.BrandQueryRepository;
 import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
+import com.ryuqq.setof.storage.db.index.brand.BrandDocumentQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

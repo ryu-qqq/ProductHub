@@ -58,17 +58,6 @@ public class ProductGroupImage {
         return deleteYn;
     }
 
-    public ProductGroupImageEntity toEntity() {
-        return new ProductGroupImageEntity(
-                productGroupImageId,
-                productGroupId,
-                productImageType,
-                imageUrl,
-                originUrl,
-                deleteYn);
-    }
-
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

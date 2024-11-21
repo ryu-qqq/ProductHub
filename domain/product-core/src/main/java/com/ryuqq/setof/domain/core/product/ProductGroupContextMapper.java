@@ -13,12 +13,6 @@ import java.util.List;
 @Component
 public class ProductGroupContextMapper {
 
-    private final ProductGroupImageMapper productGroupImageMapper;
-
-    public ProductGroupContextMapper(ProductGroupImageMapper productGroupImageMapper) {
-        this.productGroupImageMapper = productGroupImageMapper;
-    }
-
     public ProductGroupContext toProductGroupContext(ProductGroupContextDto dto) {
         long productGroupId = dto.getProductGroupDto().getProductGroupId();
         return new ProductGroupContext(
@@ -84,7 +78,16 @@ public class ProductGroupContextMapper {
     }
 
     private List<ProductGroupImage> toProductGroupImages(long productGroupId, List<ProductGroupImageDto> images) {
-        return productGroupImageMapper.toProductGroupImages(productGroupId, images);
+        return images.stream()
+                .map(dto ->
+                        new ProductGroupImage(
+                                dto.getProductGroupImageId(),
+                                productGroupId,
+                                dto.getProductImageType(),
+                                dto.getImageUrl(),
+                                dto.getOriginUrl())
+                )
+                .toList();
     }
 
     private CategoryRecord toCategory(CategoryDto dto) {

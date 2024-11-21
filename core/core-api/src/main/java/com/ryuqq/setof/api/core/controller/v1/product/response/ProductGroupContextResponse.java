@@ -29,7 +29,6 @@ public record ProductGroupContextResponse(
         );
     }
 
-
     private static ProductGroupResponse toProductGroupResponse(ProductGroup productGroup) {
         return new ProductGroupResponse(
                 productGroup.getProductGroupId(),

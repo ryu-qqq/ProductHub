@@ -16,7 +16,7 @@ public record ProductGroupImageRequestDto(
         String imageUrl
 ){
     public ProductGroupImageCommand toProductGroupImage(){
-        return new ProductGroupImageCommand(productImageType, imageUrl);
+        return new ProductGroupImageCommand(null, productImageType, imageUrl, false);
     }
 
 }

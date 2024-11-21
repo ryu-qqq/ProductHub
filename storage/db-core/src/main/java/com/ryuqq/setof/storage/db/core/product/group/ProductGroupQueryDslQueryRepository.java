@@ -33,11 +33,23 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
     }
 
     @Override
-    public List<Long> fetchProductGroupIds(ProductStatus productStatus, int pageSize) {
+    public List<ProductGroupEntity> fetchProductGroupEntitiesByStatus(ProductStatus productStatus, int pageSize){
+        return queryFactory.selectFrom(productGroupEntity)
+                .where(productStatusEq(productStatus))
+                .limit(pageSize)
+                .fetch();
+    }
+
+
+    @Override
+    public List<Long> fetchProductGroupIds(ProductStatus productStatus, Long cursorId,  int pageSize) {
         return queryFactory.select(
                         productGroupEntity.id
                 ).from(productGroupEntity)
-                .where(productStatusEq(productStatus))
+                .where(
+                        productStatusEq(productStatus),
+                        isProductGroupIdGt(cursorId)
+                        )
                 .limit(pageSize)
                 .fetch();
     }
@@ -125,6 +137,7 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
                                         new QBrandDto(
                                                 brandEntity.id,
                                                 brandEntity.brandName,
+                                                brandEntity.brandNameKr,
                                                 brandEntity.brandIconImageUrl.coalesce(""),
                                                 brandEntity.displayYn
                                         ),
@@ -231,6 +244,11 @@ public class ProductGroupQueryDslQueryRepository implements ProductGroupQueryRep
 
     private BooleanExpression isProductGroupIdLt(Long productGroupId){
         if(productGroupId !=null) return productGroupEntity.id.lt(productGroupId);
+        else return null;
+    }
+
+    private BooleanExpression isProductGroupIdGt(Long productGroupId){
+        if(productGroupId !=null) return productGroupEntity.id.gt(productGroupId);
         else return null;
     }
 

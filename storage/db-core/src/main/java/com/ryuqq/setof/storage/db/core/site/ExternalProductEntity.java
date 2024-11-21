@@ -29,6 +29,13 @@ public class ExternalProductEntity extends BaseEntity {
 
     protected ExternalProductEntity() {}
 
+    public ExternalProductEntity(long siteId, long productGroupId, long policyId) {
+        this.siteId = siteId;
+        this.productGroupId = productGroupId;
+        this.policyId = policyId;
+        this.status = SyncStatus.WAITING;
+    }
+
     public ExternalProductEntity(long siteId, long productGroupId, long policyId, String externalProductId, String productName, SyncStatus status) {
         this.siteId = siteId;
         this.productGroupId = productGroupId;
@@ -36,5 +43,29 @@ public class ExternalProductEntity extends BaseEntity {
         this.externalProductId = externalProductId;
         this.productName = productName;
         this.status = status;
+    }
+
+    public long getSiteId() {
+        return siteId;
+    }
+
+    public long getProductGroupId() {
+        return productGroupId;
+    }
+
+    public long getPolicyId() {
+        return policyId;
+    }
+
+    public String getExternalProductId() {
+        return externalProductId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public SyncStatus getStatus() {
+        return status;
     }
 }

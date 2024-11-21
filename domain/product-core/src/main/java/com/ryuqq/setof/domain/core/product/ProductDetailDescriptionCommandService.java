@@ -1,23 +1,23 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionJpaService;
+import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionCommandFacade;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductDetailDescriptionCommandService {
 
-    private final ProductDetailDescriptionJpaService productDetailDescriptionJpaService;
+    private final ProductDetailDescriptionCommandFacade productDetailDescriptionCommandFacade;
 
-    public ProductDetailDescriptionCommandService(ProductDetailDescriptionJpaService productDetailDescriptionJpaService) {
-        this.productDetailDescriptionJpaService = productDetailDescriptionJpaService;
+    public ProductDetailDescriptionCommandService(ProductDetailDescriptionCommandFacade productDetailDescriptionCommandFacade) {
+        this.productDetailDescriptionCommandFacade = productDetailDescriptionCommandFacade;
     }
 
     public void insert(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
-        productDetailDescriptionJpaService.insert(productDetailDescriptionCommand.toEntity(productGroupId));
+        productDetailDescriptionCommandFacade.insert(productDetailDescriptionCommand.toEntity(productGroupId));
     }
 
     public void update(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
-        productDetailDescriptionJpaService.update(productDetailDescriptionCommand.toEntity(productGroupId));
+        productDetailDescriptionCommandFacade.update(productDetailDescriptionCommand.toEntity(productGroupId));
     }
 
 }

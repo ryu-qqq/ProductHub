@@ -41,7 +41,6 @@ class BrandControllerTest extends RestDocsTest {
     @InjectMocks
     private BrandController brandController;
 
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -79,6 +78,7 @@ class BrandControllerTest extends RestDocsTest {
 
                                 fieldWithPath("content[].brandId").type(JsonFieldType.NUMBER).description("브랜드 ID"),
                                 fieldWithPath("content[].brandName").type(JsonFieldType.STRING).description("브랜드 이름"),
+                                fieldWithPath("content[].brandNameKr").type(JsonFieldType.STRING).description("브랜드 한국 이름"),
                                 fieldWithPath("content[].brandIconImageUrl").type(JsonFieldType.STRING).description("브랜드 이미지 URL"),
                                 fieldWithPath("content[].displayYn").type(JsonFieldType.BOOLEAN).description("브랜드 전시 여부"),
 

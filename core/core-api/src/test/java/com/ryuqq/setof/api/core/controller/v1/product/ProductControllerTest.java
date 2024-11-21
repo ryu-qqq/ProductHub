@@ -1,13 +1,12 @@
 package com.ryuqq.setof.api.core.controller.v1.product;
 
 
-import com.ryuqq.setof.api.core.controller.v1.product.ProductController;
 import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupQueryFacade;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
-import com.ryuqq.setof.domain.core.product.ProductGroupDocumentCommandFacade;
+import com.ryuqq.setof.domain.core.product.ProductGroupContextCommandFacade;
 import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.api.core.data.ProductModuleHelper;
 import com.ryuqq.setof.test.api.RestDocsTest;
@@ -41,7 +40,7 @@ class ProductControllerTest extends RestDocsTest {
 
 
     @Mock
-    private ProductGroupDocumentCommandFacade productGroupCommandFacade;
+    private ProductGroupContextCommandFacade productGroupCommandFacade;
 
     @Mock
     private ProductGroupQueryFacade productGroupQueryFacade;

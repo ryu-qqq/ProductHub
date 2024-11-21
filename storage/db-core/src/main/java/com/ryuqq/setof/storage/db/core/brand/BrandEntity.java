@@ -12,6 +12,9 @@ public class BrandEntity extends BaseEntity {
     @Column(name = "BRAND_NAME", nullable = false, length = 50)
     private String brandName;
 
+    @Column(name = "BRAND_NAME_KR", nullable = false, length = 50)
+    private String brandNameKr;
+
     @Column(name = "BRAND_ICON_IMAGE_URL", nullable = true, length = 255)
     private String brandIconImageUrl;
 
@@ -21,14 +24,19 @@ public class BrandEntity extends BaseEntity {
     protected BrandEntity() {
     }
 
-    public BrandEntity(String brandName, String brandIconImageUrl, boolean displayYn) {
+    public BrandEntity(String brandName, String brandNameKr, String brandIconImageUrl, boolean displayYn) {
         this.brandName = brandName;
+        this.brandNameKr = brandNameKr;
         this.brandIconImageUrl = brandIconImageUrl;
         this.displayYn = displayYn;
     }
 
     public String getBrandName() {
         return brandName;
+    }
+
+    public String getBrandNameKr() {
+        return brandNameKr;
     }
 
     public String getBrandIconImageUrl() {

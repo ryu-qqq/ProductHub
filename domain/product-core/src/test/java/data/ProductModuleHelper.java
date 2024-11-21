@@ -40,9 +40,9 @@ public class ProductModuleHelper {
 
     public static List<ProductGroupImageCommand> createProductGroupImageCommands() {
         return List.of(
-                new ProductGroupImageCommand(ProductImageType.MAIN, "https://example.com/main.jpg"),
-                new ProductGroupImageCommand(ProductImageType.DETAIL, "https://example.com/detail1.jpg"),
-                new ProductGroupImageCommand(ProductImageType.DETAIL, "https://example.com/detail2.jpg")
+                new ProductGroupImageCommand(null, ProductImageType.MAIN, "https://example.com/main.jpg", false),
+                new ProductGroupImageCommand(null, ProductImageType.DETAIL, "https://example.com/detail1.jpg", false),
+                new ProductGroupImageCommand(null, ProductImageType.DETAIL, "https://example.com/detail2.jpg", false)
         );
     }
 
@@ -52,8 +52,8 @@ public class ProductModuleHelper {
 
     public static List<ProductCommand> createProductCommands() {
         return List.of(
-                new ProductCommand(false, true, 10, BigDecimal.valueOf(5000), createDoubleOptionCommands("Blue", " M")),
-                new ProductCommand(false, true, 20, BigDecimal.valueOf(7000), createDoubleOptionCommands("Blue", "L"))
+                new ProductCommand(null,false, true, 10, BigDecimal.valueOf(5000), createDoubleOptionCommands("Blue", " M"), false),
+                new ProductCommand(null,false, true, 20, BigDecimal.valueOf(7000), createDoubleOptionCommands("Blue", "L"), false)
         );
     }
 

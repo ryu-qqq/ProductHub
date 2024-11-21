@@ -12,10 +12,14 @@ public class ColorEntity extends BaseEntity {
     @Column(name = "COLOR_NAME", nullable = false, length = 50)
     private String colorName;
 
+    @Column(name = "RGB_CODE", nullable = false, length = 7)
+    private String rgbCode;
+
     protected ColorEntity() {}
 
-    public ColorEntity(String colorName) {
+    public ColorEntity(String colorName, String rgbCode) {
         this.colorName = colorName;
+        this.rgbCode = rgbCode;
     }
 
     public String getColorName() {
@@ -23,4 +27,7 @@ public class ColorEntity extends BaseEntity {
     }
 
 
+    public String getRgbCode() {
+        return rgbCode;
+    }
 }

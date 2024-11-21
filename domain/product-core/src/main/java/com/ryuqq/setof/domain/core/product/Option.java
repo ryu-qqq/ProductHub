@@ -1,8 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.enums.core.OptionName;
-import com.ryuqq.setof.storage.db.core.product.option.detail.OptionDetailEntity;
-import com.ryuqq.setof.storage.db.core.product.option.group.OptionGroupEntity;
 
 import java.util.Objects;
 
@@ -12,7 +10,7 @@ public class Option {
     private final Long optionDetailId;
     private final OptionName optionName;
     private final String optionValue;
-    private boolean deleteYn;
+    private final boolean deleteYn;
 
     public Option(Long productId, Long optionGroupId, Long optionDetailId, OptionName optionName, String optionValue) {
         this.productId = productId;
@@ -43,28 +41,6 @@ public class Option {
         return optionValue;
     }
 
-    public boolean isDeleteYn() {
-        return deleteYn;
-    }
-
-    public void delete(){
-        this.deleteYn = true;
-    }
-
-    public boolean requiresUpdate(OptionCommand command) {
-        return !this.getOptionName().equals(command.name()) ||
-                !this.getOptionValue().equals(command.value());
-    }
-
-    public OptionGroupEntity toGroupEntity() {
-        return new OptionGroupEntity(
-                this.optionGroupId, this.optionName, this.deleteYn);
-    }
-
-    public OptionDetailEntity toDetailEntity() {
-        return new OptionDetailEntity(
-                this.optionDetailId , this.optionGroupId, this.optionValue, this.deleteYn);
-    }
 
     @Override
     public boolean equals(Object object) {

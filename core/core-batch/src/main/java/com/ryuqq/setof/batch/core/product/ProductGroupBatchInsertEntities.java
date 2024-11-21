@@ -1,0 +1,59 @@
+package com.ryuqq.setof.batch.core.product;
+
+import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
+import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
+import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
+import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
+import com.ryuqq.setof.storage.db.core.site.ExternalProductEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductGroupBatchInsertEntities {
+
+    private final List<ProductDeliveryEntity> deliveries = new ArrayList<>();
+    private final List<ProductNoticeEntity> notices = new ArrayList<>();
+    private final List<ProductDetailDescriptionEntity> detailDescriptions = new ArrayList<>();
+    private final List<ProductGroupImageEntity> images = new ArrayList<>();
+    private final List<ExternalProductEntity> externalProductEntities = new ArrayList<>();
+
+    public void addDelivery(ProductDeliveryEntity delivery) {
+        deliveries.add(delivery);
+    }
+
+    public void addNotice(ProductNoticeEntity notice) {
+        notices.add(notice);
+    }
+
+    public void addDetailDescription(ProductDetailDescriptionEntity detailDescription) {
+        detailDescriptions.add(detailDescription);
+    }
+
+    public void addImages(ProductGroupImageEntity imageEntity) {
+        images.add(imageEntity);
+    }
+
+    public void addExternalProduct(ExternalProductEntity externalProductEntity) {
+        externalProductEntities.add(externalProductEntity);
+    }
+
+    public List<ProductDeliveryEntity> getDeliveries() {
+        return deliveries;
+    }
+
+    public List<ProductNoticeEntity> getNotices() {
+        return notices;
+    }
+
+    public List<ProductDetailDescriptionEntity> getDetailDescriptions() {
+        return detailDescriptions;
+    }
+
+    public List<ProductGroupImageEntity> getImages() {
+        return images;
+    }
+
+    public List<ExternalProductEntity> getExternalProductEntities() {
+        return externalProductEntities;
+    }
+}

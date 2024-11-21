@@ -4,5 +4,6 @@ public enum PriceConditionType {
 
     CATEGORY,
     SELLER,
+    PRODUCT,
 
 }

@@ -1,6 +1,5 @@
 package com.ryuqq.setof.storage.db.core.product.image;
 
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupImageDto;
 import com.ryuqq.setof.storage.db.core.product.dto.QProductGroupImageDto;

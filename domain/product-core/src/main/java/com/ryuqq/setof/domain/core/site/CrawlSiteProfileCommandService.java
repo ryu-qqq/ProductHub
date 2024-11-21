@@ -84,7 +84,8 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
                 crawlTaskPersistenceService.insert(crawlTaskEntity);
             });
         });
-
     }
+
+
 
 }
