@@ -5,16 +5,19 @@ import com.ryuqq.setof.enums.core.ManagementType;
 import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.enums.core.ProductCondition;
 import com.ryuqq.setof.enums.core.ProductStatus;
-import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
-import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductGroupDto {
+
     private long productGroupId;
+    private Long setOfProductGroupId;
     private long sellerId;
-    private CategoryDto categoryDto;
-    private BrandDto brandDto;
+    private List<Long> colorIds;
+    private long categoryId;
+    private long brandId;
+    private long configId;
     private String productGroupName;
     private String styleCode;
     private ProductCondition productCondition;
@@ -28,14 +31,22 @@ public class ProductGroupDto {
     private ProductStatus productStatus;
     private String keywords;
 
+    private ProductNoticeDto productNoticeDto;
+    private ProductDeliveryDto productDeliveryDto;
+    private List<ProductGroupImageDto> productGroupImageDtos;
+    private ProductDetailDescriptionDto productDetailDescriptionDto;
+
     protected ProductGroupDto() {}
 
     @QueryProjection
-    public ProductGroupDto(long productGroupId, long sellerId, CategoryDto categoryDto, BrandDto brandDto, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords) {
+    public ProductGroupDto(long productGroupId, Long setOfProductGroupId, long sellerId, List<Long> colorIds, long categoryId, long brandId, long configId, String productGroupName, String styleCode, ProductCondition productCondition, ManagementType managementType, OptionType optionType, BigDecimal regularPrice, BigDecimal currentPrice, int discountRate, boolean soldOutYn, boolean displayYn, ProductStatus productStatus, String keywords, ProductNoticeDto productNoticeDto, ProductDeliveryDto productDeliveryDto, List<ProductGroupImageDto> productGroupImageDtos, ProductDetailDescriptionDto productDetailDescriptionDto) {
         this.productGroupId = productGroupId;
+        this.setOfProductGroupId = setOfProductGroupId;
         this.sellerId = sellerId;
-        this.categoryDto = categoryDto;
-        this.brandDto = brandDto;
+        this.colorIds = colorIds;
+        this.categoryId = categoryId;
+        this.brandId = brandId;
+        this.configId = configId;
         this.productGroupName = productGroupName;
         this.styleCode = styleCode;
         this.productCondition = productCondition;
@@ -48,22 +59,38 @@ public class ProductGroupDto {
         this.displayYn = displayYn;
         this.productStatus = productStatus;
         this.keywords = keywords;
+        this.productNoticeDto = productNoticeDto;
+        this.productDeliveryDto = productDeliveryDto;
+        this.productGroupImageDtos = productGroupImageDtos;
+        this.productDetailDescriptionDto = productDetailDescriptionDto;
     }
 
     public long getProductGroupId() {
         return productGroupId;
     }
 
+    public Long getSetOfProductGroupId() {
+        return setOfProductGroupId;
+    }
+
     public long getSellerId() {
         return sellerId;
     }
 
-    public CategoryDto getCategoryDto() {
-        return categoryDto;
+    public List<Long> getColorIds() {
+        return colorIds;
     }
 
-    public BrandDto getBrandDto() {
-        return brandDto;
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public long getBrandId() {
+        return brandId;
+    }
+
+    public long getConfigId() {
+        return configId;
     }
 
     public String getProductGroupName() {
@@ -114,4 +141,19 @@ public class ProductGroupDto {
         return keywords;
     }
 
+    public ProductNoticeDto getProductNoticeDto() {
+        return productNoticeDto;
+    }
+
+    public ProductDeliveryDto getProductDeliveryDto() {
+        return productDeliveryDto;
+    }
+
+    public List<ProductGroupImageDto> getProductGroupImageDtos() {
+        return productGroupImageDtos;
+    }
+
+    public ProductDetailDescriptionDto getProductDetailDescriptionDto() {
+        return productDetailDescriptionDto;
+    }
 }

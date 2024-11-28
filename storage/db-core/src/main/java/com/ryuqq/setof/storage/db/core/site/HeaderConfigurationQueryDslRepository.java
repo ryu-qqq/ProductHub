@@ -20,7 +20,7 @@ public class HeaderConfigurationQueryDslRepository {
     }
 
 
-    public List<HeaderConfigurationDto> fetchConfigurationsByName(String configurationName) {
+    public List<HeaderConfigurationDto> fetchByConfigurationName(String configurationName) {
         return queryFactory.select(
                         new QHeaderConfigurationDto(
                                 headerConfigurationEntity.configurationName,

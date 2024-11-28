@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.CrawlProductFilter;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductFilter;
 
 public record CrawlProductGetRequestDto(
         String siteName,

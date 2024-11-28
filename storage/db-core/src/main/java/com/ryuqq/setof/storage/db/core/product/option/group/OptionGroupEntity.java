@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Entity
 public class OptionGroupEntity extends BaseEntity {
 
-    @Column(name = "OPTION_NAME", length = 10, nullable = false)
+    @Column(name = "OPTION_NAME", length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
     private OptionName optionName;
 

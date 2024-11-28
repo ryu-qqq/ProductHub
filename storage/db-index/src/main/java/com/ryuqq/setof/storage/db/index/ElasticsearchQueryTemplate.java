@@ -27,6 +27,10 @@ public class ElasticsearchQueryTemplate  extends ElasticsearchAbstractTemplate {
         return execute(operationName, () -> elasticsearchClient.search(searchRequest, responseClass));
     }
 
+    public <T> SearchResponse<T> executeSearch(SearchRequest searchRequest, Class<T> responseClass) {
+        return execute("", () -> elasticsearchClient.search(searchRequest, responseClass));
+    }
+
     /**
      * Count 작업 템플릿 메서드
      *

@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 
 public record ProductGroupInsertRequestDto(
 
+        Long setofProductGroupId,
+
         @NotNull(message = "Brand ID cannot be null.")
         @Positive(message = "Brand ID must be a positive number.")
         long brandId,
@@ -27,8 +29,8 @@ public record ProductGroupInsertRequestDto(
         @Size(max = 100, message = "Product Group Name must be 100 characters or less.")
         String productGroupName,
 
-        @NotBlank(message = "Style Code cannot be blank.")
-        @Size(max = 50, message = "Style Code must be 50 characters or less.")
+//        @NotBlank(message = "Style Code cannot be blank.")
+//        @Size(max = 50, message = "Style Code must be 50 characters or less.")
         String styleCode,
 
         @NotNull(message = "Product Condition Type cannot be null.")
@@ -53,7 +55,7 @@ public record ProductGroupInsertRequestDto(
         String keywords
 ) {
     public ProductGroupCommand toProductGroupCommand() {
-        return new ProductGroupCommand(brandId, categoryId, sellerId, productGroupName,
+        return new ProductGroupCommand(setofProductGroupId, brandId, categoryId, sellerId, productGroupName,
                 styleCode, productCondition, managementType, optionType, regularPrice, currentPrice,
                 soldOutYn, displayYn, ProductStatus.WAITING, keywords);
     }

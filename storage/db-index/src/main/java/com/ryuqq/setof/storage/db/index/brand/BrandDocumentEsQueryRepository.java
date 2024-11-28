@@ -3,7 +3,6 @@ package com.ryuqq.setof.storage.db.index.brand;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQueryField;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -12,6 +11,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.ryuqq.setof.storage.db.index.ElasticsearchQueryFactory;
 import com.ryuqq.setof.storage.db.index.ElasticsearchQueryTemplate;
 import com.ryuqq.setof.storage.db.index.brand.dto.BrandIndexFilterDto;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -27,6 +27,29 @@ public class BrandDocumentEsQueryRepository {
     public BrandDocumentEsQueryRepository(ElasticsearchQueryTemplate elasticsearchQueryTemplate) {
         this.elasticsearchQueryTemplate = elasticsearchQueryTemplate;
     }
+
+    public List<BrandDocument> fetchByBrandName(String brandName) {
+
+        Query matchQuery = ElasticsearchQueryFactory.createMatchQuery(List.of("brandName", "brandNameKr"), brandName);
+
+        SearchRequest searchRequest = SearchRequest.of(builder -> builder
+                .index("brand-document")
+                .size(20)
+                .query(matchQuery));
+
+
+        SearchResponse<BrandDocument> searchResponse = elasticsearchQueryTemplate.executeSearch(
+                "fetchByBrandName",
+                searchRequest,
+                BrandDocument.class
+        );
+
+
+        return searchResponse.hits().hits().stream()
+                .map(Hit::source)
+                .toList();
+    }
+
 
     public List<BrandDocument> fetchBrands(BrandIndexFilterDto brandFilter) {
         List<Query> mustQueries = new ArrayList<>();

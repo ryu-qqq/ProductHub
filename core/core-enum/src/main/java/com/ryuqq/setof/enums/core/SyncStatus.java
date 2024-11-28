@@ -4,8 +4,10 @@ public enum SyncStatus {
 
     WAITING,
     PROCESSING,
+    REVIEW,
+    UPLOADING,
+    APPROVED,
     SUCCESS,
     FAILED,
-
 
 }

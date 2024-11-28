@@ -10,13 +10,18 @@ public class MappingCategoryEntity extends BaseEntity {
 
     private long siteId;
     private String siteCategoryId;
+    private String siteCategoryExtraId;
+    private String description;
     private long internalCategoryId;
+
 
     protected MappingCategoryEntity() {}
 
-    public MappingCategoryEntity(long siteId, String siteCategoryId, long internalCategoryId) {
+    public MappingCategoryEntity(long siteId, String siteCategoryId, String siteCategoryExtraId, String description, long internalCategoryId) {
         this.siteId = siteId;
         this.siteCategoryId = siteCategoryId;
+        this.siteCategoryExtraId = siteCategoryExtraId;
+        this.description = description;
         this.internalCategoryId = internalCategoryId;
     }
 
@@ -26,6 +31,14 @@ public class MappingCategoryEntity extends BaseEntity {
 
     public String getSiteCategoryId() {
         return siteCategoryId;
+    }
+
+    public String getSiteCategoryExtraId() {
+        return siteCategoryExtraId;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public long getInternalCategoryId() {

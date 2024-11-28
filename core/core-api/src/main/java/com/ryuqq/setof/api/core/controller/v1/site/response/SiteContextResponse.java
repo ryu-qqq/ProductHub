@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.response;
 
-import com.ryuqq.setof.domain.core.site.CrawlSiteProfile;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlSiteProfile;
 import com.ryuqq.setof.domain.core.site.SiteContext;
 import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteType;

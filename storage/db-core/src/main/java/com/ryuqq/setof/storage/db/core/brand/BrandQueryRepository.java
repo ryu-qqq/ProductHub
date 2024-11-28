@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface BrandQueryRepository  {
 
-    boolean fetchBrandExists(long brandId);
-    Optional<BrandDto> fetchBrand(long brandId);
-    List<BrandDto> fetchBrands(BrandStorageFilterDto brandFilter);
-    long fetchBrandCount(BrandStorageFilterDto brandFilter);
+    boolean existById(long brandId);
+    Optional<BrandDto> fetchById(long brandId);
+    List<BrandDto> fetchByFilter(BrandStorageFilterDto brandFilter);
+    long countByFilter(BrandStorageFilterDto brandFilter);
 
 }

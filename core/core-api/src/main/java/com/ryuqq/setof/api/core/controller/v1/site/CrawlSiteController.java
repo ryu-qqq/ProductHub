@@ -7,8 +7,8 @@ import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteInsertResponseDto;
 import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductQueryFacade;
 import com.ryuqq.setof.domain.core.generic.Slice;
-import com.ryuqq.setof.domain.core.site.CrawlProductCommand;
-import com.ryuqq.setof.domain.core.site.CrawlProductCommandService;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommand;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommandService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +27,6 @@ public class CrawlSiteController {
         this.crawlProductCommandService = crawlProductCommandService;
         this.crawlProductQueryFacade = crawlProductQueryFacade;
     }
-
 
     @PostMapping("/site/crawl/product")
     public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerCrawlProducts(

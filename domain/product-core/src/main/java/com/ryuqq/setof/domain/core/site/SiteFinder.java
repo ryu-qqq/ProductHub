@@ -19,17 +19,17 @@ public class SiteFinder implements SiteQueryService{
 
     @Override
     public boolean siteExist(long siteId) {
-        return siteQueryRepository.fetchSiteExists(siteId);
+        return siteQueryRepository.existById(siteId);
     }
 
     @Override
     public boolean siteExist(String name, String baseUrl) {
-        return siteQueryRepository.fetchSiteExists(name, baseUrl);
+        return siteQueryRepository.existByNameAndUrl(name, baseUrl);
     }
 
     @Override
     public List<Site> findSiteResponse(SiteFilter siteFilter) {
-        List<SiteContextDto> siteContextDtos = siteQueryRepository.fetchSites(siteFilter.toSiteFilterStorageDto());
+        List<SiteContextDto> siteContextDtos = siteQueryRepository.fetchByFilter(siteFilter.toSiteFilterStorageDto());
         return siteContextDtos.stream()
                 .map(s -> new Site(s.getSiteId(), s.getSiteName(), s.getBaseUrl(), s.getCountryCode(), s.getSiteType()))
                 .toList();
@@ -37,7 +37,7 @@ public class SiteFinder implements SiteQueryService{
 
     @Override
     public long findSiteCount(SiteFilter siteFilter) {
-        return siteQueryRepository.fetchSiteCount(siteFilter.toSiteFilterStorageDto());
+        return siteQueryRepository.countByFilter(siteFilter.toSiteFilterStorageDto());
     }
 
     @Override

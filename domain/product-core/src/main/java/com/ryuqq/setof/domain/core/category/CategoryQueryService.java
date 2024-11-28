@@ -4,10 +4,11 @@ import java.util.List;
 
 public interface CategoryQueryService {
 
-    boolean categoryExist(long categoryId);
-    List<CategoryRecord> findCategories(CategoryFilter categoryFilter);
-    List<CategoryRecord> findCategories(List<Long> categoryIds);
-    List<CategoryRecord> findChildCategories(long categoryId);
-    List<CategoryRecord> findParentCategories(long categoryId);
-    long findCategoryCount(CategoryFilter categoryFilter);
+    boolean existById(long categoryId);
+    List<Category> fetchCategoriesByFilter(CategoryFilter categoryFilter);
+    List<Category> fetchCategoriesByIds(List<Long> categoryIds);
+
+    long countByFilter(CategoryFilter categoryFilter);
+    CategoryRelation fetchCategoryRelation(long categoryId, boolean isParentRelation);
+    List<CategoryRelation> fetchCategoryRelations(List<Long> categoryIds, boolean isParentRelation);
 }

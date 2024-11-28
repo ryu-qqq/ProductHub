@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public record ProductDeliveryRequestDto(
 
         @NotBlank(message = "Delivery Area cannot be blank.")
-        @Size(max = 15, message = "Delivery Area must be 15 characters or less.")
+        @Size(max = 200, message = "Delivery Area must be 15 characters or less.")
         String deliveryArea,
 
         @NotNull(message = "Delivery Fee cannot be null.")
@@ -18,7 +18,7 @@ public record ProductDeliveryRequestDto(
         BigDecimal deliveryFee,
 
         @NotNull(message = "Delivery Period Average cannot be null.")
-        @Max(value = 14, message = "Delivery Period Average must be 14 days or less.")
+        @Max(value = 30, message = "Delivery Period Average must be 30 days or less.")
         int deliveryPeriodAverage,
 
         @NotNull(message = "Return Method Domestic cannot be null.")
@@ -32,7 +32,7 @@ public record ProductDeliveryRequestDto(
         BigDecimal returnChargeDomestic,
 
         @NotBlank(message = "Return Exchange Area Domestic cannot be blank.")
-        @Size(max = 15, message = "Return Exchange Area Domestic must be 15 characters or less.")
+        @Size(max = 200, message = "Return Exchange Area Domestic must be 15 characters or less.")
         String returnExchangeAreaDomestic
 ){
 

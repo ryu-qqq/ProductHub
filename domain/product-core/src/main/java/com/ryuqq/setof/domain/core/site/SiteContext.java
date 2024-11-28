@@ -1,6 +1,7 @@
 package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.enums.core.Origin;
+import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.enums.core.SiteType;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public class SiteContext {
 
     public String getSiteName() {
         return siteName;
+    }
+
+    public SiteName getSiteNameEnum() {
+        return SiteName.of(siteName);
     }
 
     public String getBaseUrl() {

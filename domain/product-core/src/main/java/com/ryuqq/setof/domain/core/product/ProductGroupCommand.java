@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public record ProductGroupCommand(
+        long setofProductGroupId,
         long brandId,
         long categoryId,
         long sellerId,
@@ -28,19 +29,23 @@ public record ProductGroupCommand(
 ) {
 
     public ProductGroupEntity toEntity(){
-        return new ProductGroupEntity(
+        ProductGroupEntity productGroupEntity = new ProductGroupEntity(
                 sellerId, categoryId, brandId, productGroupName, styleCode, productCondition, managementType,
                 optionType, regularPrice, currentPrice, calculateDiscountRate(regularPrice, currentPrice),
                 soldOutYn, displayYn, productStatus, keywords
         );
+        productGroupEntity.setSetofProductGroupId(setofProductGroupId);
+        return productGroupEntity;
     }
 
     public ProductGroupEntity toEntity(long productGroupId){
-        return new ProductGroupEntity(productGroupId,
+        ProductGroupEntity productGroupEntity = new ProductGroupEntity(productGroupId,
                 sellerId, categoryId, brandId, productGroupName, styleCode, productCondition, managementType,
                 optionType, regularPrice, currentPrice, calculateDiscountRate(regularPrice, currentPrice),
                 soldOutYn, displayYn, productStatus, keywords
         );
+        productGroupEntity.setSetofProductGroupId(setofProductGroupId);
+        return productGroupEntity;
     }
 
     private int calculateDiscountRate(BigDecimal regularPrice, BigDecimal currentPrice) {

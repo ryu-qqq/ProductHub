@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.response;
 
-import com.ryuqq.setof.domain.core.site.CrawlEndpoint;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlEndpoint;
 
 import java.util.List;
 

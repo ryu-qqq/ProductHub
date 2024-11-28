@@ -22,7 +22,7 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
     }
 
     @Override
-    public boolean fetchColorExists(long colorId) {
+    public boolean existById(long colorId) {
         Long categoryOpt = queryFactory
                 .select(colorEntity.id)
                 .from(colorEntity)
@@ -33,7 +33,7 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
     }
 
     @Override
-    public List<ColorDto> fetchColors(ColorStorageFilterDto colorFilter) {
+    public List<ColorDto> fetchColorByFilter(ColorStorageFilterDto colorFilter) {
         return queryFactory
                 .select(new QColorDto(
                         colorEntity.id,
@@ -52,7 +52,7 @@ public class ColorQueryDslRepository implements ColorQueryRepository {
 
 
     @Override
-    public long fetchColorCount(ColorStorageFilterDto colorFilter) {
+    public long countByFilter(ColorStorageFilterDto colorFilter) {
         Long count =  queryFactory.select(
                         colorEntity.count()
                 )

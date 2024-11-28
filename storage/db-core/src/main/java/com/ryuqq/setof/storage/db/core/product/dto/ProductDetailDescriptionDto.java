@@ -15,4 +15,5 @@ public class ProductDetailDescriptionDto {
     public String getDetailDescription() {
         return detailDescription;
     }
+
 }

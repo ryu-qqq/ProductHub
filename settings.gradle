@@ -14,8 +14,10 @@ rootProject.name = 'ProductHub'
 include 'core:core-api'
 include 'core:core-batch'
 include 'core:core-enum'
+
 include 'support:logging'
 include 'support:utils'
+include 'support:external'
 
 include 'storage:db-core'
 include 'storage:db-cache'

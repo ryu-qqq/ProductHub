@@ -1,23 +1,23 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionCommandFacade;
+import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionHybridRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductDetailDescriptionCommandService {
 
-    private final ProductDetailDescriptionCommandFacade productDetailDescriptionCommandFacade;
+    private final ProductDetailDescriptionHybridRepository productDetailDescriptionHybridRepository;
 
-    public ProductDetailDescriptionCommandService(ProductDetailDescriptionCommandFacade productDetailDescriptionCommandFacade) {
-        this.productDetailDescriptionCommandFacade = productDetailDescriptionCommandFacade;
+    public ProductDetailDescriptionCommandService(ProductDetailDescriptionHybridRepository productDetailDescriptionHybridRepository) {
+        this.productDetailDescriptionHybridRepository = productDetailDescriptionHybridRepository;
     }
 
     public void insert(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
-        productDetailDescriptionCommandFacade.insert(productDetailDescriptionCommand.toEntity(productGroupId));
+        productDetailDescriptionHybridRepository.saveAllProductDetailDescription(productDetailDescriptionCommand.toEntity(productGroupId));
     }
 
     public void update(long productGroupId, ProductDetailDescriptionCommand productDetailDescriptionCommand) {
-        productDetailDescriptionCommandFacade.update(productDetailDescriptionCommand.toEntity(productGroupId));
+        productDetailDescriptionHybridRepository.updateProductDelivery(productDetailDescriptionCommand.toEntity(productGroupId));
     }
 
 }

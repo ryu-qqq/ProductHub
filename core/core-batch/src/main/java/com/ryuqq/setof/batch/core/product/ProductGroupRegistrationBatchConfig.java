@@ -16,38 +16,55 @@ public class ProductGroupRegistrationBatchConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-    private final ProductGroupBatchReader reader;
-    private final ProductGroupBatchProcessor processor;
-    private final ProductGroupBatchWriter writer;
+    private final ProductGroupBatchReader productGroupInsertReader;
+    private final ProductGroupBatchProcessor productGroupInsertProcessor;
+    private final ProductGroupBatchWriterWithContext productGroupInsertWriter;
+    private final ExternalProductBatchReader externalProductBatchReader;
+    private final ExternalProductBatchProcessor externalProductBatchProcessor;
+    private final ExternalProductBatchWriter externalProductBatchWriter;
 
     public ProductGroupRegistrationBatchConfig(
             JobRepository jobRepository,
             PlatformTransactionManager transactionManager,
-            ProductGroupBatchReader reader,
-            ProductGroupBatchProcessor processor,
-            ProductGroupBatchWriter writer
+            ProductGroupBatchReader productGroupInsertReader,
+            ProductGroupBatchProcessor productGroupInsertProcessor,
+            ProductGroupBatchWriterWithContext productGroupInsertWriter, ExternalProductBatchReader externalProductBatchReader, ExternalProductBatchProcessor externalProductBatchProcessor, ExternalProductBatchWriter externalProductBatchWriter
     ) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
-        this.reader = reader;
-        this.processor = processor;
-        this.writer = writer;
+        this.productGroupInsertReader = productGroupInsertReader;
+        this.productGroupInsertProcessor = productGroupInsertProcessor;
+        this.productGroupInsertWriter = productGroupInsertWriter;
+        this.externalProductBatchReader = externalProductBatchReader;
+        this.externalProductBatchProcessor = externalProductBatchProcessor;
+        this.externalProductBatchWriter = externalProductBatchWriter;
     }
 
     @Bean
     public Job productGroupInsertJob() {
         return new JobBuilder("productGroupInsertJob", jobRepository)
                 .start(productGroupInsertStep())
+                .next(externalProductInsertStep())
                 .build();
     }
 
     @Bean
     public Step productGroupInsertStep() {
         return new StepBuilder("productGroupInsertStep", jobRepository)
-                .<List<ProductGroupProcessingData>, ProductGroupBatchInsertData>chunk(2, transactionManager)
-                .reader(reader)
-                .processor(processor)
-                .writer(writer)
+                .<List<ProductGroupProcessingData>, ProductGroupBatchInsertData>chunk(5, transactionManager)
+                .reader(productGroupInsertReader)
+                .processor(productGroupInsertProcessor)
+                .writer(productGroupInsertWriter)
+                .build();
+    }
+
+    @Bean
+    public Step externalProductInsertStep() {
+        return new StepBuilder("externalProductInsertStep", jobRepository)
+                .<List<ExternalProductProcessingData>, ExternalProductBatchInsertData>chunk(5, transactionManager)
+                .reader(externalProductBatchReader)
+                .processor(externalProductBatchProcessor)
+                .writer(externalProductBatchWriter)
                 .build();
     }
 

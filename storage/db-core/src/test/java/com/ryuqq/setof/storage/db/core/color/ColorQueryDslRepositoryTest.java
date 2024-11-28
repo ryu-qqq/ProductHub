@@ -34,8 +34,8 @@ class ColorQueryDslRepositoryTest extends BaseRepositoryTest {
 
 
     @Test
-    void shouldFetchColorExists() {
-        boolean result = colorQueryDslRepository.fetchColorExists(color.getId());
+    void shouldExistById() {
+        boolean result = colorQueryDslRepository.existById(color.getId());
         assertTrue(result);
     }
 
@@ -43,7 +43,7 @@ class ColorQueryDslRepositoryTest extends BaseRepositoryTest {
     void shouldFetchBrandResponsesWithPagination() {
         ColorStorageFilterDto colorFilter = ColorModuleHelper.toColorFilter(List.of());
 
-        List<ColorDto> colors = colorQueryDslRepository.fetchColors((colorFilter));
+        List<ColorDto> colors = colorQueryDslRepository.fetchColorByFilter((colorFilter));
 
         assertFalse(colors.isEmpty());
         assertEquals(1, colors.size());
@@ -55,7 +55,7 @@ class ColorQueryDslRepositoryTest extends BaseRepositoryTest {
     @Test
     void shouldReturnEmptyBrandResponsesWhenNoMatches() {
         ColorStorageFilterDto colorFilter = ColorModuleHelper.toColorFilter(List.of(99L));
-        List<ColorDto> result = colorQueryDslRepository.fetchColors(colorFilter);
+        List<ColorDto> result = colorQueryDslRepository.fetchColorByFilter(colorFilter);
         assertTrue(result.isEmpty());
     }
 
@@ -63,14 +63,14 @@ class ColorQueryDslRepositoryTest extends BaseRepositoryTest {
     @Test
     void shouldReturnBrandCount() {
         ColorStorageFilterDto colorFilter = ColorModuleHelper.toColorFilter(List.of());
-        long count = colorQueryDslRepository.fetchColorCount(colorFilter);
+        long count = colorQueryDslRepository.countByFilter(colorFilter);
         assertEquals(1, count);
     }
 
     @Test
     void shouldReturnZeroBrandCountWhenNoMatches() {
         ColorStorageFilterDto colorFilter = ColorModuleHelper.toColorFilter(List.of(99L));
-        long count = colorQueryDslRepository.fetchColorCount(colorFilter);
+        long count = colorQueryDslRepository.countByFilter(colorFilter);
         assertEquals(0, count);
     }
 

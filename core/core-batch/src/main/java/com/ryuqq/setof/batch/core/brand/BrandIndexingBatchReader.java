@@ -4,7 +4,7 @@ package com.ryuqq.setof.batch.core.brand;
 import com.ryuqq.setof.domain.core.brand.BrandFilter;
 import com.ryuqq.setof.domain.core.brand.BrandFinder;
 import com.ryuqq.setof.domain.core.brand.BrandQueryService;
-import com.ryuqq.setof.domain.core.brand.BrandRecord;
+import com.ryuqq.setof.domain.core.brand.Brand;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +12,13 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class BrandIndexingBatchReader implements ItemReader<BrandRecord> {
+public class BrandIndexingBatchReader implements ItemReader<Brand> {
 
 
     private final BrandQueryService brandQueryService;
     private final int pageSize;
     private Long cursorId = null;
-    private Iterator<BrandRecord> currentBatchIterator;
+    private Iterator<Brand> currentBatchIterator;
 
     public BrandIndexingBatchReader(BrandFinder brandQueryService) {
         this.brandQueryService = brandQueryService;
@@ -26,9 +26,9 @@ public class BrandIndexingBatchReader implements ItemReader<BrandRecord> {
     }
 
     @Override
-    public BrandRecord read() {
+    public Brand read() {
         if (currentBatchIterator == null || !currentBatchIterator.hasNext()) {
-            List<BrandRecord> currentBatch = fetchNextBatch();
+            List<Brand> currentBatch = fetchNextBatch();
             if (currentBatch.isEmpty()) {
                 return null;
             }
@@ -38,9 +38,9 @@ public class BrandIndexingBatchReader implements ItemReader<BrandRecord> {
         return currentBatchIterator.next();
     }
 
-    private List<BrandRecord> fetchNextBatch() {
+    private List<Brand> fetchNextBatch() {
         BrandFilter filter = new BrandFilter(null, cursorId, "", pageSize);
-        List<BrandRecord> brands = brandQueryService.findBrands(filter);
+        List<Brand> brands = brandQueryService.fetchBrandsByFilter(filter);
 
         if (!brands.isEmpty()) {
             cursorId = brands.getLast().id();

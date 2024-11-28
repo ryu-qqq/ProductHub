@@ -1,78 +1,105 @@
-# DB CORE 상품 관련 패키지
+# **Storage Module Rds Convention**
 
-상품 관리 모듈 내 `DB CORE`의 각 테이블과 관계를 다음과 같이 설명합니다. 인덱스는 성능을 고려해 설정했으며, 외래 키는 운영 유지보수를 위해 설정하지 않았습니다. 이는 운영 중 장애가 발생할 경우 유연한 대응을 위해 결정한 사항입니다.
+## **목적**
+Storage 모듈은 데이터 저장 및 조회를 담당하며, 데이터 접근 계층의 일관성과 가독성을 높이기 위해 명확한 네이밍 컨벤션을 사용합니다.  
+이 문서는 클래스 및 메서드 네이밍 규칙을 정의하여 개발자 간 협업을 원활하게 하고 유지보수성을 향상시키는 것을 목표로 합니다.
 
-본 패키지에서는 **기본적으로 JPA와 QueryDSL을 사용하여 데이터를 처리**합니다. **저장 시에는 JPA를 사용하고, 조회는 QueryDSL을 활용**하여 복잡한 조건을 효율적으로 처리합니다. 향후 성능이 더 필요하게 된다면, `JdbcTemplate`을 활용하여 **배치 인서트** 등을 구현할 계획입니다.
+---
 
+## **클래스 네이밍 컨벤션**
 
-RDS - 운영 MYSQL, 테스트 H2
+### **1. 레포지토리 인터페이스**
+- **역할**: 데이터 저장, 수정, 삭제 작업의 추상화를 정의.
+- **네이밍 규칙**: `XXPersistenceRepository`
+    - **예**:
+        - `ProductGroupPersistenceRepository`
+        - `UserPersistenceRepository`
 
+### **2. 구현체**
+#### **JPA 기반 구현체**
+- **역할**: JPA를 이용한 데이터 접근 로직 정의.
+- **네이밍 규칙**: `XXJpaRepository`
+    - **예**:
+        - `ProductGroupJpaRepository`
+        - `UserJpaRepository`
 
-## 테이블 개요 및 관계도
+#### **JDBC 기반 구현체**
+- **역할**: JDBC를 이용한 데이터 접근 로직 정의.
+- **네이밍 규칙**: `XXJdbcRepository`
+    - **예**:
+        - `ProductGroupJdbcRepository`
+        - `UserJdbcRepository`
 
-### 1. `PRODUCT_GROUP`
-- **설명**: 상품 그룹에 대한 정보를 저장하며, 개별 상품들이 속하는 최상위 그룹입니다.
-- **주요 필드**: `productGroupName`(상품 그룹 이름), `styleCode`(스타일 코드), `categoryId`, `brandId`, `sellerId`, `productCondition`(상품 상태), `managementType`(관리 타입), `optionType`(옵션 타입), `regularPrice`(정가), `currentPrice`(판매가).
-- **관계**: `PRODUCT`, `PRODUCT_NOTICE`, `PRODUCT_DELIVERY`, `PRODUCT_GROUP_IMAGE`, `PRODUCT_GROUP_DETAIL_DESCRIPTION`와 연관됩니다.
-- **인덱스**: `sellerId`, `categoryId`, `brandId`, `styleCode`
+#### **JPA와 JDBC를 함께 사용하는 구현체**
+- **역할**: JPA와 JDBC를 조합한 데이터 접근 로직 정의.
+- **네이밍 규칙**: `XXHybridRepository`
+    - **예**:
+        - `ProductGroupHybridRepository`
+        - `UserHybridRepository`
 
-### 2. `PRODUCT`
-- **설명**: 개별 상품 정보를 저장하며, `PRODUCT_GROUP`의 하위 단위입니다.
-- **주요 필드**: `productGroupId`, `soldOutYn`(품절 여부), `displayYn`(표시 여부), `quantity`(수량), `additionalPrice`(추가 가격).
-- **관계**: `PRODUCT_OPTION`와 연관됩니다.
-- **인덱스**: `productGroupId`
+---
 
-### 3. `PRODUCT_OPTION`
-- **설명**: 개별 상품에 대한 옵션 정보를 매핑하는 테이블로, 옵션 그룹과 옵션 상세를 연결합니다.
-- **주요 필드**: `productId`, `optionGroupId`, `optionDetailId`.
-- **관계**: `PRODUCT`, `OPTION_GROUP`, `OPTION_DETAIL`와 연관됩니다.
-- **인덱스**: `productId`, `optionGroupId`, `optionDetailId`
+## **메서드 네이밍 컨벤션**
 
-### 4. `OPTION_GROUP`
-- **설명**: 옵션 그룹 정보를 저장하며, 각 옵션 이름(`OptionName`)을 관리합니다.
-- **주요 필드**: `optionName`(예: `SIZE`, `COLOR`).
-- **관계**: `OPTION_DETAIL`와 연관됩니다.
+### **1. 기본 형식**
+- **구조**: `동사 + 작업 대상`
+    - **동사**: 메서드가 수행하는 작업 (예: `save`, `update`, `delete`, `fetch` 등).
+    - **작업 대상**: 작업의 대상이 되는 엔티티나 데이터 (예: `ProductGroup`, `Configs` 등).
 
-### 5. `OPTION_DETAIL`
-- **설명**: 각 옵션 그룹의 상세 정보로, 옵션 값(예: `블랙`, `S`)을 저장합니다.
-- **주요 필드**: `optionGroupId`, `optionValue`.
-- **관계**: `OPTION_GROUP`와 연결되며 `PRODUCT_OPTION`에 의해 `PRODUCT`와 매핑됩니다.
-- **인덱스**: `optionGroupId`
+---
 
-### 6. `PRODUCT_NOTICE`
-- **설명**: 상품의 상세 설명 정보를 저장하는 테이블로, 주로 상품의 재질, 제조사, 사이즈 등의 정보를 포함합니다.
-- **주요 필드**: `productGroupId`, `material`, `color`, `size`, `maker`, `origin`, `washingMethod`, `yearMonth`, `assuranceStandard`, `asPhone`.
-- **관계**: `PRODUCT_GROUP`와 연관됩니다.
-- **인덱스**: `productGroupId`
+### **2. CRUD 작업별 규칙**
 
-### 7. `PRODUCT_DELIVERY`
-- **설명**: 상품의 배송 및 반품 정보를 저장하는 테이블로, 상품의 배송 지역, 배송료, 반품 방식 등의 정보를 포함합니다.
-- **주요 필드**: `productGroupId`, `deliveryArea`, `deliveryFee`, `deliveryPeriodAverage`, `returnMethodDomestic`, `returnCourierDomestic`, `returnChargeDomestic`, `returnExchangeAreaDomestic`.
-- **관계**: `PRODUCT_GROUP`와 연관됩니다.
-- **인덱스**: `productGroupId`
+#### **저장/수정**
+- **단일 항목 저장**: `save<Entity>`
+    - **예**: `saveProductGroupConfig`
+- **여러 항목 저장**: `saveAll<Entity>`
+    - **예**: `saveAllProductGroupConfigs`
+- **수정 작업**: `update<Entity>`
+    - **예**: `updateProductGroupNameConfigs`
 
-### 8. `PRODUCT_GROUP_IMAGE`
-- **설명**: 상품 그룹에 대한 이미지를 저장하며, 다양한 이미지 유형을 지원합니다(예: 썸네일, 상세 이미지).
-- **주요 필드**: `productGroupId`, `productImageType`, `imageUrl`.
-- **관계**: `PRODUCT_GROUP`와 연관됩니다.
-- **인덱스**: `productGroupId`
+#### **삭제**
+- **단일 항목 삭제**: `delete<Entity>`
+    - **예**: `deleteProductGroup`
+- **조건에 따른 삭제**: `deleteBy<Condition>`
+    - **예**: `deleteByStatus`
 
-### 9. `PRODUCT_GROUP_DETAIL_DESCRIPTION`
-- **설명**: 상품 그룹의 상세 설명을 LOB 형태로 저장하는 테이블입니다.
-- **주요 필드**: `productGroupId`, `detailDescription`.
-- **관계**: `PRODUCT_GROUP`와 연관됩니다.
-- **인덱스**: `productGroupId`
+#### **조회**
+- **단일 항목 조회**: `find<Entity>` 또는 `fetch<Entity>`
+    - **예**: `findProductGroupById`
+- **조건부 조회**: `findBy<Condition>` 또는 `fetchBy<Condition>`
+    - **예**: `fetchProductGroupConfigsByStatus`
+- **모두 조회**: `findAll<Entity>` 또는 `fetchAll<Entity>`
+    - **예**: `fetchAllProductGroupConfigs`
 
-### 10. `BRAND`
-- **설명**: 브랜드 정보를 저장하는 테이블로, 각 브랜드의 이름과 아이콘 이미지 URL, 표시 여부를 포함합니다.
-- **주요 필드**: `brandName`(브랜드 이름), `brandIconImageUrl`(아이콘 이미지 URL), `displayYn`(표시 여부).
+---
 
-### 11. `CATEGORY`
-- **설명**: 상품의 카테고리 정보를 저장하는 테이블로, 계층형 구조를 지원합니다.
-- **주요 필드**: `categoryName`(카테고리 이름), `depth`(카테고리 계층 깊이), `parentCategoryId`(상위 카테고리 ID), `displayYn`(표시 여부), `targetGroup`(타겟 그룹), `categoryType`(카테고리 타입), `path`(카테고리 경로).
+## **예시**
 
-### 11. `COLOR`
-- **설명**: 상품 옵션으로 사용될 색상 정보를 저장하는 테이블로, 각 색상 이름만을 저장합니다.
-- **주요 필드**: `colorName` (색상 이름).
+### **1. 인터페이스**
+```java
+public interface ProductGroupPersistenceRepository {
+    void saveProductGroupConfig(ProductGroupConfigEntity configEntity);
+    void saveAllProductGroupConfigs(List<ProductGroupConfigEntity> configEntities);
+    void updateProductGroupNameConfigs(List<ProductGroupNameConfigDto> configDtos);
+    void deleteProductGroupConfig(Long configId);
+}
+```
+---
 
+## **결론**
 
+### **클래스 네이밍**
+1. **인터페이스**: `XXPersistenceRepository`
+    - 데이터 저장 로직의 추상화.
+2. **구현체**:
+    - JPA 기반: `XXJpaRepository`
+    - JDBC 기반: `XXJdbcRepository`
+    - JPA+JDBC 혼합: `XXHybridRepository`
+
+### **메서드 네이밍**
+- **저장**: `save<Entity>` / `saveAll<Entity>`
+- **수정**: `update<Entity>`/ `supdateAll<Entity>`
+- **조회**: `fetch<Entity>` / `fetchBy<Condition>`
+
+이 컨벤션을 따르면 코드의 가독성과 유지보수성이 향상되며, 역할과 책임이 명확히 구분됩니다.

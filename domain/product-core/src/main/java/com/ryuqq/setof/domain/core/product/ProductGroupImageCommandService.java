@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImagePersistenceService;
+import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImagePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,13 +10,10 @@ import java.util.List;
 @Service
 public class ProductGroupImageCommandService {
 
-    private final ProductGroupImagePersistenceService productGroupImagePersistenceService;
-    private final ProductGroupImageFinder productGroupImageFinder;
+    private final ProductGroupImagePersistenceRepository productGroupImagePersistenceRepository;
 
-
-    public ProductGroupImageCommandService(ProductGroupImagePersistenceService productGroupImagePersistenceService, ProductGroupImageFinder productGroupImageFinder) {
-        this.productGroupImagePersistenceService = productGroupImagePersistenceService;
-        this.productGroupImageFinder = productGroupImageFinder;
+    public ProductGroupImageCommandService(ProductGroupImagePersistenceRepository productGroupImagePersistenceRepository) {
+        this.productGroupImagePersistenceRepository = productGroupImagePersistenceRepository;
     }
 
     public void inserts(long productGroupId, List<ProductGroupImageCommand> productGroupImageCommands) {
@@ -24,7 +21,7 @@ public class ProductGroupImageCommandService {
                 .map(productGroupImageCommand -> productGroupImageCommand.toEntity(productGroupId))
                 .toList();
 
-        productGroupImagePersistenceService.insertAll(productGroupImageEntities);
+        productGroupImagePersistenceRepository.saveAllProductGroupImage(productGroupImageEntities);
     }
 
     public void updateAndInserts(long productGroupId, List<ProductGroupImageCommand> productGroupImageCommands) {
@@ -40,11 +37,11 @@ public class ProductGroupImageCommandService {
         }
 
         if(!toInsert.isEmpty()){
-            productGroupImagePersistenceService.insertAll(toInsert);
+            productGroupImagePersistenceRepository.saveAllProductGroupImage(toInsert);
         }
 
         if(!toUpdate.isEmpty()){
-            productGroupImagePersistenceService.updateAll(toUpdate);
+            productGroupImagePersistenceRepository.updateAllProductGroupImage(toUpdate);
         }
     }
 

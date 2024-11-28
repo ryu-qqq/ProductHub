@@ -1,4 +1,6 @@
 dependencies {
+
+    implementation project(':core:core-enum')
     //Redis
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
 

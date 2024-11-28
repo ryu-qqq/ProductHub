@@ -28,16 +28,16 @@ public class ProductGroupContextUpdater {
         UpdateDecision groupDecision = productGroupChecker.checkUpdates(existingContext.getProductGroup(), newContext.productGroupCommand());
         decision.merge(groupDecision);
 
-        UpdateDecision deliveryDecision = productDeliveryChecker.checkUpdates(existingContext.getDelivery(), newContext.productDeliveryCommand());
+        UpdateDecision deliveryDecision = productDeliveryChecker.checkUpdates(existingContext.getProductGroup().delivery(), newContext.productDeliveryCommand());
         decision.merge(deliveryDecision);
 
-        UpdateDecision noticeDecision = productNoticeChecker.checkUpdates(existingContext.getNotice(), newContext.productNoticeCommand());
+        UpdateDecision noticeDecision = productNoticeChecker.checkUpdates(existingContext.getProductGroup().notice(), newContext.productNoticeCommand());
         decision.merge(noticeDecision);
 
-        UpdateDecision imagesDecision = productGroupImageChecker.checkUpdates(existingContext.getImages(), newContext.productGroupImageCommands());
+        UpdateDecision imagesDecision = productGroupImageChecker.checkUpdates(existingContext.getProductGroup().images(), newContext.productGroupImageCommands());
         decision.merge(imagesDecision);
 
-        UpdateDecision descriptionDecision = productGroupDetailDescriptionChecker.checkUpdates(existingContext.getDetailDescription(), newContext.productDetailDescriptionCommand());
+        UpdateDecision descriptionDecision = productGroupDetailDescriptionChecker.checkUpdates(existingContext.getProductGroup().detailDescription(), newContext.productDetailDescriptionCommand());
         decision.merge(descriptionDecision);
 
         UpdateDecision productDecision = productChecker.checkUpdates(existingContext.getProducts(), newContext.productCommands());

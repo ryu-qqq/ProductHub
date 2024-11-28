@@ -2,6 +2,8 @@ package com.ryuqq.setof.api.core.data;
 
 import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.*;
+import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
+import com.ryuqq.setof.domain.core.color.Color;
 import com.ryuqq.setof.enums.core.*;
 import com.ryuqq.setof.domain.core.product.*;
 
@@ -14,12 +16,12 @@ import java.util.Set;
 public class ProductModuleHelper {
 
     public static ProductGroupInsertRequestDto toProductGroupInsertRequestDto(String productGroupName, BigDecimal regularPrice, BigDecimal currentPrice, ProductCondition productCondition) {
-        return new ProductGroupInsertRequestDto(1L, 2L, 3L, productGroupName, "Style123", productCondition, ManagementType.MENUAL, OptionType.OPTION_ONE, regularPrice, currentPrice, false, true, "");
+        return new ProductGroupInsertRequestDto(1L,1L, 2L, 3L, productGroupName, "Style123", productCondition, ManagementType.MENUAL, OptionType.OPTION_ONE, regularPrice, currentPrice, false, false,  "");
     }
 
 
     public static ProductGroupCommandContextRequestDto toProductGroupCommandContextRequestDto() {
-        ProductGroupInsertRequestDto productGroupInsertRequestDto = new ProductGroupInsertRequestDto(1L, 2L, 3L, "Test Product Group", "Style123", ProductCondition.NEW, ManagementType.MENUAL, OptionType.OPTION_ONE, BigDecimal.valueOf(1000), BigDecimal.valueOf(800), false, true, "");
+        ProductGroupInsertRequestDto productGroupInsertRequestDto = new ProductGroupInsertRequestDto(1L, 1L, 2L, 3L, "Test Product Group", "Style123", ProductCondition.NEW, ManagementType.MENUAL, OptionType.OPTION_ONE, BigDecimal.valueOf(1000), BigDecimal.valueOf(800), false, true, "");
         ProductNoticeInsertRequestDto productNoticeInsertRequestDto = new ProductNoticeInsertRequestDto("Cotton", "Blue", "M", "BrandX", Origin.KR, "Dry Clean", "2022-09", "Standard", "010-1234-5678");
         ProductDeliveryRequestDto productDeliveryRequestDto = new ProductDeliveryRequestDto("Seoul", BigDecimal.valueOf(10), 2, ReturnMethod.RETURN_CONSUMER, ShipmentCompanyCode.SHIP01, BigDecimal.valueOf(5), "Seoul");
         ProductGroupImageRequestDto productGroupImageRequestDto = new ProductGroupImageRequestDto(ProductImageType.MAIN, "http://image.url");
@@ -52,9 +54,26 @@ public class ProductModuleHelper {
                 false,
                 true,
                 ProductStatus.WAITING,
-                ""
+                "",
+                toProductGroupConfigContextResponse()
         );
     }
+
+    public static ProductGroupConfigContextResponse toProductGroupConfigContextResponse(){
+        return new ProductGroupConfigContextResponse(
+                toProductGroupConfigResponse(),
+                List.of(toProductGroupNameConfigResponse())
+        );
+    }
+
+    public static ProductGroupConfigResponse toProductGroupConfigResponse(){
+        return new ProductGroupConfigResponse(1L, 1L, true);
+    }
+
+    public static ProductGroupNameConfigResponse toProductGroupNameConfigResponse(){
+        return new ProductGroupNameConfigResponse(Origin.US, "");
+    }
+
 
 
     public static PriceResponse toPrice(long regularPrice, long currentPrice, int discountRate){
@@ -144,4 +163,18 @@ public class ProductModuleHelper {
                 toProducts(productGroupId, optionType)
         );
     }
+
+    public static ExternalMallProductPendingDataResponse toExternalMallProductPendingDataResponse(){
+        return new ExternalMallProductPendingDataResponse(
+                1L,
+                1L,
+                1L,
+                Origin.US,
+                true
+        );
+    }
+
+
+
+
 }

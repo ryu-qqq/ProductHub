@@ -3,9 +3,9 @@ package com.ryuqq.setof.api.core.controller.v1.site.service;
 import com.ryuqq.setof.api.core.controller.v1.site.mapper.CrawlProductSliceMapper;
 import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse;
 import com.ryuqq.setof.domain.core.generic.Slice;
-import com.ryuqq.setof.domain.core.site.CrawlProduct;
-import com.ryuqq.setof.domain.core.site.CrawlProductFilter;
-import com.ryuqq.setof.domain.core.site.CrawlProductQueryService;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProduct;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductFilter;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductQueryService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

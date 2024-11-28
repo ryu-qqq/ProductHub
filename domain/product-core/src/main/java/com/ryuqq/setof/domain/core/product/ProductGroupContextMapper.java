@@ -1,100 +1,40 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.domain.core.brand.BrandRecord;
-import com.ryuqq.setof.domain.core.category.CategoryRecord;
-import com.ryuqq.setof.storage.db.core.brand.dto.BrandDto;
-import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
-import com.ryuqq.setof.storage.db.core.product.dto.*;
+import com.ryuqq.setof.domain.core.brand.Brand;
+import com.ryuqq.setof.domain.core.category.Category;
+import com.ryuqq.setof.domain.core.category.CategoryRelation;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductGroupContextMapper {
 
-    public ProductGroupContext toProductGroupContext(ProductGroupContextDto dto) {
-        long productGroupId = dto.getProductGroupDto().getProductGroupId();
-        return new ProductGroupContext(
-                toProductGroup(dto.getProductGroupDto()),
-                toProductDelivery(productGroupId, dto.getProductDeliveryDto()),
-                toProductNotice(productGroupId, dto.getProductNoticeDto()),
-                toProductGroupImages(productGroupId, dto.getProductGroupImageDtos()),
-                toProductDetailDescription(productGroupId, dto.getProductDetailDescriptionDto()),
-                new LinkedHashSet<>()
-        );
-    }
+    public List<ProductGroupContext> toDomains(ProductGroupContextAggregate aggregate) {
+        Map<Long, Brand> brandMap = aggregate.brands().stream()
+                .collect(Collectors.toMap(Brand::id, Function.identity(), (v1, v2) -> v2));
 
-    private ProductGroup toProductGroup(ProductGroupDto dto) {
-        return new ProductGroup(
-                dto.getProductGroupId(),
-                dto.getSellerId(),
-                null,
-                List.of(toCategory(dto.getCategoryDto())),
-                toBrand(dto.getBrandDto()),
-                dto.getProductGroupName(),
-                dto.getStyleCode(),
-                dto.getProductCondition(),
-                dto.getManagementType(),
-                dto.getOptionType(),
-                new Price(dto.getRegularPrice(), dto.getCurrentPrice(), dto.getDiscountRate()),
-                dto.isSoldOutYn(),
-                dto.isDisplayYn(),
-                dto.getProductStatus(),
-                dto.getKeywords()
-        );
-    }
+        Map<Long, CategoryRelation> categoryMap = aggregate.categories().stream()
+                .collect(Collectors.toMap(CategoryRelation::categoryId, Function.identity(), (v1, v2) -> v2));
 
-    private ProductNotice toProductNotice(long productGroupId, ProductNoticeDto dto) {
-        return new ProductNotice(
-                productGroupId,
-                dto.getMaterial(),
-                dto.getColor(),
-                dto.getSize(),
-                dto.getMaker(),
-                dto.getOrigin(),
-                dto.getWashingMethod(),
-                dto.getYearMonth(),
-                dto.getAssuranceStandard(),
-                dto.getAsPhone()
-        );
-    }
+        Map<Long, List<Product>> productsByGroupId = aggregate.products().stream()
+                .collect(Collectors.groupingBy(Product::getProductGroupId));
 
-    private ProductDelivery toProductDelivery(long productGroupId, ProductDeliveryDto dto) {
-        return new ProductDelivery(
-                productGroupId,
-                dto.getDeliveryArea(),
-                dto.getDeliveryFee(),
-                dto.getDeliveryPeriodAverage(),
-                dto.getReturnMethodDomestic(),
-                dto.getReturnCourierDomestic(),
-                dto.getReturnChargeDomestic(),
-                dto.getReturnExchangeAreaDomestic()
-        );
-    }
+        Map<Long, ProductGroupConfigContext> configMap = aggregate.configs().stream()
+                .collect(Collectors.toMap(ProductGroupConfigContext::getConfigId, Function.identity(), (v1, v2) -> v2));
 
-    private ProductDetailDescription toProductDetailDescription(long productGroupId, ProductDetailDescriptionDto dto) {
-        return new ProductDetailDescription(productGroupId, dto.getDetailDescription());
-    }
-
-    private List<ProductGroupImage> toProductGroupImages(long productGroupId, List<ProductGroupImageDto> images) {
-        return images.stream()
-                .map(dto ->
-                        new ProductGroupImage(
-                                dto.getProductGroupImageId(),
-                                productGroupId,
-                                dto.getProductImageType(),
-                                dto.getImageUrl(),
-                                dto.getOriginUrl())
-                )
+        return aggregate.productGroups().stream()
+                .map(group -> new ProductGroupContext(
+                        group,
+                        brandMap.get(group.brandId()),
+                        categoryMap.get(group.categoryId()).categories(),
+                        productsByGroupId.getOrDefault(group.productGroupId(), List.of()),
+                        configMap.get(group.configId())
+                ))
                 .toList();
     }
 
-    private CategoryRecord toCategory(CategoryDto dto) {
-        return CategoryRecord.toCategoryRecord(dto);
-    }
-
-    private BrandRecord toBrand(BrandDto dto) {
-        return BrandRecord.toBrandRecord(dto);
-    }
 }

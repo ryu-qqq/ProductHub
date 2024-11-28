@@ -5,5 +5,5 @@ import com.ryuqq.setof.storage.db.core.product.dto.ProductContextDto;
 import java.util.List;
 
 public interface ProductQueryRepository {
-    List<ProductContextDto> fetchProductContexts(List<Long> productGroupIds);
+    List<ProductContextDto> fetchByProductGroupIds(List<Long> productGroupIds);
 }

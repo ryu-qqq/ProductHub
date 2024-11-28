@@ -1,6 +1,6 @@
 package com.ryuqq.setof.batch.core.brand;
 
-import com.ryuqq.setof.domain.core.brand.BrandRecord;
+import com.ryuqq.setof.domain.core.brand.Brand;
 import com.ryuqq.setof.storage.db.index.brand.BrandDocument;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -43,7 +43,7 @@ public class BrandIndexingBatchConfig {
     @Bean
     public Step brandIndexingStep() {
         return new StepBuilder("brandIndexingStep", jobRepository)
-                .<BrandRecord, BrandDocument>chunk(100, transactionManager)
+                .<Brand, BrandDocument>chunk(100, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)

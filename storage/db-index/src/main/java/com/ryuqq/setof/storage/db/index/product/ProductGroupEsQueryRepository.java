@@ -17,14 +17,17 @@ public class ProductGroupEsQueryRepository implements ProductGroupDocumentQueryR
 
     private final ElasticsearchQueryTemplate elasticsearchQueryTemplate;
 
+    private final static String ID_FIELD = "productGroupId";
+    private final static String PRODUCT_DOCUMENT = "product-group-command-context";
+
     public ProductGroupEsQueryRepository(ElasticsearchQueryTemplate elasticsearchQueryTemplate) {
         this.elasticsearchQueryTemplate = elasticsearchQueryTemplate;
     }
 
     @Override
-    public List<ProductGroupCommandContextDocument> fetchProductGroupCommandContextDocument(List<Long> productGroupIds) {
+    public List<ProductGroupCommandContextDocument> fetchByIds(List<Long> productGroupIds) {
         Query termsQuery = Query.of(q -> q.terms(
-                t -> t.field("productGroupId")
+                t -> t.field(ID_FIELD)
                         .terms(TermsQueryField.of(tf -> tf.value(
                                 productGroupIds.stream()
                                         .map(id -> FieldValue.of(String.valueOf(id)))
@@ -33,8 +36,9 @@ public class ProductGroupEsQueryRepository implements ProductGroupDocumentQueryR
         ));
 
         SearchRequest searchRequest = SearchRequest.of(s -> s
-                .index("product-group-command-context")
+                .index(PRODUCT_DOCUMENT)
                 .query(termsQuery)
+                .size(productGroupIds.size())
         );
 
         SearchResponse<ProductGroupCommandContextDocument> searchResponse =

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ProductGroupImageQueryRepository {
 
-    List<ProductGroupImageDto> fetchProductGroupImages(long productGroupId);
+    List<ProductGroupImageDto> fetchByProductGroupId(long productGroupId);
 }

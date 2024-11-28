@@ -22,7 +22,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public boolean fetchBrandExists(long brandId) {
+    public boolean existById(long brandId) {
         Long brandOpt = queryFactory
                 .select(brandEntity.id)
                 .from(brandEntity)
@@ -33,7 +33,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public Optional<BrandDto> fetchBrand(long brandId) {
+    public Optional<BrandDto> fetchById(long brandId) {
         return Optional.ofNullable(queryFactory
                         .select(
                                 new QBrandDto(
@@ -50,7 +50,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public long fetchBrandCount(BrandStorageFilterDto brandFilter) {
+    public long countByFilter(BrandStorageFilterDto brandFilter) {
         Long count = queryFactory.select(
                         brandEntity.count()
                 )
@@ -63,7 +63,7 @@ public class BrandQueryDslRepository implements BrandQueryRepository {
     }
 
     @Override
-    public List<BrandDto> fetchBrands(BrandStorageFilterDto brandFilter) {
+    public List<BrandDto> fetchByFilter(BrandStorageFilterDto brandFilter) {
         return queryFactory
                 .select(
                         new QBrandDto(

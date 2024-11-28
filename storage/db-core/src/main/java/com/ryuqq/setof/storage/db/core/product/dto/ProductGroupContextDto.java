@@ -11,17 +11,18 @@ public class ProductGroupContextDto {
     private ProductDeliveryDto productDeliveryDto;
     private List<ProductGroupImageDto> productGroupImageDtos;
     private ProductDetailDescriptionDto productDetailDescriptionDto;
-
+    private ProductGroupConfigDto productGroupConfigDto;
 
     protected ProductGroupContextDto() {}
 
     @QueryProjection
-    public ProductGroupContextDto(ProductGroupDto productGroupDto, ProductNoticeDto productNoticeDto, ProductDeliveryDto productDeliveryDto, List<ProductGroupImageDto> productGroupImageDtos, ProductDetailDescriptionDto productDetailDescriptionDto) {
+    public ProductGroupContextDto(ProductGroupDto productGroupDto, ProductNoticeDto productNoticeDto, ProductDeliveryDto productDeliveryDto, List<ProductGroupImageDto> productGroupImageDtos, ProductDetailDescriptionDto productDetailDescriptionDto, ProductGroupConfigDto productGroupConfigDto) {
         this.productGroupDto = productGroupDto;
         this.productNoticeDto = productNoticeDto;
         this.productDeliveryDto = productDeliveryDto;
         this.productGroupImageDtos = productGroupImageDtos;
         this.productDetailDescriptionDto = productDetailDescriptionDto;
+        this.productGroupConfigDto = productGroupConfigDto;
     }
 
     public ProductGroupDto getProductGroupDto() {
@@ -43,4 +44,9 @@ public class ProductGroupContextDto {
     public ProductDetailDescriptionDto getProductDetailDescriptionDto() {
         return productDetailDescriptionDto;
     }
+
+    public ProductGroupConfigDto getProductGroupConfigDto() {
+        return productGroupConfigDto;
+    }
+
 }

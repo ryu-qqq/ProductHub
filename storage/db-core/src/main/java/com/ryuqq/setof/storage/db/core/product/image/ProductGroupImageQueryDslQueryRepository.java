@@ -17,7 +17,7 @@ public class ProductGroupImageQueryDslQueryRepository implements ProductGroupIma
         this.queryFactory = queryFactory;
     }
 
-    public List<ProductGroupImageDto> fetchProductGroupImages(long productGroupId){
+    public List<ProductGroupImageDto> fetchByProductGroupId(long productGroupId){
         return queryFactory.select(
                     new QProductGroupImageDto(
                             productGroupImageEntity.id,

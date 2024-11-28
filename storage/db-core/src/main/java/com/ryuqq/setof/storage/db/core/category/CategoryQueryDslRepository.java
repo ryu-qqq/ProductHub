@@ -36,7 +36,7 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
     }
 
     @Override
-    public boolean fetchCategoryExists(long categoryId) {
+    public boolean existById(long categoryId) {
         Long categoryOpt = queryFactory
                 .select(categoryEntity.id)
                 .from(categoryEntity)
@@ -47,7 +47,7 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
     }
 
     @Override
-    public List<CategoryDto> fetchCategories(CategoryStorageFilterDto categoryFilter) {
+    public List<CategoryDto> fetchByFilter(CategoryStorageFilterDto categoryFilter) {
         return queryFactory
                 .select(new QCategoryDto(
                         categoryEntity.id,
@@ -73,7 +73,7 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
     }
 
     @Override
-    public long fetchCategoryCount(CategoryStorageFilterDto categoryFilter) {
+    public long countByFilter(CategoryStorageFilterDto categoryFilter) {
         Long count =  queryFactory.select(
                         categoryEntity.count()
                 )
@@ -87,31 +87,23 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
         return count !=null ? count : 0;
     }
 
-    @Override
-    public List<CategoryDto> fetchChildCategories(long categoryId) {
-        return fetchRecursiveCategories(categoryId, true);
-    }
 
     @Override
-    public List<CategoryDto> fetchParentCategories(long categoryId) {
-        return fetchRecursiveCategories(categoryId, false);
-    }
-
-    private List<CategoryDto> fetchRecursiveCategories(long categoryId, boolean isChild) {
+    public List<CategoryDto> fetchRecursiveByIds(List<Long> categoryIds, boolean isParentRelation) {
         JPASQLQuery<CategoryEntity> q = new JPASQLQuery<>(em, SQLTemplates.DEFAULT);
         QCategoryEntity c = new QCategoryEntity("c");
         QCategoryEntity sub = new QCategoryEntity("sub");
         EntityPathBase<QCategoryEntity> rec = new EntityPathBase<>(QCategoryEntity.class, "sub");
 
-        JPQLQuery<CategoryEntity> query1 = JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType,  c.path))
+        JPQLQuery<CategoryEntity> query1 = JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType, c.path))
                 .from(c)
-                .where(c.id.eq(categoryId));
+                .where(c.id.in(categoryIds)); // 변경: 다중 ID를 처리
 
-        JPQLQuery<CategoryEntity> query2 = isChild
-                ? JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType,  c.path))
+        JPQLQuery<CategoryEntity> query2 = isParentRelation
+                ? JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType, c.path))
                 .from(rec)
                 .innerJoin(c).on(sub.id.eq(c.parentCategoryId))
-                : JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType,  c.path))
+                : JPAExpressions.select(Projections.fields(CategoryEntity.class, c.id, c.categoryName, c.depth, c.parentCategoryId, c.displayYn, c.targetGroup, c.categoryType, c.path))
                 .from(rec)
                 .innerJoin(c).on(c.id.eq(sub.parentCategoryId));
 
@@ -130,9 +122,8 @@ public class CategoryQueryDslRepository implements CategoryQueryRepository {
                                 sub.path
                         ))
                 .from(rec)
-                .orderBy(isChild ? sub.depth.asc() : sub.depth.desc())
+                .orderBy(isParentRelation ? sub.depth.asc() : sub.depth.desc())
                 .fetch();
-
     }
 
     private BooleanExpression categoryIdEq(long categoryId){

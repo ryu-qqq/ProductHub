@@ -1,5 +1,6 @@
 package com.ryuqq.setof.api.core.filter;
 
+import com.ryuqq.setof.domain.core.TraceIdHolder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
@@ -22,6 +23,9 @@ public class LoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         long startTime = System.currentTimeMillis();
+        String traceId = UUID.randomUUID().toString();
+        TraceIdHolder.setTraceId(traceId); // traceId 저장
+
 
         RequestWrapper requestWrapper = new RequestWrapper(request);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
@@ -35,6 +39,8 @@ public class LoggingFilter extends OncePerRequestFilter {
             logResponse(wrappedResponse, duration);
 
             wrappedResponse.copyBodyToResponse();
+            TraceIdHolder.clear();
+
         }
     }
 
@@ -42,9 +48,10 @@ public class LoggingFilter extends OncePerRequestFilter {
         try {
             String userAgent = request.getHeader("User-Agent");
             String clientIp = getClientIp(request);
-
+            String traceId = TraceIdHolder.getTraceId();
             String body = new String(request.getContentAsByteArray());
-            log.info("Request: method={}, uri={}, headers={}, body={}, clientIp={}, userAgent={}",
+            log.info("Request: traceId ={}, method={}, uri={}, headers={}, body={}, clientIp={}, userAgent={}",
+                    traceId,
                     request.getMethod(),
                     request.getRequestURI(),
                     getHeaders(request),
@@ -59,7 +66,9 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     private void logResponse(ContentCachingResponseWrapper response, long duration) {
         try {
-            log.info("Response: status={}, headers={}, body={}, duration={}ms",
+            String traceId = TraceIdHolder.getTraceId();
+            log.info("Response: traceId={}, status={}, headers={}, body={}, duration={}ms",
+                    traceId,
                     response.getStatus(),
                     response.getHeaderNames(),
                     new String(response.getContentAsByteArray()),

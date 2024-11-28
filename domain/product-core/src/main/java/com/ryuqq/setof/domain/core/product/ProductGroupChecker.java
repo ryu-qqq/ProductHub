@@ -42,48 +42,48 @@ public class ProductGroupChecker implements UpdateChecker<ProductGroup, ProductG
     }
 
     private boolean isUpdateBrand(ProductGroup existing, long newBrandId) {
-        return existing.getBrand().id() != newBrandId;
+        return existing.brandId() != newBrandId;
     }
 
     private boolean isUpdateCategory(ProductGroup existing, long newCategoryId) {
-        return existing.getCategories().stream().noneMatch(c -> c.id() == newCategoryId);
+        return existing.colorIds().stream().noneMatch(c -> c == newCategoryId);
     }
 
     private boolean isUpdateProductName(ProductGroup existing, String newName) {
-        return !Objects.equals(existing.getProductGroupName(), newName);
+        return !Objects.equals(existing.productGroupName(), newName);
     }
 
     private boolean isUpdateStyleCode(ProductGroup existing, String newStyleCode) {
-        return !Objects.equals(existing.getStyleCode(), newStyleCode);
+        return !Objects.equals(existing.styleCode(), newStyleCode);
     }
 
     private boolean isUpdateProductCondition(ProductGroup existing, ProductCondition newCondition) {
-        return existing.getProductCondition() != newCondition;
+        return existing.productCondition() != newCondition;
     }
 
     private boolean isUpdateManagementType(ProductGroup existing, ManagementType newManagementType) {
-        return existing.getManagementType() != newManagementType;
+        return existing.managementType() != newManagementType;
     }
 
     private boolean isUpdateOptionType(ProductGroup existing, OptionType newOptionType) {
-        return existing.getOptionType() != newOptionType;
+        return existing.optionType() != newOptionType;
     }
 
     private boolean isUpdatePrice(ProductGroup existing, BigDecimal newRegularPrice, BigDecimal newCurrentPrice) {
-        return !Objects.equals(existing.getPrice().getRegularPrice(), Money.wons(newRegularPrice)) ||
-                !Objects.equals(existing.getPrice().getCurrentPrice(), Money.wons(newCurrentPrice));
+        return !Objects.equals(existing.price().getRegularPrice(), Money.wons(newRegularPrice)) ||
+                !Objects.equals(existing.price().getCurrentPrice(), Money.wons(newCurrentPrice));
     }
 
     private boolean isUpdateSoldOutStatus(ProductGroup existing, boolean newSoldOutYn) {
-        return existing.isSoldOutYn() != newSoldOutYn;
+        return existing.soldOutYn() != newSoldOutYn;
     }
 
     private boolean isUpdateDisplayStatus(ProductGroup existing, boolean newDisplayYn) {
-        return existing.isDisplayYn() != newDisplayYn;
+        return existing.displayYn() != newDisplayYn;
     }
 
     private boolean isUpdateProductStatus(ProductGroup existing, ProductStatus newStatus) {
-        return existing.getProductStatus() != newStatus;
+        return existing.productStatus() != newStatus;
     }
 
 

@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
-import com.ryuqq.setof.storage.db.core.product.option.ProductPersistenceService;
+import com.ryuqq.setof.storage.db.core.product.option.ProductPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -9,11 +9,11 @@ import java.util.*;
 @Service
 public class ProductCommandService {
 
-    private final ProductPersistenceService productPersistenceService;
+    private final ProductPersistenceRepository productPersistenceRepository;
     private final ProductOptionCommandService productOptionCommandService;
 
-    public ProductCommandService(ProductPersistenceService productPersistenceService, ProductOptionCommandService productOptionCommandService) {
-        this.productPersistenceService = productPersistenceService;
+    public ProductCommandService(ProductPersistenceRepository productPersistenceRepository, ProductOptionCommandService productOptionCommandService) {
+        this.productPersistenceRepository = productPersistenceRepository;
         this.productOptionCommandService = productOptionCommandService;
     }
 
@@ -53,7 +53,7 @@ public class ProductCommandService {
                 .map(p -> p.toEntity(productGroupId))
                 .toList();
 
-        productPersistenceService.updateAll(productEntities);
+        productPersistenceRepository.updateAllProduct(productEntities);
         productOptionCommandService.deleteOptions(toDeleteIds);
     }
 
@@ -61,7 +61,7 @@ public class ProductCommandService {
     private Map<Long, List<OptionCommand>> createOptionMap(long productGroupId, List<ProductCommand> productCommands) {
         Map<Long, List<OptionCommand>> optionMap = new LinkedHashMap<>();
         productCommands.forEach(productCommand -> {
-            long productId = productPersistenceService.insert(productCommand.toEntity(productGroupId));
+            long productId = productPersistenceRepository.insertProduct(productCommand.toEntity(productGroupId));
             if (!productCommand.options().isEmpty()) {
                 optionMap.put(productId, productCommand.options());
             }

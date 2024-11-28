@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.CrawlAuthSettingCommand;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlAuthSettingCommand;
 import com.ryuqq.setof.enums.core.AuthType;
 import jakarta.validation.constraints.NotNull;
 

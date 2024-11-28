@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface SiteQueryRepository {
 
-    boolean fetchSiteExists(long siteId);
-    boolean fetchSiteExists(String name, String baseUrl);
-    List<SiteContextDto> fetchSites(SiteFilterStorageDto siteFilterStorageDto);
-    long fetchSiteCount(SiteFilterStorageDto siteFilterStorageDto);
+    boolean existById(long siteId);
+    boolean existByNameAndUrl(String name, String baseUrl);
+    List<SiteContextDto> fetchByFilter(SiteFilterStorageDto siteFilterStorageDto);
+    long countByFilter(SiteFilterStorageDto siteFilterStorageDto);
     Optional<SiteContextDto> fetchSiteContext(long siteId);
 
 }

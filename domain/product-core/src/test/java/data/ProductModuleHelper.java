@@ -21,7 +21,7 @@ public class ProductModuleHelper {
 
     public static ProductGroupCommand createProductGroupCommand() {
         return new ProductGroupCommand(
-                1L, 1L, 1L, "Test Product Group", "STYLE123", ProductCondition.NEW, ManagementType.MENUAL,
+                1L, 1L, 1L,1L, "Test Product Group", "STYLE123", ProductCondition.NEW, ManagementType.MENUAL,
                 OptionType.OPTION_TWO, BigDecimal.valueOf(100000), BigDecimal.valueOf(90000), false, true, ProductStatus.WAITING, ""
         );
     }

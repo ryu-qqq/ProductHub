@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ColorQueryRepository {
 
-    boolean fetchColorExists(long colorId);
-    List<ColorDto> fetchColors(ColorStorageFilterDto colorFilter);
-    long fetchColorCount(ColorStorageFilterDto colorFilter);
+    boolean existById(long colorId);
+    List<ColorDto> fetchColorByFilter(ColorStorageFilterDto colorFilter);
+    long countByFilter(ColorStorageFilterDto colorFilter);
 
 }

@@ -27,3 +27,14 @@ include::{snippets}/product-group-get/http-response.adoc[]
 include::{snippets}/product-group-get/response-fields-ProductGroupContent.adoc[]
 include::{snippets}/product-group-get/response-fields-beneath-response.adoc[]
 
+=== PRODUCTS PROCESSING DATA QUERY GET API
+==== Curl Request
+include::{snippets}/product-group-processing-waiting-get/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/product-group-processing-waiting-get/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/product-group-processing-waiting-get/http-response.adoc[]
+==== Response Fields
+include::{snippets}/product-group-processing-waiting-get/response-fields-beneath-data[].adoc
+include::{snippets}/product-group-processing-waiting-get/response-fields-beneath-response.adoc[]
+
