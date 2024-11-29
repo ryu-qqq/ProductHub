@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.external.ExternalSiteProductPolicyCommand;
+import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicyCommand;
 import com.ryuqq.setof.enums.core.Origin;
 
 public record ExternalSiteProductPolicyRequestDto(
@@ -8,8 +8,8 @@ public record ExternalSiteProductPolicyRequestDto(
         boolean translated
 )
 {
-    public ExternalSiteProductPolicyCommand toExternalSiteProductPolicyCommand(){
-        return new ExternalSiteProductPolicyCommand(countryCode, translated);
+    public ExternalProductPolicyCommand toExternalSiteProductPolicyCommand(){
+        return new ExternalProductPolicyCommand(countryCode, translated);
     }
 }
 

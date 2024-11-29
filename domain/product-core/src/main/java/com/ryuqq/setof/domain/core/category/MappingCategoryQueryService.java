@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface MappingCategoryQueryService {
 
-    List<MappingCategory> getMappingCategories(long siteId, List<Long> categoryIds);
+    List<MappingCategory> fetchBySiteIdAndCategoryIds(long siteId, List<Long> categoryIds);
 }

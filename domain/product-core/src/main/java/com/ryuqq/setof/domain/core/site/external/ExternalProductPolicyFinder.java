@@ -15,7 +15,7 @@ public class ExternalProductPolicyFinder {
     }
 
     public List<ExternalProductPolicy> fetchByIds(List<Long> siteIds) {
-        return externalProductPolicyQueryRepository.fetchByFilter(siteIds).stream()
+        return externalProductPolicyQueryRepository.fetchBySiteIds(siteIds).stream()
                 .map(e -> new ExternalProductPolicy(
                         e.getPolicyId(),
                         e.getSiteId(),

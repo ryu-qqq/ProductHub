@@ -1,40 +1,33 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductPolicyQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalProductQueryRepository;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductContextDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class ExternalProductFinder implements ExternalProductQueryService{
+public class ExternalProductFinder implements ExternalProductQueryService {
 
+    private final ExternalProductMapper externalProductMapper;
     private final ExternalProductQueryRepository externalProductQueryRepository;
-    private final ExternalProductPolicyQueryRepository externalProductPolicyQueryRepository;
 
-    public ExternalProductFinder(ExternalProductQueryRepository externalProductQueryRepository, ExternalProductPolicyQueryRepository externalProductPolicyQueryRepository) {
+    public ExternalProductFinder(ExternalProductMapper externalProductMapper, ExternalProductQueryRepository externalProductQueryRepository) {
+        this.externalProductMapper = externalProductMapper;
         this.externalProductQueryRepository = externalProductQueryRepository;
-        this.externalProductPolicyQueryRepository = externalProductPolicyQueryRepository;
     }
+
 
     @Override
     public List<Long> findUnlinkedProductGroupIds(long sellerId, List<Long> siteIds){
         return externalProductQueryRepository.fetchUnlinkedProductGroupIdsBySellerIdAndSiteId(sellerId, siteIds);
     }
 
+
     @Override
-    public List<ExternalProductContext> findExternalProductContext(ExternalProductFilter externalProductFilter){
-        List<ExternalProductContextDto> externalProductContextDtos = externalProductPolicyQueryRepository.fetchExternalProductContextByFilter(externalProductFilter.toExternalProductFilterDto());
-        return externalProductContextDtos
+    public List<ExternalProduct> fetchByFilter(ExternalProductFilter filter){
+        return externalProductQueryRepository.fetchByFilter(filter.toStorageFilterDto())
                 .stream()
-                .map(e ->
-                    new ExternalProductContext(
-                            ExternalProductGroup.from(e.getExternalProductGroupDto()),
-                            ExternalProductPolicy.from(e.getExternalProductGroupDto().getPolicyId(), e.getExternalProductGroupDto().getSiteId(), e.getExternalProductPolicyDto()),
-                            e.getExternalProductProcessingResultDto().stream().map(ExternalProductProcessingResult::from).toList()
-                    )
-                )
+                .map(externalProductMapper::toDomain)
                 .toList();
     }
 

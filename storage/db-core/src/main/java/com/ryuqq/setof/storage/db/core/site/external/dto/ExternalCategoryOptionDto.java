@@ -5,14 +5,14 @@ import com.querydsl.core.annotations.QueryProjection;
 public class ExternalCategoryOptionDto {
 
     private long siteId;
-    private long externalCategoryId;
+    private String externalCategoryId;
     private long optionId;
     private String optionValue;
 
     protected ExternalCategoryOptionDto() {}
 
     @QueryProjection
-    public ExternalCategoryOptionDto(long siteId, long externalCategoryId, long optionId, String optionValue) {
+    public ExternalCategoryOptionDto(long siteId, String externalCategoryId, long optionId, String optionValue) {
         this.siteId = siteId;
         this.externalCategoryId = externalCategoryId;
         this.optionId = optionId;
@@ -23,7 +23,7 @@ public class ExternalCategoryOptionDto {
         return siteId;
     }
 
-    public long getExternalCategoryId() {
+    public String getExternalCategoryId() {
         return externalCategoryId;
     }
 

@@ -1,6 +1,8 @@
 package com.ryuqq.setof.domain.core.site.external.mapper.buyma;
 
 import com.ryuqq.setof.domain.core.product.Price;
+import com.ryuqq.setof.support.external.core.buyma.BuyMaPriceGenerator;
+import com.ryuqq.setof.support.utils.Money;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,7 +20,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(900);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         BigDecimal expected = new BigDecimal("22900"); // 예상 결과: (100000 * 1.1 / 900) + 900
@@ -32,7 +34,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(900);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         BigDecimal expected = new BigDecimal("36900"); // 예상 결과: 조정된 가격 + 900
@@ -46,7 +48,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(900);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         BigDecimal expected = new BigDecimal("22900"); // 예상 결과: 기준값 (16666엔)
@@ -60,7 +62,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(900);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         // 100자리 부분이 900인지 확인
@@ -74,7 +76,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(1500);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         BigDecimal expected = new BigDecimal("48900"); // 예상 결과: 조정된 가격 + 900
@@ -88,7 +90,7 @@ class BuyMaPriceGeneratorTest {
         BigDecimal exchangeRate = BigDecimal.valueOf(500);
 
         // When
-        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price, exchangeRate);
+        BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(price.getCurrentPrice(), exchangeRate);
 
         // Then
         BigDecimal expected = new BigDecimal("146900"); // 예상 결과: 조정된 가격 + 900

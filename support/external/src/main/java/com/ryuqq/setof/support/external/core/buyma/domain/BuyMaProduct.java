@@ -2,6 +2,8 @@ package com.ryuqq.setof.support.external.core.buyma.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ryuqq.setof.support.external.core.ExternalMallImagePayload;
+import com.ryuqq.setof.support.external.core.ExternalMallProductImageContext;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +30,7 @@ public record BuyMaProduct(
         @JsonInclude(JsonInclude.Include.NON_NULL) @JsonProperty("id") Integer id,
         @JsonProperty("duty") String duty,
         @JsonProperty("colorsize_comments") String colorSizeComments
-) {
+) implements ExternalMallImagePayload {
 
     public BuyMaProduct(String styleCode, long productGroupId, String name, String comments, int brandId, String brandName, int categoryId, int price, int referencePrice, List<BuyMaImage> images, List<BuyMaVariant> variants, List<BuyMaOption> options,  Integer id, String colorSizeComments) {
         this(
@@ -71,5 +73,11 @@ public record BuyMaProduct(
             sb.append(styleCode);
         }
         return sb.toString();
+    }
+
+
+    @Override
+    public List<? extends ExternalMallProductImageContext> getExternalMallProductImageContext() {
+        return images;
     }
 }

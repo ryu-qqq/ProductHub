@@ -14,4 +14,5 @@ public record ExternalSiteSellerRelationCommand(
                 .map(site -> new ExternalSiteSellerEntity(site, sellerId))
                 .toList();
     }
+
 }

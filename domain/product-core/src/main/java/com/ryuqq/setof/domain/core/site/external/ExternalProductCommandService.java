@@ -21,8 +21,13 @@ public class ExternalProductCommandService {
         externalProductPersistenceRepository.saveAll(externalProductEntities);
     }
 
-    public void updateStatusByProductGroupId(List<Long> productGroupIds, SyncStatus status){
-        externalProductPersistenceRepository.updateStatusByProductGroupId(productGroupIds, status);
+    public void updateStatusByProductGroupId(List<Long> productGroupIds, Long siteId, SyncStatus status){
+        externalProductPersistenceRepository.updateStatusByProductGroupId(productGroupIds, siteId, status);
+    }
+
+    public void updateByExternalMallUpdateCommand(List<ExternalMallUpdateCommand> externalMallUpdateCommands){
+        List<ExternalProductEntity> entities = externalMallUpdateCommands.stream().map(ExternalMallUpdateCommand::toEntity).toList();
+        externalProductPersistenceRepository.updateAll(entities);
     }
 
 }

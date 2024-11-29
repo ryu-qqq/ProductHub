@@ -31,13 +31,13 @@ public class ExternalSiteProfileCommandService  implements SiteProfileCommandSer
     @Override
     public void insert(long siteId, ExternalSiteProfileCommand externalSiteProfileCommand) {
         long policyId = externalPolicyPersistenceRepository.insert(externalSiteProfileCommand.toEntity(siteId));
-        ExternalSiteProductPolicyCommand externalSiteProductPolicyCommand = externalSiteProfileCommand.externalSiteProductPolicyCommand();
-        externalProductPolicyPersistenceRepository.insertExternalProductPolicy(externalSiteProductPolicyCommand.toEntity(policyId));
+        ExternalProductPolicyCommand externalProductPolicyCommand = externalSiteProfileCommand.externalProductPolicyCommand();
+        externalProductPolicyPersistenceRepository.insertExternalProductPolicy(externalProductPolicyCommand.toEntity(policyId));
 
-        ExternalSitePricePolicyCommand externalSitePricePolicyCommand = externalSiteProfileCommand.externalSitePricePolicyCommand();
-        long pricePolicyId = externalPricePolicyPersistenceService.saveExternalPricePolicy(externalSitePricePolicyCommand.toEntity(policyId));
+        ExternalPricePolicyCommand externalPricePolicyCommand = externalSiteProfileCommand.externalPricePolicyCommand();
+        long pricePolicyId = externalPricePolicyPersistenceService.saveExternalPricePolicy(externalPricePolicyCommand.toEntity(policyId));
 
-        List<ExternalPricePolicyRuleEntity> pricePolicyRuleEntities = externalSitePricePolicyCommand.externalSitePricePolicyRuleCommands().stream()
+        List<ExternalPricePolicyRuleEntity> pricePolicyRuleEntities = externalPricePolicyCommand.externalPricePolicyRuleCommands().stream()
                 .map(e -> e.toEntity(pricePolicyId))
                 .toList();
 

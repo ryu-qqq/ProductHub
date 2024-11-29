@@ -9,5 +9,11 @@ public enum SyncStatus {
     APPROVED,
     SUCCESS,
     FAILED,
+    ;
+
+    public boolean isApproved(){
+        return this.equals(APPROVED);
+    }
+
 
 }

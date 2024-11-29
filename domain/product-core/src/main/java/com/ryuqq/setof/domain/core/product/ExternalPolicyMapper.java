@@ -10,6 +10,7 @@ public class ExternalPolicyMapper {
     public ExternalPolicy toDomain(ExternalPolicyDto dto){
         return new ExternalPolicy(
                 dto.getSiteId(),
+                dto.getSiteName(),
                 dto.getPolicyId(),
                 dto.getName(),
                 dto.getDescription(),

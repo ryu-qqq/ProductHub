@@ -1,6 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.product.ProductGroupNameCommandService;
+import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalProductEntity;
 
 import jakarta.transaction.Transactional;
@@ -17,16 +18,16 @@ public class ExternalProductSyncCommandService {
 
     private final ProductGroupNameCommandService productGroupNameCommandService;
     private final ExternalProductQueryService externalProductQueryService;
-    private final ExternalSiteSellerRelationFinder externalSiteSellerRelationFinder;
+    private final ExternalPolicyContextQueryService externalPolicyContextQueryService;
     private final ExternalProductCommandService externalProductCommandService;
-    private final ExternalPolicyContextFinder externalPolicyContextFinder;
+    private final ExternalSiteSellerRelationQueryService externalSiteSellerRelationQueryService;
 
-    public ExternalProductSyncCommandService(ProductGroupNameCommandService productGroupNameCommandService, ExternalProductQueryService externalProductQueryService, ExternalSiteSellerRelationFinder externalSiteSellerRelationFinder, ExternalProductCommandService externalProductCommandService, ExternalPolicyContextFinder externalPolicyContextFinder) {
+    public ExternalProductSyncCommandService(ProductGroupNameCommandService productGroupNameCommandService, ExternalProductQueryService externalProductQueryService, ExternalPolicyContextQueryService externalPolicyContextQueryService, ExternalProductCommandService externalProductCommandService, ExternalSiteSellerRelationQueryService externalSiteSellerRelationQueryService) {
         this.productGroupNameCommandService = productGroupNameCommandService;
         this.externalProductQueryService = externalProductQueryService;
-        this.externalSiteSellerRelationFinder = externalSiteSellerRelationFinder;
+        this.externalPolicyContextQueryService = externalPolicyContextQueryService;
         this.externalProductCommandService = externalProductCommandService;
-        this.externalPolicyContextFinder = externalPolicyContextFinder;
+        this.externalSiteSellerRelationQueryService = externalSiteSellerRelationQueryService;
     }
 
 
@@ -44,9 +45,8 @@ public class ExternalProductSyncCommandService {
             return 0L;
         }
 
-        Map<Long, ExternalPolicy> sitePolicyMap = toSiteIdMap(command.siteIds());
-        List<ExternalProductEntity> externalProductEntities = generateExternalProductEntities(
-                command.siteIds(), unlinkedProductGroupIds, sitePolicyMap);
+        Map<Long, ExternalPolicyContext> sitePolicyMap = toSiteIdMap(command.siteIds());
+        List<ExternalProductEntity> externalProductEntities = generateExternalProductEntities(command.siteIds(), unlinkedProductGroupIds, sitePolicyMap);
 
         externalProductCommandService.saveAllExternalProduct(externalProductEntities);
         productGroupNameCommandService.insertAll(command.siteIds(), unlinkedProductGroupIds);
@@ -55,44 +55,32 @@ public class ExternalProductSyncCommandService {
     }
 
     private List<Long> getValidSiteIds(ExternalSiteSellerRelationCommand command) {
-        List<Long> existingPolicyIds = externalSiteSellerRelationFinder.findExternalSiteSellerRelation(
-                        List.of(command.sellerId()))
-                .stream()
-                .flatMap(relation -> relation.externalSiteProductPolicies().stream())
-                .map(ExternalSiteProductPolicy::siteId)
-                .toList();
-
         return command.siteIds().stream()
-                .filter(existingPolicyIds::contains)
+                .filter(siteId -> externalSiteSellerRelationQueryService.existBySellerIdAndSitId(command.sellerId(), siteId))
                 .toList();
     }
 
-
-    private Map<Long, ExternalPolicy> toSiteIdMap(List<Long> siteIds) {
-        return externalPolicyContextFinder.findExternalPolicies(siteIds).stream()
-                .collect(Collectors.toMap(ExternalPolicy::siteId, Function.identity()));
+    private Map<Long, ExternalPolicyContext> toSiteIdMap(List<Long> siteIds) {
+        return externalPolicyContextQueryService.fetchExternalPolicies(siteIds).stream()
+                .collect(Collectors.toMap(ExternalPolicyContext::getSiteId, Function.identity()));
     }
 
     private List<ExternalProductEntity> generateExternalProductEntities(
             List<Long> siteIds,
             List<Long> productGroupIds,
-            Map<Long, ExternalPolicy> sitePolicyMap) {
+            Map<Long, ExternalPolicyContext> sitePolicyMap) {
 
         return siteIds.stream()
                 .flatMap(siteId -> productGroupIds.stream()
                         .map(productGroupId -> {
-                            ExternalPolicy policy = sitePolicyMap.get(siteId);
+                            ExternalPolicyContext policy = sitePolicyMap.get(siteId);
                             if (policy != null) {
-                                return createExternalProductEntity(siteId, productGroupId, policy.policyId());
+                                return ExternalProductEntity.toWaitingStatusEntity(siteId, productGroupId, policy.getPolicyId());
                             }
                             return null;
                         }))
                 .filter(Objects::nonNull)
                 .toList();
-    }
-
-    private ExternalProductEntity createExternalProductEntity(long siteId, long productGroupId, long policyId) {
-        return new ExternalProductEntity(siteId, productGroupId, policyId);
     }
 
 

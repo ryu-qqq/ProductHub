@@ -1,6 +1,4 @@
 package com.ryuqq.setof.domain.core.site.external;
-
-
 import com.ryuqq.setof.storage.db.core.site.external.ExternalSiteSellerEntity;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalSiteSellerPersistenceRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +25,7 @@ public class ExternalSiteSellerRelationCommandService {
 
         List<Long> existingSiteIds = existingRelations.stream()
                 .flatMap(e -> e.externalSiteProductPolicies().stream())
-                .map(ExternalSiteProductPolicy::siteId)
+                .map(ExternalProductPolicy::siteId)
                 .toList();
 
         List<ExternalSiteSellerEntity> externalSiteSellerEntities = externalSiteSellerRelationCommand.toExternalSiteSellerEntities()

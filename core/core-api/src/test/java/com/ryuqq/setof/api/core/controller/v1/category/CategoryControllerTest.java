@@ -110,7 +110,7 @@ class CategoryControllerTest extends RestDocsTest {
     void getChildCategories() throws Exception {
         // given
         List<CategoryResponse> categoryResponses = CategoryModuleHelper.toCategoryResponses();
-        when(categoryService.fetchChildrenCategory(anyLong())).thenReturn(categoryResponses);
+        when(categoryService.fetchCategoryRelation(any())).thenReturn(categoryResponses);
 
         // when
         given()
@@ -150,7 +150,7 @@ class CategoryControllerTest extends RestDocsTest {
     void getParentCategories() throws Exception {
         // given
         List<CategoryResponse> categoryResponses = CategoryModuleHelper.toCategoryResponses();
-        when(categoryService.fetchParentsCategory(anyLong())).thenReturn(categoryResponses);
+        when(categoryService.fetchCategoryRelation(any())).thenReturn(categoryResponses);
 
         // when
         given()

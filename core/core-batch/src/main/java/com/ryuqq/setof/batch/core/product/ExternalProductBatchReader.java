@@ -1,9 +1,10 @@
 package com.ryuqq.setof.batch.core.product;
 
-import com.ryuqq.setof.domain.core.product.*;
-import com.ryuqq.setof.domain.core.site.external.ExternalSiteProductPolicy;
-import com.ryuqq.setof.domain.core.site.external.ExternalSiteSellerRelationFinder;
+import com.ryuqq.setof.domain.core.product.ProductGroupConfigContext;
+import com.ryuqq.setof.domain.core.product.ProductGroupConfigContextFinder;
+import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicy;
 import com.ryuqq.setof.domain.core.site.external.ExternalSiteSellerRelation;
+import com.ryuqq.setof.domain.core.site.external.ExternalSiteSellerRelationFinder;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.batch.item.ItemReader;
@@ -47,7 +48,9 @@ public class ExternalProductBatchReader implements ItemReader<List<ExternalProdu
 
         List<ProductGroupConfigContext> productGroupConfigContexts = productGroupConfigContextFinder.fetchByProductGroupIds(productGroupIds);
 
-        Map<Long, List<ExternalSiteProductPolicy>> sellerSiteMap = externalSiteSellerRelationFinder.findExternalSiteSellerRelation(sellerIds)
+
+
+        Map<Long, List<ExternalProductPolicy>> sellerSiteMap = externalSiteSellerRelationFinder.findExternalSiteSellerRelation(sellerIds)
                 .stream()
                 .collect(Collectors.toMap(
                         ExternalSiteSellerRelation::sellerId,
@@ -58,7 +61,7 @@ public class ExternalProductBatchReader implements ItemReader<List<ExternalProdu
 
         return productGroupConfigContexts.stream()
                 .map(p -> {
-                    List<ExternalSiteProductPolicy> externalSiteProductPolicyDtos = sellerSiteMap.getOrDefault(p.getSellerId(), List.of());
+                    List<ExternalProductPolicy> externalSiteProductPolicyDtos = sellerSiteMap.getOrDefault(p.getSellerId(), List.of());
                     return new ExternalProductProcessingData(p, externalSiteProductPolicyDtos);
                 })
                 .toList();

@@ -7,7 +7,6 @@ import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescript
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigEntity;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
-import com.ryuqq.setof.storage.db.core.site.ExternalProductEntity;
 import com.ryuqq.setof.storage.db.index.product.OptionDocument;
 import com.ryuqq.setof.storage.db.index.product.ProductGroupCommandContextDocument;
 import org.springframework.batch.item.ItemProcessor;

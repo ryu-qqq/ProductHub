@@ -3,10 +3,7 @@ package com.ryuqq.setof.api.core.data;
 import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.*;
 import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
-import com.ryuqq.setof.domain.core.color.Color;
 import com.ryuqq.setof.enums.core.*;
-import com.ryuqq.setof.domain.core.product.*;
-
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -42,9 +39,6 @@ public class ProductModuleHelper {
         return new ProductGroupResponse(
                 productGroupId,
                 101L,
-                new Color(1L, "Red"),
-                CategoryModuleHelper.toCategory(),
-                BrandModuleHelper.toBrandRecord(),
                 "Sample Product Group",
                 "SGX001",
                 ProductCondition.NEW,
@@ -55,14 +49,18 @@ public class ProductModuleHelper {
                 true,
                 ProductStatus.WAITING,
                 "",
-                toProductGroupConfigContextResponse()
+                toProductDeliveryResponse(),
+                toProductNoticeResponse(),
+                toProductDetailDescriptionResponse(),
+                toProductGroupImageResponse()
         );
     }
 
     public static ProductGroupConfigContextResponse toProductGroupConfigContextResponse(){
         return new ProductGroupConfigContextResponse(
                 toProductGroupConfigResponse(),
-                List.of(toProductGroupNameConfigResponse())
+                List.of(toProductGroupNameConfigResponse()),
+                List.of()
         );
     }
 
@@ -73,7 +71,6 @@ public class ProductModuleHelper {
     public static ProductGroupNameConfigResponse toProductGroupNameConfigResponse(){
         return new ProductGroupNameConfigResponse(Origin.US, "");
     }
-
 
 
     public static PriceResponse toPrice(long regularPrice, long currentPrice, int discountRate){
@@ -120,17 +117,17 @@ public class ProductModuleHelper {
         );
     }
 
-    public static Set<ProductResponse> toProducts(long productGroupId, OptionType optionType){
+    public static List<ProductResponse> toProducts(long productGroupId, OptionType optionType){
         switch (optionType) {
             case SINGLE:
-                return Set.of(new ProductResponse(productGroupId, 4L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
+                return List.of(new ProductResponse(productGroupId, 4L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
             case OPTION_ONE:
-                return Set.of(
+                return List.of(
                         new ProductResponse(productGroupId, 3L, 10,false, true, "", Set.of(new OptionResponse(3L, 3L, 4L, OptionName.SIZE, "M")), BigDecimal.ZERO),
                         new ProductResponse(productGroupId, 3L,5,false, true, "", Set.of(new OptionResponse(3L, 3L, 5L, OptionName.SIZE, "L")), BigDecimal.ZERO)
                 );
             case OPTION_TWO:
-                return Set.of(
+                return List.of(
                         new ProductResponse(productGroupId, 1L, 10,false, true, "",
                                 Set.of(
                                         new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
@@ -146,9 +143,8 @@ public class ProductModuleHelper {
                                 ), BigDecimal.ZERO)
                 );
 
-
             default:
-                return Collections.emptySet();
+                return Collections.emptyList();
         }
 
     }
@@ -156,11 +152,10 @@ public class ProductModuleHelper {
     public static ProductGroupContextResponse toProductGroupContextResponse(long productGroupId, OptionType optionType) {
         return new ProductGroupContextResponse(
                 toProductGroupResponse(productGroupId, optionType),
-                toProductDeliveryResponse(),
-                toProductNoticeResponse(),
-                toProductDetailDescriptionResponse(),
-                toProductGroupImageResponse(),
-                toProducts(productGroupId, optionType)
+                toProducts(productGroupId, optionType),
+                CategoryModuleHelper.toCategoryResponses(),
+                BrandModuleHelper.toBrandResponse(),
+                toProductGroupConfigContextResponse()
         );
     }
 
@@ -173,8 +168,6 @@ public class ProductModuleHelper {
                 true
         );
     }
-
-
 
 
 }

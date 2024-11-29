@@ -32,6 +32,15 @@ public class ProductGroupNameConfigEntity extends BaseEntity {
         this.defaultYn = defaultYn;
     }
 
+    public static ProductGroupNameConfigEntity toInitEntity(long configId, Origin countryCode){
+        return new ProductGroupNameConfigEntity(
+                configId,
+                countryCode,
+                "",
+                false
+        );
+    }
+
     public long getProductGroupConfigId() {
         return productGroupConfigId;
     }

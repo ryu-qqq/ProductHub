@@ -6,8 +6,8 @@ import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyEntity;
 public record ExternalSiteProfileCommand(
         String name,
         String description,
-        ExternalSiteProductPolicyCommand externalSiteProductPolicyCommand,
-        ExternalSitePricePolicyCommand externalSitePricePolicyCommand
+        ExternalProductPolicyCommand externalProductPolicyCommand,
+        ExternalPricePolicyCommand externalPricePolicyCommand
 ) implements SiteProfileCommand {
 
     public ExternalPolicyEntity toEntity(long siteId){

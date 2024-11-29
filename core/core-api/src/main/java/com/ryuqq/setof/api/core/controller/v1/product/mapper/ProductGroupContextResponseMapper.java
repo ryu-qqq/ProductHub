@@ -24,19 +24,19 @@ public class ProductGroupContextResponseMapper {
         );
     }
 
-    private List<CategoryResponse> toCategoryResponseOf(List<Category> categories) {
+    public List<CategoryResponse> toCategoryResponseOf(List<Category> categories) {
         return categories.stream()
                 .map(CategoryResponse::of)
                 .collect(Collectors.toList());
 
     }
 
-    private BrandResponse toBrandResponseOf(Brand brand) {
+    public BrandResponse toBrandResponseOf(Brand brand) {
         return BrandResponse.of(brand);
     }
 
 
-    private ProductGroupResponse toProductGroupResponse(ProductGroup productGroup) {
+    public ProductGroupResponse toProductGroupResponse(ProductGroup productGroup) {
         return new ProductGroupResponse(
                 productGroup.productGroupId(),
                 productGroup.sellerId(),
@@ -57,7 +57,7 @@ public class ProductGroupContextResponseMapper {
                 );
     }
 
-    private ProductGroupConfigContextResponse toConfigContextResponse(ProductGroupConfigContext configContext){
+    public ProductGroupConfigContextResponse toConfigContextResponse(ProductGroupConfigContext configContext){
         return new ProductGroupConfigContextResponse(
                 new ProductGroupConfigResponse(
                         configContext.getConfigId(),
@@ -69,7 +69,7 @@ public class ProductGroupContextResponseMapper {
         );
     }
 
-    private List<ProductGroupNameConfigResponse> toNameConfigResponse(List<ProductGroupNameConfig> nameConfigs){
+    public List<ProductGroupNameConfigResponse> toNameConfigResponse(List<ProductGroupNameConfig> nameConfigs){
         return nameConfigs.stream()
                 .map(n -> new ProductGroupNameConfigResponse(
                         n.countryCode(),
@@ -79,7 +79,7 @@ public class ProductGroupContextResponseMapper {
     }
 
 
-    private PriceResponse toPriceResponse(Price price) {
+    public PriceResponse toPriceResponse(Price price) {
         return new PriceResponse(
                 price.getRegularPrice().getAmount(),
                 price.getCurrentPrice().getAmount(),
@@ -90,7 +90,7 @@ public class ProductGroupContextResponseMapper {
         );
     }
 
-    private ProductDeliveryResponse toProductDeliveryResponse(ProductDelivery delivery) {
+    public ProductDeliveryResponse toProductDeliveryResponse(ProductDelivery delivery) {
         return new ProductDeliveryResponse(
                 delivery.getDeliveryArea(),
                 delivery.getDeliveryFee().getAmount(),
@@ -102,7 +102,7 @@ public class ProductGroupContextResponseMapper {
         );
     }
 
-    private ProductNoticeResponse toProductNoticeResponse(ProductNotice notice) {
+    public ProductNoticeResponse toProductNoticeResponse(ProductNotice notice) {
         return new ProductNoticeResponse(
                 notice.getMaterial(),
                 notice.getColor(),
@@ -116,17 +116,17 @@ public class ProductGroupContextResponseMapper {
         );
     }
 
-    private ProductDetailDescriptionResponse toProductDetailDescriptionResponse(ProductDetailDescription detailDescription) {
+    public ProductDetailDescriptionResponse toProductDetailDescriptionResponse(ProductDetailDescription detailDescription) {
         return new ProductDetailDescriptionResponse(detailDescription.getDetailDescription());
     }
 
-    private List<ProductGroupImageResponse> toProductGroupImageResponses(List<ProductGroupImage> images) {
+    public List<ProductGroupImageResponse> toProductGroupImageResponses(List<ProductGroupImage> images) {
         return images.stream()
                 .map(i -> new ProductGroupImageResponse(i.getProductImageType(), i.getImageUrl()))
                 .toList();
     }
 
-    private List<ProductResponse> toProductResponses(List<Product> products) {
+    public List<ProductResponse> toProductResponses(List<Product> products) {
         return products.stream().map(p -> new ProductResponse(
                 p.getProductGroupId(),
                 p.getProductId(),
@@ -142,7 +142,7 @@ public class ProductGroupContextResponseMapper {
 
     }
 
-    private OptionResponse toProductOptionResponse(Option option) {
+    public OptionResponse toProductOptionResponse(Option option) {
         return new OptionResponse(
                 option.getProductId(),
                 option.getOptionGroupId(),

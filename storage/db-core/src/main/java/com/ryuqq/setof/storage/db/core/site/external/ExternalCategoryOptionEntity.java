@@ -13,7 +13,7 @@ public class ExternalCategoryOptionEntity extends BaseEntity {
     private Long siteId;
 
     @Column(name = "EXTERNAL_CATEGORY_ID", nullable = false)
-    private Long externalCategoryId;
+    private String externalCategoryId;
 
     @Column(name = "OPTION_ID", nullable = false)
     private long optionId;
@@ -23,7 +23,7 @@ public class ExternalCategoryOptionEntity extends BaseEntity {
 
     public ExternalCategoryOptionEntity() {}
 
-    public ExternalCategoryOptionEntity(Long siteId, Long externalCategoryId, String optionValue) {
+    public ExternalCategoryOptionEntity(Long siteId, String externalCategoryId, String optionValue) {
         this.siteId = siteId;
         this.externalCategoryId = externalCategoryId;
         this.optionValue = optionValue;

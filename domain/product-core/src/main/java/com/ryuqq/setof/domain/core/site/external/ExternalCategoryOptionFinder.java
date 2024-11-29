@@ -1,6 +1,5 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalCategoryOptionQueryRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,8 @@ public class ExternalCategoryOptionFinder implements ExternalCategoryOptionQuery
     }
 
     @Override
-    public List<ExternalCategoryOption> findExternalCategoryOptions(SiteName siteName, long categoryId) {
-        return externalCategoryOptionQueryRepository.fetchBySiteNameAndCategoryId(siteName, categoryId).stream()
+    public List<ExternalCategoryOption> fetchBySiteIdAndCategoryIds(long siteId, List<Long> categoryIds) {
+        return externalCategoryOptionQueryRepository.fetchBySiteIdAndCategoryIds(siteId, categoryIds).stream()
                 .map(e -> new ExternalCategoryOption(
                         e.getSiteId(),
                         e.getExternalCategoryId(),

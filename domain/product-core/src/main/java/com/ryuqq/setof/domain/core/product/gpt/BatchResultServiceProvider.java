@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class BatchResultServiceProvider extends AbstractProvider<ProductDataType, BatchResultCommandService<? extends BatchResult>> {
+public class BatchResultServiceProvider extends AbstractProvider<ProductDataType, GptBatchResultCommandService<? extends GptBatchResult>> {
 
-    public BatchResultServiceProvider(List<BatchResultCommandService<? extends BatchResult>> services) {
-        for (BatchResultCommandService<? extends BatchResult> service : services) {
+    public BatchResultServiceProvider(List<GptBatchResultCommandService<? extends GptBatchResult>> services) {
+        for (GptBatchResultCommandService<? extends GptBatchResult> service : services) {
             map.put(service.getProductDataType(), service);
         }
     }

@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface MappingBrandQueryService {
 
-    List<MappingBrand> getMappingBrands(long siteId, List<Long> brandIds);
+    List<MappingBrand> fetchBySiteIdAndBrandIds(long siteId, List<Long> brandIds);
 
 }

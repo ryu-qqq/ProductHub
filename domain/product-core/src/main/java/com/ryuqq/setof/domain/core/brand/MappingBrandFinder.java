@@ -15,7 +15,7 @@ public class MappingBrandFinder implements MappingBrandQueryService{
     }
 
     @Override
-    public List<MappingBrand> getMappingBrands(long siteId, List<Long> brandIds) {
+    public List<MappingBrand> fetchBySiteIdAndBrandIds(long siteId, List<Long> brandIds) {
         return mappingBrandQueryRepository.fetchByBrandIdAndSiteId(siteId, brandIds)
                 .stream()
                 .map(b -> new MappingBrand(

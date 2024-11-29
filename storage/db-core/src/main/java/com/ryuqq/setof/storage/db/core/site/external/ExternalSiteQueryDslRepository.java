@@ -26,6 +26,22 @@ public class ExternalSiteQueryDslRepository implements ExternalSiteQueryReposito
     }
 
     @Override
+    public boolean existBySellerIdAndSitId(long sellerId, long siteId) {
+        Long l = queryFactory
+                .select(externalSiteSellerEntity.id)
+                .from(externalSiteSellerEntity)
+                .where(
+                        activeStatusEq(),
+                        sellerIdEq(sellerId),
+                        siteIdEq(siteId)
+                )
+                .fetchOne();
+
+        return l != null;
+    }
+
+
+    @Override
     public List<ExternalSiteSellerRelationDto> fetchBySellerId(List<Long> sellerIds) {
         return queryFactory
                 .from(externalSiteSellerEntity)
@@ -50,6 +66,14 @@ public class ExternalSiteQueryDslRepository implements ExternalSiteQueryReposito
                                     )
                             )
                 ));
+    }
+
+    private BooleanExpression sellerIdEq(long sellerId){
+        return externalSiteSellerEntity.sellerId.eq(sellerId);
+    }
+
+    private BooleanExpression siteIdEq(long siteId){
+        return externalSiteSellerEntity.siteId.eq(siteId);
     }
 
     private BooleanExpression sellerIdIn(List<Long> sellerIds){

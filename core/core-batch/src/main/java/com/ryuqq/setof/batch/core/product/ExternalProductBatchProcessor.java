@@ -1,13 +1,15 @@
 package com.ryuqq.setof.batch.core.product;
 
 import com.ryuqq.setof.domain.core.product.ProductGroupConfig;
-import com.ryuqq.setof.domain.core.site.external.ExternalSiteProductPolicy;
+import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicy;
 import com.ryuqq.setof.enums.core.Origin;
+import com.ryuqq.setof.enums.core.SyncStatus;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalProductEntity;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -47,24 +49,15 @@ public class ExternalProductBatchProcessor implements ItemProcessor<List<Externa
         ));
     }
 
-    private void addExternalProduct(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalSiteProductPolicy policy) {
-        result.addExternalProductEntity(new ExternalProductEntity(
-                policy.siteId(),
-                productGroupConfig.getProductGroupId(),
-                policy.policyId()
-        ));
+    private void addExternalProduct(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalProductPolicy policy) {
+        result.addExternalProductEntity(ExternalProductEntity.toWaitingStatusEntity(policy.siteId(), productGroupConfig.getProductGroupId(), policy.policyId()));
     }
 
-    private void addNameConfig(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalSiteProductPolicy policy) {
-        result.addProductGroupNameConfigEntity(new ProductGroupNameConfigEntity(
-                productGroupConfig.getConfigId(),
-                policy.countryCode(),
-                "",
-                false
-        ));
+    private void addNameConfig(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalProductPolicy policy) {
+        result.addProductGroupNameConfigEntity(ProductGroupNameConfigEntity.toInitEntity(productGroupConfig.getConfigId(), policy.countryCode()));
     }
 
-    private boolean shouldAddNameConfig(ExternalSiteProductPolicy policy) {
+    private boolean shouldAddNameConfig(ExternalProductPolicy policy) {
         return policy.translated() || policy.countryCode().equals(Origin.KR);
     }
 

@@ -2,10 +2,10 @@ package com.ryuqq.setof.api.core.controller.v1.product.service;
 
 import com.ryuqq.setof.api.core.controller.v1.product.mapper.ProductGroupContextResponseMapper;
 import com.ryuqq.setof.api.core.controller.v1.product.mapper.ProductGroupContextSliceMapper;
+import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupGetRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.product.ProductGroupContextQueryService;
-import com.ryuqq.setof.domain.core.product.ProductGroupFilter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,19 +23,19 @@ public class ProductGroupContextService {
         this.productGroupContextSliceMapper = productGroupContextSliceMapper;
     }
 
-    public Slice<ProductGroupContextResponse> fetchProductGroupContextsByFilter(ProductGroupFilter productGroupFilter){
+    public Slice<ProductGroupContextResponse> fetchProductGroupContextsByFilter(ProductGroupGetRequestDto requestDto){
 
-        long productGroupCount = productGroupContextQueryService.countProductContextByFilter(productGroupFilter);
+        long productGroupCount = productGroupContextQueryService.countProductContextByFilter(requestDto.toProductGroupFilter());
 
         if(productGroupCount == 0){
-            return productGroupContextSliceMapper.toSlice(List.of(), productGroupFilter.pageSize(), productGroupCount);
+            return productGroupContextSliceMapper.toSlice(List.of(), requestDto.toProductGroupFilter().pageSize(), productGroupCount);
         }
 
-        List<ProductGroupContextResponse> responses = productGroupContextQueryService.fetchProductGroupContextsByFilter(productGroupFilter).stream()
+        List<ProductGroupContextResponse> responses = productGroupContextQueryService.fetchProductGroupContextsByFilter(requestDto.toProductGroupFilter()).stream()
                 .map(productGroupContextResponseMapper::toResponse)
                 .toList();
 
-        return productGroupContextSliceMapper.toSlice(responses, productGroupFilter.pageSize(), productGroupCount);
+        return productGroupContextSliceMapper.toSlice(responses, requestDto.toProductGroupFilter().pageSize(), productGroupCount);
     }
 
 }

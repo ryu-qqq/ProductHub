@@ -15,7 +15,7 @@ public class MappingCategoryFinder implements MappingCategoryQueryService{
     }
 
     @Override
-    public List<MappingCategory> getMappingCategories(long siteId, List<Long> categoryIds) {
+    public List<MappingCategory> fetchBySiteIdAndCategoryIds(long siteId, List<Long> categoryIds) {
         return mappingCategoryQueryRepository.fetchByCategoryIdAndSiteId(siteId, categoryIds).stream()
                 .map(c -> new MappingCategory(
                             c.getExternalCategoryId(),

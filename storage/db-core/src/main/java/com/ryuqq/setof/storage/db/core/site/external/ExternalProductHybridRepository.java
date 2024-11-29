@@ -20,8 +20,13 @@ public class ExternalProductHybridRepository implements ExternalProductPersisten
     }
 
     @Override
-    public void updateStatusByProductGroupId(List<Long> productGroupIds, SyncStatus status){
-        externalProductJdbcRepository.updatesSyncStatus(productGroupIds, status);
+    public void updateAll(List<ExternalProductEntity> externalProductEntities) {
+        externalProductJdbcRepository.batchUpdateExternalProducts(externalProductEntities);
+    }
+
+    @Override
+    public void updateStatusByProductGroupId(List<Long> productGroupIds, Long siteId, SyncStatus status){
+        externalProductJdbcRepository.updatesSyncStatus(productGroupIds, siteId, status);
     }
 
 

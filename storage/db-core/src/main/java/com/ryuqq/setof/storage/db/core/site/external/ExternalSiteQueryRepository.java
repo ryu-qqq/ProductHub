@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ExternalSiteQueryRepository {
 
+    boolean existBySellerIdAndSitId(long sellerId, long siteId);
     List<ExternalSiteSellerRelationDto> fetchBySellerId(List<Long> sellerId);
 
 }

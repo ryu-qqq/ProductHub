@@ -18,6 +18,7 @@ public class ProductGroupBatchInsertEntities {
     private final List<ProductGroupConfigEntity> productGroupConfigEntities = new ArrayList<>();
 
 
+
     public void addDelivery(ProductDeliveryEntity delivery) {
         deliveries.add(delivery);
     }

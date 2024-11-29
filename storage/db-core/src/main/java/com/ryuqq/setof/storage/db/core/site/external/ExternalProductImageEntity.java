@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 @Entity
 public class ExternalProductImageEntity extends BaseEntity {
 
+    @Column(name = "PRODUCT_GROUP_ID", nullable = true)
+    private long productGroupId;
+
     @Column(name = "EXTERNAL_PRODUCT_ID", nullable = true)
     private String externalProductId;
 
@@ -23,11 +26,16 @@ public class ExternalProductImageEntity extends BaseEntity {
 
     protected ExternalProductImageEntity() {}
 
-    public ExternalProductImageEntity(String externalProductId, int displayOrder, String imageUrl, String originUrl) {
+    public ExternalProductImageEntity(long productGroupId, String externalProductId, int displayOrder, String imageUrl, String originUrl) {
+        this.productGroupId = productGroupId;
         this.externalProductId = externalProductId;
         this.displayOrder = displayOrder;
         this.imageUrl = imageUrl;
         this.originUrl = originUrl;
+    }
+
+    public long getProductGroupId() {
+        return productGroupId;
     }
 
     public String getExternalProductId() {

@@ -59,8 +59,9 @@ public class ProductGroupNameCommandService {
 
 
     private Map<Long, ExternalProductPolicy> toSiteIdMap(List<Long> siteIds) {
-        return externalPolicyContextFinder.findExternalProductPolicies(siteIds).stream()
-                .collect(Collectors.toMap(ExternalProductPolicy::siteId, Function.identity()));
+        return null;
+//        return externalPolicyContextFinder.findExternalProductPolicies(siteIds).stream()
+//                .collect(Collectors.toMap(ExternalProductPolicy::siteId, Function.identity()));
     }
 
 

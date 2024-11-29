@@ -5,7 +5,7 @@ import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductGetReques
 import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse;
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteInsertResponseDto;
-import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommand;
 import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommandService;
@@ -21,11 +21,11 @@ import static com.ryuqq.setof.api.core.controller.config.EndPointsConstants.BASE
 public class CrawlSiteController {
 
     private final CrawlProductCommandService crawlProductCommandService;
-    private final CrawlProductQueryFacade crawlProductQueryFacade;
+    private final CrawlProductService crawlProductService;
 
-    public CrawlSiteController(CrawlProductCommandService crawlProductCommandService, CrawlProductQueryFacade crawlProductQueryFacade) {
+    public CrawlSiteController(CrawlProductCommandService crawlProductCommandService, CrawlProductService crawlProductService) {
         this.crawlProductCommandService = crawlProductCommandService;
-        this.crawlProductQueryFacade = crawlProductQueryFacade;
+        this.crawlProductService = crawlProductService;
     }
 
     @PostMapping("/site/crawl/product")
@@ -39,7 +39,7 @@ public class CrawlSiteController {
     @GetMapping("/site/crawl/product")
     public ResponseEntity<ApiResponse<Slice<CrawlProductResponse>>> getCrawlProducts(
             @ModelAttribute CrawlProductGetRequestDto crawlProductGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(crawlProductQueryFacade.getCrawlProducts(crawlProductGetRequestDto.toCrawlProductFilter())));
+        return ResponseEntity.ok(ApiResponse.success(crawlProductService.getCrawlProducts(crawlProductGetRequestDto.toCrawlProductFilter())));
     }
 
 

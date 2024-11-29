@@ -4,9 +4,11 @@ package com.ryuqq.setof.api.core.controller.v1.product;
 import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupCommandContextRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.response.GptTrainingDataResponse;
-import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataServingService;
 import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextService;
 import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
+import com.ryuqq.setof.api.core.data.BrandModuleHelper;
+import com.ryuqq.setof.api.core.data.CategoryModuleHelper;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
 import com.ryuqq.setof.domain.core.product.ProductGroupContextCommandManager;
@@ -41,7 +43,7 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 class ProductControllerTest extends RestDocsTest {
 
     @Mock
-    private GptTrainingDataQueryFacade gptTrainingDataQueryFacade;
+    private GptTrainingDataServingService gptTrainingDataServingService;
 
 
     @Mock
@@ -358,20 +360,19 @@ class ProductControllerTest extends RestDocsTest {
     void getProductGroupsWithProcessingStatus() throws Exception {
         // given
         ProductGroupContextResponse twoOption = ProductModuleHelper.toProductGroupContextResponse(1L, OptionType.OPTION_TWO);
-        ExternalMallProductPendingDataResponse externalMallProductPendingDataResponse = ProductModuleHelper.toExternalMallProductPendingDataResponse();
-
         GptTrainingDataResponse gptTrainingDataResponse =
                 new GptTrainingDataResponse(
                         twoOption.productGroup(),
                         ProductModuleHelper.toProducts(twoOption.productGroup().productGroupId(), OptionType.OPTION_TWO),
-                        ProductModuleHelper.toProductNoticeResponse(),
-                        List.of(externalMallProductPendingDataResponse));
+                        CategoryModuleHelper.toCategoryResponses(),
+                        BrandModuleHelper.toBrandResponse()
+                        );
 
         List<GptTrainingDataResponse> results = List.of(gptTrainingDataResponse);
         Slice<GptTrainingDataResponse> slice = SliceUtils.toSlice(results, 20, 3);
         slice.setCursor(1L);
 
-        when(gptTrainingDataQueryFacade.getProductGroupsForGptTraining(any())).thenReturn(slice);
+        when(gptTrainingDataServingService.getProductGroupsForGptTraining(any())).thenReturn(slice);
 
         // when
         given()

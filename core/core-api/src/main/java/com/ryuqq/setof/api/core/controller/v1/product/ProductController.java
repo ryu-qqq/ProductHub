@@ -5,8 +5,8 @@ import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupInsertResponseDto;
 import com.ryuqq.setof.api.core.controller.v1.product.response.GptTrainingDataResponse;
-import com.ryuqq.setof.api.core.controller.v1.product.service.BatchResultCommandFacade;
-import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.product.service.BatchResultCommandService;
+import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataServingService;
 import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.product.*;
@@ -23,15 +23,15 @@ public class ProductController {
     private final ProductGroupContextCommandService productGroupContextCommandService;
     private final ProductGroupCommandService productGroupCommandService;
     private final ProductGroupContextService productGroupContextService;
-    private final GptTrainingDataQueryFacade gptTrainingDataQueryFacade;
-    private final BatchResultCommandFacade batchResultCommandFacade;
+    private final GptTrainingDataServingService gptTrainingDataServingService;
+    private final BatchResultCommandService batchResultCommandService;
 
-    public ProductController(ProductGroupCommandService productGroupCommandService, ProductGroupContextCommandService productGroupContextCommandService, ProductGroupContextService productGroupContextService, GptTrainingDataQueryFacade gptTrainingDataQueryFacade, BatchResultCommandFacade batchResultCommandFacade) {
+    public ProductController(ProductGroupCommandService productGroupCommandService, ProductGroupContextCommandService productGroupContextCommandService, ProductGroupContextService productGroupContextService, GptTrainingDataServingService gptTrainingDataServingService, BatchResultCommandService batchResultCommandService) {
         this.productGroupCommandService = productGroupCommandService;
         this.productGroupContextCommandService = productGroupContextCommandService;
         this.productGroupContextService = productGroupContextService;
-        this.gptTrainingDataQueryFacade = gptTrainingDataQueryFacade;
-        this.batchResultCommandFacade = batchResultCommandFacade;
+        this.gptTrainingDataServingService = gptTrainingDataServingService;
+        this.batchResultCommandService = batchResultCommandService;
     }
 
     @PostMapping("/product/group")
@@ -48,7 +48,7 @@ public class ProductController {
 
     @GetMapping("/product/group")
     public ResponseEntity<ApiResponse<Slice<ProductGroupContextResponse>>> getProductGroups(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(productGroupContextService.fetchProductGroupContextsByFilter(productGroupGetRequestDto.toProductGroupFilter())));
+        return ResponseEntity.ok(ApiResponse.success(productGroupContextService.fetchProductGroupContextsByFilter(productGroupGetRequestDto)));
     }
 
     @GetMapping("/product/group/{productGroupId}")
@@ -57,13 +57,13 @@ public class ProductController {
     }
 
     @GetMapping("/product/processing-waiting")
-    public ResponseEntity<ApiResponse<Slice<GptTrainingDataResponse>>> getProductGroupsForGptTraining(@ModelAttribute GptTrainingDataFilterRequestDto requestDto){
-        return ResponseEntity.ok(ApiResponse.success(gptTrainingDataQueryFacade.getProductGroupsForGptTraining(requestDto)));
+    public ResponseEntity<ApiResponse<Slice<GptTrainingDataResponse>>> getProductGroupsForGptTraining(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){
+        return ResponseEntity.ok(ApiResponse.success(gptTrainingDataServingService.getProductGroupsForGptTraining(productGroupGetRequestDto)));
     }
 
     @PostMapping("/product/processing-completed")
-    public ResponseEntity<ApiResponse<Integer>> getProductGroupForProcessingData(@RequestBody BatchSaveRequest requestDto){
-        batchResultCommandFacade.batchResultIntegration(requestDto);
+    public ResponseEntity<ApiResponse<Integer>> getProductGroupForProcessingData(@RequestBody GptBatchSaveRequest requestDto){
+        batchResultCommandService.batchResultIntegration(requestDto);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 

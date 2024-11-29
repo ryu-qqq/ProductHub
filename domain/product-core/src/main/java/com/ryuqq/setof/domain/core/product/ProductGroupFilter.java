@@ -37,7 +37,7 @@ public record ProductGroupFilter(
     }
 
     public static ProductGroupFilter of(List<Long> productGroupIds) {
-        return new ProductGroupFilter(null, null, null, productGroupIds, List.of(), List.of(), null,
+        return new ProductGroupFilter(null, null, List.of(), productGroupIds, List.of(), List.of(), null,
                 null, null, productGroupIds.size(), null, null, null, null, null
         ,null, null, null);
     }

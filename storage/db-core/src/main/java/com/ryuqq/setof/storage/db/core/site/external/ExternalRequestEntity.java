@@ -32,7 +32,7 @@ public class ExternalRequestEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SyncStatus status;
 
-    @Column(name = "REQUEST_BY", nullable = false)
+    @Column(name = "REQUEST_BY", nullable = true)
     private String requestBody;
 
     protected ExternalRequestEntity() {}
