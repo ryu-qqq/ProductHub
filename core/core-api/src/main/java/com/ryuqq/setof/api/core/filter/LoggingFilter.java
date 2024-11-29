@@ -1,17 +1,23 @@
 package com.ryuqq.setof.api.core.filter;
 
+import com.ryuqq.setof.domain.core.TraceIdHolder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
@@ -22,6 +28,11 @@ public class LoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         long startTime = System.currentTimeMillis();
+        String traceId = UUID.randomUUID().toString();
+        TraceIdHolder.setTraceId(traceId);
+
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType("application/json;charset=UTF-8");
 
         RequestWrapper requestWrapper = new RequestWrapper(request);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
@@ -35,6 +46,8 @@ public class LoggingFilter extends OncePerRequestFilter {
             logResponse(wrappedResponse, duration);
 
             wrappedResponse.copyBodyToResponse();
+            TraceIdHolder.clear();
+
         }
     }
 
@@ -42,13 +55,16 @@ public class LoggingFilter extends OncePerRequestFilter {
         try {
             String userAgent = request.getHeader("User-Agent");
             String clientIp = getClientIp(request);
+            String traceId = TraceIdHolder.getTraceId();
+            String queryString = request.getQueryString();
+            String uri = request.getRequestURI() + (queryString != null ? "?" + queryString : "");
 
-            String body = new String(request.getContentAsByteArray());
-            log.info("Request: method={}, uri={}, headers={}, body={}, clientIp={}, userAgent={}",
+            log.info("Request: traceId ={}, method={}, uri={}, headers={}, body={}, clientIp={}, userAgent={}",
+                    traceId,
                     request.getMethod(),
-                    request.getRequestURI(),
+                    uri,
                     getHeaders(request),
-                    body,
+                    getRequestBody(request),
                     clientIp,
                     userAgent
             );
@@ -57,17 +73,53 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
     }
 
+
     private void logResponse(ContentCachingResponseWrapper response, long duration) {
-        try {
-            log.info("Response: status={}, headers={}, body={}, duration={}ms",
-                    response.getStatus(),
-                    response.getHeaderNames(),
-                    new String(response.getContentAsByteArray()),
-                    duration);
-        } catch (Exception e) {
-            log.error("Failed to log response", e);
-        }
+        log.info("[{}, duration={}ms]", logPayload(response.getContentType(), response.getContentAsByteArray()), duration);
     }
+
+
+
+    private String getRequestBody(RequestWrapper request) throws IOException {
+        String contentType = request.getContentType();
+        boolean visible = isVisible(MediaType.valueOf(contentType == null ? "application/json" : contentType));
+        if (visible) {
+            byte[] content = request.getContentAsByteArray();
+            if (content.length > 0) {
+                return new String(content, request.getCharacterEncoding() != null ? request.getCharacterEncoding() : StandardCharsets.UTF_8.name());
+            }
+        }
+        return "";
+    }
+
+
+    private String logPayload(String contentType, byte[] content) {
+        try {
+            boolean visible = isVisible(MediaType.valueOf(contentType == null ? "application/json" : contentType));
+            if (visible && content.length > 0) {
+                String charset = StandardCharsets.UTF_8.name(); // UTF-8 고정
+                return new String(content, charset);
+            }
+        } catch (Exception e) {
+            log.error("Failed to log payload", e);
+        }
+        return "";
+    }
+
+    private boolean isVisible(MediaType mediaType) {
+        final List<MediaType> VISIBLE_TYPES = Arrays.asList(
+                MediaType.valueOf("text/*"),
+                MediaType.APPLICATION_FORM_URLENCODED,
+                MediaType.APPLICATION_JSON,
+                MediaType.APPLICATION_XML,
+                MediaType.valueOf("application/*+json"),
+                MediaType.valueOf("application/*+xml"),
+                MediaType.MULTIPART_FORM_DATA
+        );
+
+        return VISIBLE_TYPES.stream().anyMatch(visibleType -> visibleType.includes(mediaType));
+    }
+
 
     private String getHeaders(HttpServletRequest request) {
         StringBuilder headers = new StringBuilder();

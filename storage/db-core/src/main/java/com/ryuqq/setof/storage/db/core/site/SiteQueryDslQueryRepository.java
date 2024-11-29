@@ -24,7 +24,7 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     }
 
     @Override
-    public boolean fetchSiteExists(long siteId) {
+    public boolean existById(long siteId) {
         Long findId = queryFactory.select(
                         siteEntity.id)
                 .from(siteEntity)
@@ -36,7 +36,7 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     }
 
     @Override
-    public boolean fetchSiteExists(String name, String baseUrl) {
+    public boolean existByNameAndUrl(String name, String baseUrl) {
         Long siteId = queryFactory.select(
                         siteEntity.id)
                 .from(siteEntity)
@@ -50,7 +50,7 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     }
 
     @Override
-    public List<SiteContextDto> fetchSites(SiteFilterStorageDto siteFilterStorageDto) {
+    public List<SiteContextDto> fetchByFilter(SiteFilterStorageDto siteFilterStorageDto) {
         return queryFactory.select(
                         new QSiteContextDto(
                                 siteEntity.id,
@@ -69,7 +69,7 @@ public class SiteQueryDslQueryRepository implements SiteQueryRepository{
     }
 
     @Override
-    public long fetchSiteCount(SiteFilterStorageDto siteFilterStorageDto) {
+    public long countByFilter(SiteFilterStorageDto siteFilterStorageDto) {
         Long count = queryFactory.select(
                         siteEntity.count()
                 )

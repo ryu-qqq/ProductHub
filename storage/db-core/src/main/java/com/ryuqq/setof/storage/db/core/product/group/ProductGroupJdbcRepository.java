@@ -1,6 +1,7 @@
 package com.ryuqq.setof.storage.db.core.product.group;
 
 import com.ryuqq.setof.enums.core.ProductStatus;
+import com.ryuqq.setof.storage.db.core.product.dto.ProductStyleCodeDto;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -109,6 +110,26 @@ public class ProductGroupJdbcRepository {
                 })
                 .toList();
         namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+    }
+
+
+
+
+    public void batchUpdateStyleCodes(List<ProductStyleCodeDto> productStyleCodes){
+        String sql = "UPDATE PRODUCT_GROUP " +
+                "SET STYLE_CODE = :styleCode " +
+                "WHERE ID = :productGroupId";
+
+        List<Map<String, Object>> batchValues = productStyleCodes.stream()
+                .map(styleCode -> {
+                    MapSqlParameterSource params = new MapSqlParameterSource()
+                            .addValue("styleCode", styleCode.styleCode())
+                            .addValue("productGroupId", styleCode.productGroupId());
+                    return params.getValues();
+                })
+                .toList();
+        namedParameterJdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+
     }
 
 

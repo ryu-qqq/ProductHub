@@ -1,7 +1,7 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.ExternalSitePricePolicyCommand;
-import com.ryuqq.setof.domain.core.site.ExternalSitePricePolicyRuleCommand;
+import com.ryuqq.setof.domain.core.site.external.ExternalPricePolicyCommand;
+import com.ryuqq.setof.domain.core.site.external.ExternalPricePolicyRuleCommand;
 import com.ryuqq.setof.enums.core.Origin;
 
 import java.util.List;
@@ -11,14 +11,13 @@ public record ExternalSitePricePolicyRequestDto(
         String description,
         Origin currency,
         int priority,
-        List<ExternalSitePricePolicyRuleRequestDto> externalSitePricePolicyConditionRequests
+        List<ExternalSitePricePolicyRuleRequestDto> pricePolicyConditions
 )
-{
-    public ExternalSitePricePolicyCommand toExternalSitePricePolicyCommand() {
-        List<ExternalSitePricePolicyRuleCommand> externalSitePricePolicyRuleCommands = externalSitePricePolicyConditionRequests.stream()
-                .map(ExternalSitePricePolicyRuleRequestDto::toExternalSitePricePolicyConditionCommand)
-                .toList();
-        return new ExternalSitePricePolicyCommand(name, description, currency, priority, externalSitePricePolicyRuleCommands);
+    {
+        public ExternalPricePolicyCommand toExternalSitePricePolicyCommand() {
+            List<ExternalPricePolicyRuleCommand> externalPricePolicyRuleCommands = pricePolicyConditions.stream()
+                    .map(ExternalSitePricePolicyRuleRequestDto::toExternalSitePricePolicyConditionCommand)
+                    .toList();
+            return new ExternalPricePolicyCommand(name, description, currency, priority, externalPricePolicyRuleCommands);
     }
-
 }

@@ -1,7 +1,5 @@
 dependencies {
 
-    implementation project(":storage:db-cache")
-
     // QueryDSL
     implementation "com.querydsl:querydsl-sql:${queryDslVersion}"
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"

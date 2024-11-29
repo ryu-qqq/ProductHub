@@ -3,7 +3,10 @@ package com.ryuqq.setof.storage.db.core;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-
+/**
+ * 1 -> true
+ * 0 or null -> false
+ */
 @Converter(autoApply = true)
 public class BooleanToIntegerConverter implements AttributeConverter<Boolean, Integer> {
 
@@ -15,6 +18,6 @@ public class BooleanToIntegerConverter implements AttributeConverter<Boolean, In
 
     @Override
     public Boolean convertToEntityAttribute(Integer dbData) {
-        return dbData != null && dbData == 0;
+        return dbData != null && dbData == 1;
     }
 }

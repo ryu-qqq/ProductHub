@@ -1,14 +1,15 @@
 package com.ryuqq.setof.api.core.controller.v1.product;
 
 import com.ryuqq.setof.api.core.controller.support.ApiResponse;
-import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupCommandContextRequestDto;
-import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupGetRequestDto;
+import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupInsertResponseDto;
-import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.product.response.GptTrainingDataResponse;
+import com.ryuqq.setof.api.core.controller.v1.product.service.BatchResultCommandService;
+import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataServingService;
+import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextService;
 import com.ryuqq.setof.domain.core.generic.Slice;
-import com.ryuqq.setof.domain.core.product.ProductGroupContextCommandService;
-import com.ryuqq.setof.domain.core.product.ProductGroupContextCommandFacade;
+import com.ryuqq.setof.domain.core.product.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,17 @@ import static com.ryuqq.setof.api.core.controller.config.EndPointsConstants.BASE
 public class ProductController {
 
     private final ProductGroupContextCommandService productGroupContextCommandService;
-    private final ProductGroupQueryFacade productGroupQueryFacade;
+    private final ProductGroupCommandService productGroupCommandService;
+    private final ProductGroupContextService productGroupContextService;
+    private final GptTrainingDataServingService gptTrainingDataServingService;
+    private final BatchResultCommandService batchResultCommandService;
 
-    public ProductController(ProductGroupContextCommandFacade productGroupDocumentCommandFacade, ProductGroupQueryFacade productGroupQueryFacade) {
-        this.productGroupContextCommandService = productGroupDocumentCommandFacade;
-        this.productGroupQueryFacade = productGroupQueryFacade;
+    public ProductController(ProductGroupCommandService productGroupCommandService, ProductGroupContextCommandService productGroupContextCommandService, ProductGroupContextService productGroupContextService, GptTrainingDataServingService gptTrainingDataServingService, BatchResultCommandService batchResultCommandService) {
+        this.productGroupCommandService = productGroupCommandService;
+        this.productGroupContextCommandService = productGroupContextCommandService;
+        this.productGroupContextService = productGroupContextService;
+        this.gptTrainingDataServingService = gptTrainingDataServingService;
+        this.batchResultCommandService = batchResultCommandService;
     }
 
     @PostMapping("/product/group")
@@ -41,7 +48,7 @@ public class ProductController {
 
     @GetMapping("/product/group")
     public ResponseEntity<ApiResponse<Slice<ProductGroupContextResponse>>> getProductGroups(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(productGroupQueryFacade.getProductGroupContexts(productGroupGetRequestDto.toProductGroupFilter())));
+        return ResponseEntity.ok(ApiResponse.success(productGroupContextService.fetchProductGroupContextsByFilter(productGroupGetRequestDto)));
     }
 
     @GetMapping("/product/group/{productGroupId}")
@@ -49,5 +56,21 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
+    @GetMapping("/product/processing-waiting")
+    public ResponseEntity<ApiResponse<Slice<GptTrainingDataResponse>>> getProductGroupsForGptTraining(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){
+        return ResponseEntity.ok(ApiResponse.success(gptTrainingDataServingService.getProductGroupsForGptTraining(productGroupGetRequestDto)));
+    }
+
+    @PostMapping("/product/processing-completed")
+    public ResponseEntity<ApiResponse<Integer>> getProductGroupForProcessingData(@RequestBody GptBatchSaveRequest requestDto){
+        batchResultCommandService.batchResultIntegration(requestDto);
+        return ResponseEntity.ok(ApiResponse.success(null));
+    }
+
+    @PatchMapping("/product/status")
+    public ResponseEntity<ApiResponse<Integer>> updateProductStatus(@RequestBody ProductStatusUpdateRequestDto requestDto){
+        productGroupCommandService.updateStatus(requestDto.productGroupIds(), requestDto.productStatus());
+        return ResponseEntity.ok(ApiResponse.success(requestDto.productGroupIds().size()));
+    }
 
 }

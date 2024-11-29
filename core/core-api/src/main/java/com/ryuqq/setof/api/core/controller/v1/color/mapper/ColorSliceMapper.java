@@ -2,6 +2,7 @@ package com.ryuqq.setof.api.core.controller.v1.color.mapper;
 
 import com.ryuqq.setof.api.core.controller.mapper.AbstractGeneralSliceMapper;
 import com.ryuqq.setof.api.core.controller.v1.color.response.ColorResponse;
+import com.ryuqq.setof.domain.core.color.Color;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +11,11 @@ import java.util.List;
 @Component
 public class ColorSliceMapper extends AbstractGeneralSliceMapper<ColorResponse> {
 
-    @Override
-    public Slice<ColorResponse> toSlice(List<ColorResponse> data, int pageSize) {
-        return super.toSlice(data, pageSize);
-    }
-
-    @Override
-    public Slice<ColorResponse> toSlice(List<ColorResponse> data, int pageSize, long totalElements) {
-        return super.toSlice(data, pageSize, totalElements);
+    public Slice<ColorResponse> toSliceFromColors(List<Color> colors, int pageSize, long totalElements) {
+        List<ColorResponse> responses = colors.stream()
+                .map(ColorResponse::of)
+                .toList();
+        return toSlice(responses, pageSize, totalElements);
     }
 
     @Override

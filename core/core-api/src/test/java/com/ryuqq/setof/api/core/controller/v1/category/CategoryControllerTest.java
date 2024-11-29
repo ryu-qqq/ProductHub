@@ -1,6 +1,5 @@
 package com.ryuqq.setof.api.core.controller.v1.category;
 
-import com.ryuqq.setof.api.core.controller.v1.category.CategoryController;
 import com.ryuqq.setof.api.core.controller.v1.category.response.CategoryResponse;
 import com.ryuqq.setof.api.core.controller.v1.category.service.CategoryService;
 import com.ryuqq.setof.domain.core.generic.Slice;
@@ -58,7 +57,7 @@ class CategoryControllerTest extends RestDocsTest {
         Slice<CategoryResponse> slice = SliceUtils.toSlice(categoryResponses, 20, 4);
         slice.setCursor(1L);
 
-        when(categoryService.getCategories(any())).thenReturn(slice);
+        when(categoryService.fetchCategories(any())).thenReturn(slice);
 
         // when
         given()
@@ -111,7 +110,7 @@ class CategoryControllerTest extends RestDocsTest {
     void getChildCategories() throws Exception {
         // given
         List<CategoryResponse> categoryResponses = CategoryModuleHelper.toCategoryResponses();
-        when(categoryService.getChildCategories(anyLong())).thenReturn(categoryResponses);
+        when(categoryService.fetchCategoryRelation(any())).thenReturn(categoryResponses);
 
         // when
         given()
@@ -151,7 +150,7 @@ class CategoryControllerTest extends RestDocsTest {
     void getParentCategories() throws Exception {
         // given
         List<CategoryResponse> categoryResponses = CategoryModuleHelper.toCategoryResponses();
-        when(categoryService.getParentCategories(anyLong())).thenReturn(categoryResponses);
+        when(categoryService.fetchCategoryRelation(any())).thenReturn(categoryResponses);
 
         // when
         given()

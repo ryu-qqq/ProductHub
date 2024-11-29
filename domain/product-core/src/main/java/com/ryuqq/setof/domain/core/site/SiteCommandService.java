@@ -1,20 +1,20 @@
 package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.storage.db.core.site.SiteEntity;
-import com.ryuqq.setof.storage.db.core.site.SitePersistenceService;
+import com.ryuqq.setof.storage.db.core.site.SitePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SiteCommandService {
 
-    private final SitePersistenceService sitePersistenceService;
+    private final SitePersistenceRepository sitePersistenceRepository;
 
-    public SiteCommandService(SitePersistenceService sitePersistenceService) {
-        this.sitePersistenceService = sitePersistenceService;
+    public SiteCommandService(SitePersistenceRepository sitePersistenceRepository) {
+        this.sitePersistenceRepository = sitePersistenceRepository;
     }
 
     public long insert(SiteEntity siteEntity) {
-        return sitePersistenceService.insert(siteEntity);
+        return sitePersistenceRepository.insert(siteEntity);
     }
 
 }

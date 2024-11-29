@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.enums.core.SiteType;
 import org.springframework.stereotype.Component;
-import provider.AbstractProvider;
+import com.ryuqq.setof.support.utils.AbstractProvider;
 
 import java.util.List;
 

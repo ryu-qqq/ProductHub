@@ -1,6 +1,5 @@
 package com.ryuqq.setof.api.core.controller.v1.brand;
 
-import com.ryuqq.setof.api.core.controller.v1.brand.BrandController;
 import com.ryuqq.setof.api.core.controller.v1.brand.response.BrandResponse;
 import com.ryuqq.setof.api.core.controller.v1.brand.service.BrandService;
 import com.ryuqq.setof.api.core.data.BrandModuleHelper;
@@ -58,7 +57,7 @@ class BrandControllerTest extends RestDocsTest {
         Slice<BrandResponse> slice = SliceUtils.toSlice(results, 20, 1);
         slice.setCursor(1L);
 
-        when(brandService.getBrands(any())).thenReturn(slice);
+        when(brandService.fetchBrands(any())).thenReturn(slice);
 
         // when
         given()

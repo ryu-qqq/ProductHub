@@ -7,7 +7,7 @@ import com.ryuqq.setof.api.core.controller.v1.site.request.SiteProfileRequestDto
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteInsertResponseDto;
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteResponse;
-import com.ryuqq.setof.api.core.controller.v1.site.service.SiteQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.site.service.SiteService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.SiteContextCommandFacade;
 import com.ryuqq.setof.domain.core.site.SiteProfileCommandFacade;
@@ -22,25 +22,25 @@ import static com.ryuqq.setof.api.core.controller.config.EndPointsConstants.BASE
 @RestController
 public class SiteController {
 
-    private final SiteQueryFacade siteQueryFacade;
+    private final SiteService siteService;
     private final SiteContextCommandFacade siteContextCommandFacade;
     private final SiteProfileCommandFacade siteProfileCommandFacade;
 
 
-    public SiteController(SiteQueryFacade siteQueryFacade, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade) {
-        this.siteQueryFacade = siteQueryFacade;
+    public SiteController(SiteService siteService, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade) {
+        this.siteService = siteService;
         this.siteContextCommandFacade = siteContextCommandFacade;
         this.siteProfileCommandFacade = siteProfileCommandFacade;
     }
 
     @GetMapping("/site")
     public ResponseEntity<ApiResponse<Slice<SiteResponse>>> getSites(@ModelAttribute SiteGetRequestDto siteGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteResponses(siteGetRequestDto.toSiteFilter())));
+        return ResponseEntity.ok(ApiResponse.success(siteService.getSiteResponses(siteGetRequestDto.toSiteFilter())));
     }
 
     @GetMapping("/site/{siteId}")
     public ResponseEntity<ApiResponse<SiteContextResponse>> getSite(@PathVariable("siteId") long siteId){
-        return ResponseEntity.ok(ApiResponse.success(siteQueryFacade.getSiteContextResponse(siteId)));
+        return ResponseEntity.ok(ApiResponse.success(siteService.getSiteContextResponse(siteId)));
     }
 
     @PostMapping("/site")

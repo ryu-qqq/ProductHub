@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @Table(name = "PRODUCT_GROUP")
 @Entity
 public class ProductGroupEntity extends BaseEntity {
+    @Column(name = "SETOF_PRODUCT_GROUP_ID", nullable = false)
+    private long setofProductGroupId;
 
     @Column(name = "SELLER_ID", nullable = false)
     private long sellerId;
@@ -162,4 +164,9 @@ public class ProductGroupEntity extends BaseEntity {
     protected String getKeywords() {
         return keywords;
     }
+
+    public void setSetofProductGroupId(long setofProductGroupId) {
+        this.setofProductGroupId = setofProductGroupId;
+    }
+
 }

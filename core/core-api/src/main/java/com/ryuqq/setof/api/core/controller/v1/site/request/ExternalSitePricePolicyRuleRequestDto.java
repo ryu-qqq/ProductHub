@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.ExternalSitePricePolicyRuleCommand;
+import com.ryuqq.setof.domain.core.site.external.ExternalPricePolicyRuleCommand;
 import com.ryuqq.setof.enums.core.AdjustmentType;
 import com.ryuqq.setof.enums.core.PriceConditionType;
 
@@ -14,8 +14,8 @@ public record ExternalSitePricePolicyRuleRequestDto(
         int priority,
         boolean activeYn
 ) {
-    public ExternalSitePricePolicyRuleCommand toExternalSitePricePolicyConditionCommand(){
-        return new ExternalSitePricePolicyRuleCommand(conditionType, conditionValue, adjustmentType, adjustmentValue, priority, activeYn);
+    public ExternalPricePolicyRuleCommand toExternalSitePricePolicyConditionCommand(){
+        return new ExternalPricePolicyRuleCommand(conditionType, conditionValue, adjustmentType, adjustmentValue, priority, activeYn);
     }
 
 }

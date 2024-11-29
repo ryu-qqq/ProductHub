@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.response;
 
-import com.ryuqq.setof.domain.core.site.CrawlTask;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlTask;
 import com.ryuqq.setof.enums.core.ActionType;
 import com.ryuqq.setof.enums.core.ProcessType;
 

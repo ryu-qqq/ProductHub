@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.category.response;
 
-import com.ryuqq.setof.domain.core.category.CategoryRecord;
+import com.ryuqq.setof.domain.core.category.Category;
 import com.ryuqq.setof.enums.core.CategoryType;
 import com.ryuqq.setof.enums.core.TargetGroup;
 
@@ -14,7 +14,7 @@ public record CategoryResponse(
         CategoryType categoryType,
         String path
 ) {
-    public static CategoryResponse of(CategoryRecord category) {
+    public static CategoryResponse of(Category category) {
         return new CategoryResponse(
                 category.id(),
                 category.categoryName(),

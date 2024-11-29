@@ -4,54 +4,101 @@ import com.ryuqq.setof.storage.db.core.category.CategoryQueryRepository;
 import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.Duration;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryFinder implements CategoryQueryService {
 
     private final CategoryQueryRepository categoryQueryRepository;
+    private final CategoryCacheService categoryCacheService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryFinder(CategoryQueryRepository categoryQueryRepository) {
+
+    public CategoryFinder(CategoryQueryRepository categoryQueryRepository, CategoryCacheService categoryCacheService, CategoryMapper categoryMapper) {
         this.categoryQueryRepository = categoryQueryRepository;
-    }
-    @Override
-    public boolean categoryExist(long categoryId){
-        return categoryQueryRepository.fetchCategoryExists(categoryId);
+        this.categoryCacheService = categoryCacheService;
+        this.categoryMapper = categoryMapper;
     }
 
     @Override
-    public List<CategoryRecord> findCategories(CategoryFilter categoryFilter){
-        List<CategoryDto> results = categoryQueryRepository.fetchCategories(categoryFilter.toStorageFilter());
-        return results.stream()
-                .map(CategoryRecord::toCategoryRecord)
+    public boolean existById(long categoryId){
+        return categoryQueryRepository.existById(categoryId);
+    }
+
+    @Override
+    public long countByFilter(CategoryFilter categoryFilter){
+        return categoryQueryRepository.countByFilter(categoryFilter.toStorageFilter());
+    }
+
+
+    @Override
+    public List<Category> fetchCategoriesByFilter(CategoryFilter categoryFilter) {
+        return categoryQueryRepository.fetchByFilter(categoryFilter.toStorageFilter()).stream()
+                .map(categoryMapper::toDomain)
                 .toList();
     }
 
-    @Override
-    public List<CategoryRecord> findCategories(List<Long> categoryIds){
-        CategoryFilter categoryFilter = new CategoryFilter(categoryIds, null, null, null, categoryIds.size());
-        return findCategories(categoryFilter);
-    }
 
     @Override
-    public List<CategoryRecord> findChildCategories(long categoryId){
-        List<CategoryDto> results = categoryQueryRepository.fetchChildCategories(categoryId);
-        return results.stream()
-                .map(CategoryRecord::toCategoryRecord)
+    public List<Category> fetchCategoriesByIds(List<Long> categoryIds){
+        Map<Long, Category> cachedCategoryMap = categoryIds.stream()
+                .map(id -> Map.entry(id, categoryCacheService.findCategoryFromCache(id)))
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(
+                        Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(), (v1, v2) -> v2)
+                );
+
+        List<Long> missingIds = categoryIds.stream()
+                .filter(id -> !cachedCategoryMap.containsKey(id))
                 .toList();
+
+        List<Category> result = new ArrayList<>(cachedCategoryMap.values());
+
+        if (!missingIds.isEmpty()) {
+            CategoryFilter categoryFilter = CategoryFilter.of(missingIds, null, null, null, missingIds.size());
+            List<Category> categoriesFromRds = categoryQueryRepository.fetchByFilter(categoryFilter.toStorageFilter())
+                    .stream()
+                    .map(categoryMapper::toDomain)
+                    .toList();
+
+            categoryCacheService.saveCategoriesToCache(categoriesFromRds, Duration.ofHours(1));
+            result.addAll(categoriesFromRds);
+        }
+        return result;
     }
 
     @Override
-    public List<CategoryRecord> findParentCategories(long categoryId){
-        List<CategoryDto> results = categoryQueryRepository.fetchParentCategories(categoryId);
-        return results.stream()
-                .map(CategoryRecord::toCategoryRecord)
+    public CategoryRelation fetchCategoryRelation(long categoryId, boolean isParentRelation) {
+        List<Category> relatedCategories = categoryQueryRepository.fetchRecursiveByIds(List.of(categoryId), !isParentRelation).stream()
+                .map(categoryMapper::toDomain)
                 .toList();
+
+        return new CategoryRelation(categoryId, relatedCategories, isParentRelation);
     }
 
+
     @Override
-    public long findCategoryCount(CategoryFilter categoryFilter){
-        return categoryQueryRepository.fetchCategoryCount(categoryFilter.toStorageFilter());
+    public List<CategoryRelation> fetchCategoryRelations(List<Long> categoryIds, boolean isParentRelation) {
+        List<CategoryDto> recursiveResults = categoryQueryRepository.fetchRecursiveByIds(categoryIds, !isParentRelation);
+
+
+        Map<Long, CategoryDto> categoryIdMap = recursiveResults.stream()
+                .collect(Collectors.toMap(CategoryDto::getId, Function.identity(), (v1, v2) -> v2));
+
+        return categoryIds.stream()
+                .map(id -> {
+                    List<Category> categories = Arrays.stream(categoryIdMap.get(id).getPath().split(","))
+                            .map(Long::parseLong)
+                            .map(categoryIdMap::get)
+                            .filter(Objects::nonNull) // 재귀 결과에 없는 ID는 무시
+                            .map(categoryMapper::toDomain)
+                            .toList();
+                    return new CategoryRelation(id, categories, isParentRelation);
+                })
+                .toList();
     }
 
 }

@@ -2,9 +2,9 @@ package com.ryuqq.setof.batch.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
 import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
+import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigEntity;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
-import com.ryuqq.setof.storage.db.core.site.ExternalProductEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,9 @@ public class ProductGroupBatchInsertEntities {
     private final List<ProductNoticeEntity> notices = new ArrayList<>();
     private final List<ProductDetailDescriptionEntity> detailDescriptions = new ArrayList<>();
     private final List<ProductGroupImageEntity> images = new ArrayList<>();
-    private final List<ExternalProductEntity> externalProductEntities = new ArrayList<>();
+    private final List<ProductGroupConfigEntity> productGroupConfigEntities = new ArrayList<>();
+
+
 
     public void addDelivery(ProductDeliveryEntity delivery) {
         deliveries.add(delivery);
@@ -33,8 +35,8 @@ public class ProductGroupBatchInsertEntities {
         images.add(imageEntity);
     }
 
-    public void addExternalProduct(ExternalProductEntity externalProductEntity) {
-        externalProductEntities.add(externalProductEntity);
+    public void addProductGroupConfig(ProductGroupConfigEntity productGroupConfigEntity) {
+        productGroupConfigEntities.add(productGroupConfigEntity);
     }
 
     public List<ProductDeliveryEntity> getDeliveries() {
@@ -53,7 +55,9 @@ public class ProductGroupBatchInsertEntities {
         return images;
     }
 
-    public List<ExternalProductEntity> getExternalProductEntities() {
-        return externalProductEntities;
+
+
+    public List<ProductGroupConfigEntity> getProductGroupConfigEntities() {
+        return productGroupConfigEntities;
     }
 }

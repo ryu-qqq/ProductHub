@@ -4,16 +4,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
+
 @ConfigurationPropertiesScan
 @SpringBootApplication(scanBasePackages = {
 
         "com.ryuqq.setof.domain",
         "com.ryuqq.setof.api",
         "com.ryuqq.setof.batch",
+        "com.ryuqq.setof.support.utils",
+        "com.ryuqq.setof.support.external.core",
         "com.ryuqq.setof.storage.db.core",
         "com.ryuqq.setof.storage.db.cache",
         "com.ryuqq.setof.storage.db.index",
-
 
 })
 public class ProductHubApplication {

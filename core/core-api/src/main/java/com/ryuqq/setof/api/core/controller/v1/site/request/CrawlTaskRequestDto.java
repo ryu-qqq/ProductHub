@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.CrawlTaskCommand;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlTaskCommand;
 import com.ryuqq.setof.enums.core.ActionType;
 import com.ryuqq.setof.enums.core.ProcessType;
 import jakarta.validation.constraints.NotBlank;

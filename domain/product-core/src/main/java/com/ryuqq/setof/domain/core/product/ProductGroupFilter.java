@@ -11,7 +11,7 @@ import java.util.List;
 public record ProductGroupFilter(
         ProductStatus productStatus,
         ManagementType managementType,
-        Long categoryId,
+        List<Long> categoryIds,
         List<Long> productGroupIds,
         List<Long> brandIds,
         List<Long> colorIds,
@@ -30,10 +30,19 @@ public record ProductGroupFilter(
         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime endDate
 )  {
-    public ProductGroupStorageFilterDto toProductGroupStorageFilterDto(List<Long> categoryIds){
+
+    public ProductGroupStorageFilterDto toStorageFilterDto(){
         return new ProductGroupStorageFilterDto(productStatus, managementType, categoryIds, productGroupIds, brandIds, colorIds, sellerId, cursorId, styleCode, pageSize,
                 soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate);
     }
+
+    public static ProductGroupFilter of(List<Long> productGroupIds) {
+        return new ProductGroupFilter(null, null, List.of(), productGroupIds, List.of(), List.of(), null,
+                null, null, productGroupIds.size(), null, null, null, null, null
+        ,null, null, null);
+    }
+
+
 
 
 }

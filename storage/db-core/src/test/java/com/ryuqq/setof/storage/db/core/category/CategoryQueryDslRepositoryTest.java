@@ -40,19 +40,19 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
 
     @Test
     void shouldFetchCategoryExists() {
-        boolean result = categoryQueryDslRepository.fetchCategoryExists(category.getId());
+        boolean result = categoryQueryDslRepository.existById(category.getId());
         assertTrue(result);
     }
 
     @Test
     void shouldReturnFalseWhenCategoryNotExists() {
-        boolean result = categoryQueryDslRepository.fetchCategoryExists(999L);
+        boolean result = categoryQueryDslRepository.existById(999L);
         assertFalse(result);
     }
 
     @Test
-    void shouldFetchChildCategories() {
-        List<CategoryDto> result = categoryQueryDslRepository.fetchChildCategories(category.getId());
+    void shouldFetchChildById() {
+        List<CategoryDto> result = categoryQueryDslRepository.fetchChildById(category.getId());
         assertNotNull(result);
         assertFalse(result.isEmpty());
         result.forEach(child -> {
@@ -62,8 +62,8 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
 
 
     @Test
-    void shouldFetchParentCategories() {
-        List<CategoryDto> result = categoryQueryDslRepository.fetchParentCategories(category.getId());
+    void shouldFetchRecursiveById() {
+        List<CategoryDto> result = categoryQueryDslRepository.fetchRecursiveById(category.getId());
         assertNotNull(result);
         assertFalse(result.isEmpty());
         result.forEach(parent -> {
@@ -76,7 +76,7 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
     void shouldFetchCategoryResponsesWithPagination() {
         CategoryStorageFilterDto filter = CategoryModuleHelper.toCategoryFilter(categories);
 
-        List<CategoryDto> result = categoryQueryDslRepository.fetchCategories(filter);
+        List<CategoryDto> result = categoryQueryDslRepository.fetchByFilter(filter);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -89,7 +89,7 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
     void shouldReturnEmptyCategoryResponsesWhenNoMatches() {
         CategoryStorageFilterDto filter = CategoryModuleHelper.toCategoryFilter(List.of());
 
-        List<CategoryDto> result = categoryQueryDslRepository.fetchCategories(filter);
+        List<CategoryDto> result = categoryQueryDslRepository.fetchByFilter(filter);
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
@@ -97,7 +97,7 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
     @Test
     void shouldReturnCategoryCount() {
         CategoryStorageFilterDto filter = CategoryModuleHelper.toCategoryFilter(categories);
-        long count = categoryQueryDslRepository.fetchCategoryCount(filter);
+        long count = categoryQueryDslRepository.countByFilter(filter);
 
         assertEquals(categories.size(), count);
     }
@@ -105,7 +105,7 @@ class CategoryQueryDslRepositoryTest extends BaseRepositoryTest {
     @Test
     void shouldReturnZeroCategoryCountWhenNoMatches() {
         CategoryStorageFilterDto filter = CategoryModuleHelper.toCategoryFilter(List.of());
-        long count = categoryQueryDslRepository.fetchCategoryCount(filter);
+        long count = categoryQueryDslRepository.countByFilter(filter);
 
         assertEquals(0, count);
     }

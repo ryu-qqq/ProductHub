@@ -10,55 +10,61 @@ import java.util.stream.Collectors;
 @Component
 public class ProductMapper {
 
-    public Set<Product> toProductContexts(List<ProductContextDto> products) {
+    public List<Product> toDomains(List<ProductContextDto> products) {
         Map<Long, Set<Option>> groupedOptions = getGroupedOptions(products);
-        Map<Long, ProductContextDto> productMap = products.stream()
-                .collect(Collectors.toMap(ProductContextDto::getProductId, Function.identity(),
-                        (existing, replacement) -> existing));
+        Map<Long, ProductContextDto> productMap =getProductMap(products);
 
-        return setOption(groupedOptions, productMap);
+        return productMap.values().stream()
+                .map(dto -> mapToProduct(dto, groupedOptions))
+                .sorted(Comparator.comparing(Product::getProductId)) // productId로 정렬
+                .toList();
     }
 
     private Map<Long, Set<Option>> getGroupedOptions(List<ProductContextDto> products) {
-        Map<Long, Set<Option>> groupedOptions = new LinkedHashMap<>();
-        for (ProductContextDto p : products) {
-            groupedOptions
-                    .computeIfAbsent(p.getProductId(), k -> new HashSet<>())
-                    .add(new Option(p.getProductId(), p.getOptionGroupId(), p.getOptionDetailId(), p.getOptionName(), p.getOptionValue()));
-        }
-        return groupedOptions;
+        return products.stream()
+                .collect(Collectors.groupingBy(
+                        ProductContextDto::getProductId,
+                        Collectors.mapping(
+                                p -> new Option(
+                                        p.getProductId(),
+                                        p.getOptionGroupId(),
+                                        p.getOptionDetailId(),
+                                        p.getOptionName(),
+                                        p.getOptionValue()
+                                ),
+                                Collectors.toSet()
+                        )
+                ));
     }
 
+    private Map<Long, ProductContextDto> getProductMap(List<ProductContextDto> products) {
+        return products.stream()
+                .collect(Collectors.toMap(ProductContextDto::getProductId, Function.identity(),
+                        (existing, replacement) -> existing));
+    }
 
-    private Set<Product> setOption(Map<Long, Set<Option>> groupedOptions, Map<Long, ProductContextDto> productMap) {
-        List<Product> responses = productMap.values().stream()
-                .map(productContextDto -> {
-                    Long productId = productContextDto.getProductId();
-                    Set<Option> options = groupedOptions.getOrDefault(productId, Set.of());
+    private Product mapToProduct(ProductContextDto productContextDto, Map<Long, Set<Option>> groupedOptions) {
+        Long productId = productContextDto.getProductId();
+        Set<Option> options = groupedOptions.getOrDefault(productId, Set.of());
 
-                    Set<Option> filteredOptions = options.stream()
-                            .filter(option -> option.getOptionGroupId() != null && option.getOptionGroupId() != 0)
-                            .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Option::getOptionGroupId))));
+        Set<Option> filteredOptions = options.stream()
+                .filter(option -> option.getOptionGroupId() != null && option.getOptionGroupId() != 0)
+                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Option::getOptionGroupId))));
 
-                    if (!filteredOptions.isEmpty()) {
-                        filteredOptions.addAll(options);
-                    }
+        if (!filteredOptions.isEmpty()) {
+            filteredOptions.addAll(options);
+        }
 
-                    return new Product(
-                            productContextDto.getProductGroupId(),
-                            productContextDto.getProductId(),
-                            productContextDto.getQuantity(),
-                            productContextDto.isSoldOutYn(),
-                            productContextDto.isDisplayYn(),
-                            getOptionName(filteredOptions),
-                            filteredOptions,
-                            productContextDto.getAdditionalPrice()
-                    );
-                })
-                .filter(Objects::nonNull)
-                .toList();
-
-        return new LinkedHashSet<>(responses);
+        return new Product(
+                productContextDto.getProductGroupId(),
+                productContextDto.getProductId(),
+                productContextDto.getQuantity(),
+                productContextDto.isSoldOutYn(),
+                productContextDto.isDisplayYn(),
+                getOptionName(filteredOptions),
+                filteredOptions,
+                productContextDto.getAdditionalPrice()
+        );
     }
 
     private String getOptionName(Set<Option> options) {

@@ -1,23 +1,23 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticePersistenceService;
+import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductNoticeCommandService {
 
-    private final ProductNoticePersistenceService productNoticePersistenceService;
+    private final ProductNoticePersistenceRepository productNoticePersistenceRepository;
 
-    public ProductNoticeCommandService(ProductNoticePersistenceService productNoticePersistenceService) {
-        this.productNoticePersistenceService = productNoticePersistenceService;
+    public ProductNoticeCommandService(ProductNoticePersistenceRepository productNoticePersistenceRepository) {
+        this.productNoticePersistenceRepository = productNoticePersistenceRepository;
     }
 
     public void insert(long productGroupId, ProductNoticeCommand productNoticeCommand) {
-        productNoticePersistenceService.insert(productNoticeCommand.toEntity(productGroupId));
+        productNoticePersistenceRepository.insertProductNotice(productNoticeCommand.toEntity(productGroupId));
     }
 
     public void update(long productGroupId, ProductNoticeCommand productNoticeCommand) {
-        productNoticePersistenceService.update(productNoticeCommand.toEntity(productGroupId));
+        productNoticePersistenceRepository.updateProductNotice(productNoticeCommand.toEntity(productGroupId));
     }
 
 }

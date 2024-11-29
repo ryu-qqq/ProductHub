@@ -4,7 +4,12 @@ import java.util.Arrays;
 
 public enum SiteName {
     MUSTIT,
-    KASINA;
+    KASINA,
+    BUYMA,
+    SHEIN,
+    NAVER
+
+    ;
 
 
     public static SiteName of(String siteName) {

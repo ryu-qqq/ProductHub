@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.response;
 
-import com.ryuqq.setof.domain.core.site.CrawlProduct;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProduct;
 import com.ryuqq.setof.enums.core.SiteName;
 
 public record CrawlProductResponse(

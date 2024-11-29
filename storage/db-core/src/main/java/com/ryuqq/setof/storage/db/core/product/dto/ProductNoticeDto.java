@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.enums.core.Origin;
 
 public class ProductNoticeDto {
+
     private String material;
     private String color;
     private String size;

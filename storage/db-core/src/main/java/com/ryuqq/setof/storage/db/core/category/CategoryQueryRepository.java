@@ -9,10 +9,9 @@ import java.util.List;
 
 public interface CategoryQueryRepository {
 
-    boolean fetchCategoryExists(long categoryId);
-    List<CategoryDto> fetchCategories(CategoryStorageFilterDto categoryFilter);
-    List<CategoryDto> fetchChildCategories(long categoryId);
-    List<CategoryDto> fetchParentCategories(long categoryId);
-    long fetchCategoryCount(CategoryStorageFilterDto categoryFilter);
+    boolean existById(long categoryId);
+    List<CategoryDto> fetchByFilter(CategoryStorageFilterDto categoryFilter);
+    List<CategoryDto> fetchRecursiveByIds(List<Long> categoryIds, boolean isParentRelation);
+    long countByFilter(CategoryStorageFilterDto categoryFilter);
 
 }

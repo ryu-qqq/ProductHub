@@ -1,8 +1,5 @@
 package com.ryuqq.setof.api.core.controller.v1.product.response;
 
-import com.ryuqq.setof.domain.core.brand.BrandRecord;
-import com.ryuqq.setof.domain.core.category.CategoryRecord;
-import com.ryuqq.setof.domain.core.product.Color;
 import com.ryuqq.setof.enums.core.ManagementType;
 import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.enums.core.ProductCondition;
@@ -13,9 +10,6 @@ import java.util.List;
 public record ProductGroupResponse(
         long productGroupId,
         long sellerId,
-        Color color,
-        List<CategoryRecord> categories,
-        BrandRecord brand,
         String productGroupName,
         String styleCode,
         ProductCondition productCondition,
@@ -25,7 +19,11 @@ public record ProductGroupResponse(
         boolean soldOutYn,
         boolean displayYn,
         ProductStatus productStatus,
-        String keywords
+        String keywords,
+        ProductDeliveryResponse productDelivery,
+        ProductNoticeResponse productNotice,
+        ProductDetailDescriptionResponse productDetailDescription,
+        List<ProductGroupImageResponse> productImages
 ) {}
 
 

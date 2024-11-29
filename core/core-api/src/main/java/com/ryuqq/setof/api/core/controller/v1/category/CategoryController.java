@@ -2,11 +2,15 @@ package com.ryuqq.setof.api.core.controller.v1.category;
 
 import com.ryuqq.setof.api.core.controller.support.ApiResponse;
 import com.ryuqq.setof.api.core.controller.v1.category.request.CategoryGetRequestDto;
+import com.ryuqq.setof.api.core.controller.v1.category.request.CategoryRelationGetRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.category.response.CategoryResponse;
 import com.ryuqq.setof.api.core.controller.v1.category.service.CategoryService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,17 +28,13 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<Slice<CategoryResponse>>> getCategories(@ModelAttribute CategoryGetRequestDto categoryFilter) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategories(categoryFilter)));
+        return ResponseEntity.ok(ApiResponse.success(categoryService.fetchCategories(categoryFilter)));
     }
 
-    @GetMapping("/categories/{categoryId}/children")
-    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getChildCategories(@PathVariable("categoryId") long categoryId) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getChildCategories(categoryId)));
+    @GetMapping("/categories-relation")
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getCategoryRelation(@ModelAttribute CategoryRelationGetRequestDto requestDto) {
+        return ResponseEntity.ok(ApiResponse.success(categoryService.fetchCategoryRelation(requestDto)));
     }
 
-    @GetMapping("/categories/{categoryId}/parents")
-    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getParentCategories(@PathVariable("categoryId") long categoryId) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getParentCategories(categoryId)));
-    }
 
 }

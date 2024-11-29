@@ -9,4 +9,6 @@ public enum OptionType {
     public boolean isMultiOption(){
         return !this.equals(SINGLE);
     }
+
+
 }

@@ -2,9 +2,8 @@ package com.ryuqq.setof.api.core.data;
 
 import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.*;
+import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
 import com.ryuqq.setof.enums.core.*;
-import com.ryuqq.setof.domain.core.product.*;
-
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -14,12 +13,12 @@ import java.util.Set;
 public class ProductModuleHelper {
 
     public static ProductGroupInsertRequestDto toProductGroupInsertRequestDto(String productGroupName, BigDecimal regularPrice, BigDecimal currentPrice, ProductCondition productCondition) {
-        return new ProductGroupInsertRequestDto(1L, 2L, 3L, productGroupName, "Style123", productCondition, ManagementType.MENUAL, OptionType.OPTION_ONE, regularPrice, currentPrice, false, true, "");
+        return new ProductGroupInsertRequestDto(1L,1L, 2L, 3L, productGroupName, "Style123", productCondition, ManagementType.MENUAL, OptionType.OPTION_ONE, regularPrice, currentPrice, false, false,  "");
     }
 
 
     public static ProductGroupCommandContextRequestDto toProductGroupCommandContextRequestDto() {
-        ProductGroupInsertRequestDto productGroupInsertRequestDto = new ProductGroupInsertRequestDto(1L, 2L, 3L, "Test Product Group", "Style123", ProductCondition.NEW, ManagementType.MENUAL, OptionType.OPTION_ONE, BigDecimal.valueOf(1000), BigDecimal.valueOf(800), false, true, "");
+        ProductGroupInsertRequestDto productGroupInsertRequestDto = new ProductGroupInsertRequestDto(1L, 1L, 2L, 3L, "Test Product Group", "Style123", ProductCondition.NEW, ManagementType.MENUAL, OptionType.OPTION_ONE, BigDecimal.valueOf(1000), BigDecimal.valueOf(800), false, true, "");
         ProductNoticeInsertRequestDto productNoticeInsertRequestDto = new ProductNoticeInsertRequestDto("Cotton", "Blue", "M", "BrandX", Origin.KR, "Dry Clean", "2022-09", "Standard", "010-1234-5678");
         ProductDeliveryRequestDto productDeliveryRequestDto = new ProductDeliveryRequestDto("Seoul", BigDecimal.valueOf(10), 2, ReturnMethod.RETURN_CONSUMER, ShipmentCompanyCode.SHIP01, BigDecimal.valueOf(5), "Seoul");
         ProductGroupImageRequestDto productGroupImageRequestDto = new ProductGroupImageRequestDto(ProductImageType.MAIN, "http://image.url");
@@ -40,9 +39,6 @@ public class ProductModuleHelper {
         return new ProductGroupResponse(
                 productGroupId,
                 101L,
-                new Color(1L, "Red"),
-                CategoryModuleHelper.toCategory(),
-                BrandModuleHelper.toBrandRecord(),
                 "Sample Product Group",
                 "SGX001",
                 ProductCondition.NEW,
@@ -52,8 +48,28 @@ public class ProductModuleHelper {
                 false,
                 true,
                 ProductStatus.WAITING,
-                ""
+                "",
+                toProductDeliveryResponse(),
+                toProductNoticeResponse(),
+                toProductDetailDescriptionResponse(),
+                toProductGroupImageResponse()
         );
+    }
+
+    public static ProductGroupConfigContextResponse toProductGroupConfigContextResponse(){
+        return new ProductGroupConfigContextResponse(
+                toProductGroupConfigResponse(),
+                List.of(toProductGroupNameConfigResponse()),
+                List.of()
+        );
+    }
+
+    public static ProductGroupConfigResponse toProductGroupConfigResponse(){
+        return new ProductGroupConfigResponse(1L, 1L, true);
+    }
+
+    public static ProductGroupNameConfigResponse toProductGroupNameConfigResponse(){
+        return new ProductGroupNameConfigResponse(Origin.US, "");
     }
 
 
@@ -101,17 +117,17 @@ public class ProductModuleHelper {
         );
     }
 
-    public static Set<ProductResponse> toProducts(long productGroupId, OptionType optionType){
+    public static List<ProductResponse> toProducts(long productGroupId, OptionType optionType){
         switch (optionType) {
             case SINGLE:
-                return Set.of(new ProductResponse(productGroupId, 4L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
+                return List.of(new ProductResponse(productGroupId, 4L, 10, false, true, "", Collections.emptySet(), BigDecimal.ZERO));
             case OPTION_ONE:
-                return Set.of(
+                return List.of(
                         new ProductResponse(productGroupId, 3L, 10,false, true, "", Set.of(new OptionResponse(3L, 3L, 4L, OptionName.SIZE, "M")), BigDecimal.ZERO),
                         new ProductResponse(productGroupId, 3L,5,false, true, "", Set.of(new OptionResponse(3L, 3L, 5L, OptionName.SIZE, "L")), BigDecimal.ZERO)
                 );
             case OPTION_TWO:
-                return Set.of(
+                return List.of(
                         new ProductResponse(productGroupId, 1L, 10,false, true, "",
                                 Set.of(
                                         new OptionResponse(1L, 1L, 1L, OptionName.COLOR, "Black"),
@@ -127,9 +143,8 @@ public class ProductModuleHelper {
                                 ), BigDecimal.ZERO)
                 );
 
-
             default:
-                return Collections.emptySet();
+                return Collections.emptyList();
         }
 
     }
@@ -137,11 +152,22 @@ public class ProductModuleHelper {
     public static ProductGroupContextResponse toProductGroupContextResponse(long productGroupId, OptionType optionType) {
         return new ProductGroupContextResponse(
                 toProductGroupResponse(productGroupId, optionType),
-                toProductDeliveryResponse(),
-                toProductNoticeResponse(),
-                toProductDetailDescriptionResponse(),
-                toProductGroupImageResponse(),
-                toProducts(productGroupId, optionType)
+                toProducts(productGroupId, optionType),
+                CategoryModuleHelper.toCategoryResponses(),
+                BrandModuleHelper.toBrandResponse(),
+                toProductGroupConfigContextResponse()
         );
     }
+
+    public static ExternalMallProductPendingDataResponse toExternalMallProductPendingDataResponse(){
+        return new ExternalMallProductPendingDataResponse(
+                1L,
+                1L,
+                1L,
+                Origin.US,
+                true
+        );
+    }
+
+
 }

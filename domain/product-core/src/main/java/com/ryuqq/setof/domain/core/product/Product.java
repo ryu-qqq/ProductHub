@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.domain.core.generic.Money;
+import com.ryuqq.setof.support.utils.Money;
 import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
 
 import java.math.BigDecimal;

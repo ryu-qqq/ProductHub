@@ -9,10 +9,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class ProductChecker implements UpdateChecker<Set<Product>, List<ProductCommand>>{
+public class ProductChecker implements UpdateChecker<List<Product>, List<ProductCommand>>{
 
     @Override
-    public UpdateDecision checkUpdates(Set<Product> existing, List<ProductCommand> updated) {
+    public UpdateDecision checkUpdates(List<Product> existing, List<ProductCommand> updated) {
         UpdateDecision updateDecision = new UpdateDecision();
 
         Map<String, Product> existingProductMap = existing.stream()

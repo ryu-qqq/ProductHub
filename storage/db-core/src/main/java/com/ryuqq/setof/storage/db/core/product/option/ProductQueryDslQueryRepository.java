@@ -25,7 +25,7 @@ public class ProductQueryDslQueryRepository implements ProductQueryRepository {
     }
 
     @Override
-    public List<ProductContextDto> fetchProductContexts(List<Long> productGroupIds) {
+    public List<ProductContextDto> fetchByProductGroupIds(List<Long> productGroupIds) {
         return queryFactory
                 .select(
                         new QProductContextDto(
@@ -52,8 +52,8 @@ public class ProductQueryDslQueryRepository implements ProductQueryRepository {
                     .on(optionDetailEntity.id.eq(productOptionEntity.optionDetailId))
                     .on(optionDetailEntity.deleteYn.eq(false))
                 .where(productGroupIdIn(productGroupIds), productEntity.deleteYn.eq(false))
+                .orderBy(productEntity.id.asc())
                 .fetch();
-
     }
 
 

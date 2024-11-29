@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ProductGroupDocumentQueryRepository {
 
-    List<ProductGroupCommandContextDocument> fetchProductGroupCommandContextDocument(List<Long> productGroupIds);
+    List<ProductGroupCommandContextDocument> fetchByIds(List<Long> productGroupIds);
 
 }

@@ -1,13 +1,12 @@
 package com.ryuqq.setof.api.core.controller.v1.site;
 
-import com.ryuqq.setof.api.core.controller.v1.site.CrawlSiteController;
 import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse;
-import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductQueryFacade;
+import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductService;
 import com.ryuqq.setof.api.core.data.SiteModuleHelper;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
-import com.ryuqq.setof.domain.core.site.CrawlProductCommandService;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommandService;
 import com.ryuqq.setof.test.api.RestDocsTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +40,7 @@ class CrawlSiteControllerTest  extends RestDocsTest {
     private CrawlProductCommandService crawlProductCommandService;
 
     @Mock
-    private CrawlProductQueryFacade crawlProductQueryFacade;
+    private CrawlProductService crawlProductService;
 
 
     @InjectMocks
@@ -94,7 +93,7 @@ class CrawlSiteControllerTest  extends RestDocsTest {
 
         Slice<CrawlProductResponse> slice = SliceUtils.toSlice(results, 20, 1);
         slice.setCursor(1L);
-        when(crawlProductQueryFacade.getCrawlProducts(any())).thenReturn(slice);
+        when(crawlProductService.getCrawlProducts(any())).thenReturn(slice);
 
         // when
         given()

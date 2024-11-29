@@ -20,7 +20,7 @@ public class HeaderQueryDslRepository {
     }
 
 
-    public List<HeaderDto> fetchMultipleRandomHeaders(int limit) {
+    public List<HeaderDto> fetchHeader(int limit) {
         return queryFactory.select(
                         new QHeaderDto(
                                 headerEntity.headerName,

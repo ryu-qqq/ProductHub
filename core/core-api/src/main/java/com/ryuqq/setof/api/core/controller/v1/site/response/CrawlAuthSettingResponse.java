@@ -1,6 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.site.response;
 
-import com.ryuqq.setof.domain.core.site.CrawlAuthSetting;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlAuthSetting;
 import com.ryuqq.setof.enums.core.AuthType;
 
 public record CrawlAuthSettingResponse(

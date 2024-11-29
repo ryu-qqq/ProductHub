@@ -1,7 +1,7 @@
 package com.ryuqq.setof.api.core.controller.v1.site.request;
 
-import com.ryuqq.setof.domain.core.site.CrawlEndpointCommand;
-import com.ryuqq.setof.domain.core.site.CrawlSiteProfileCommand;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlEndpointCommand;
+import com.ryuqq.setof.domain.core.site.crawl.CrawlSiteProfileCommand;
 import jakarta.validation.Valid;
 
 import java.util.List;

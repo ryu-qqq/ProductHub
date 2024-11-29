@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.domain.core.generic.Money;
+import com.ryuqq.setof.support.utils.Money;
 import com.ryuqq.setof.enums.core.ReturnMethod;
 import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
 import org.springframework.stereotype.Component;

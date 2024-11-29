@@ -140,7 +140,8 @@ public enum Origin {
     VN("Vietnam", "베트남"),
     ZA("South Africa", "남아프리카"),
     ZM("Zambia", "잠비아"),
-    ZZ("Other", "기타");
+    ZZ("Other", "기타"),
+    OTHER("Other", "기타");
 
 
     Origin(String code, String displayName) {

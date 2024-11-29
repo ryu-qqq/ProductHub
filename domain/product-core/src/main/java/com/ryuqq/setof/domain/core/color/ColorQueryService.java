@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ColorQueryService {
 
-    boolean colorExist(long colorId);
-    List<ColorRecord> findColors(ColorFilter colorFilter);
-    long findColorCount(ColorFilter colorFilter);
+    boolean existById(long colorId);
+    List<Color> fetchColorByFilter(ColorFilter colorFilter);
+    long countByFilter(ColorFilter colorFilter);
 }

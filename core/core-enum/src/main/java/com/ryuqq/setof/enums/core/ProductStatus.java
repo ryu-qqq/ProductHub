@@ -4,6 +4,8 @@ public enum ProductStatus {
 
     WAITING,
     PROCESSING,
+    GATHERING,
+    REVIEW,
     APPROVED,
     FAILED,
     UPDATE_WAITING,
@@ -18,7 +20,5 @@ public enum ProductStatus {
     public boolean isFailed(){
         return this.equals(FAILED);
     }
-
-
 
 }

@@ -1,12 +1,11 @@
 package com.ryuqq.setof.storage.db.core.product.option;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Component
-public class ProductCommandFacade implements ProductPersistenceService{
+public class ProductCommandFacade implements ProductPersistenceRepository {
 
     private final ProductJpaRepository productJpaRepository;
     private final ProductJdbcRepository productJdbcRepository;
@@ -17,17 +16,17 @@ public class ProductCommandFacade implements ProductPersistenceService{
     }
 
     @Override
-    public long insert(ProductEntity productEntity) {
+    public long insertProduct(ProductEntity productEntity) {
         return productJpaRepository.save(productEntity).getId();
     }
 
     @Override
-    public void updateAll(List<ProductEntity> productEntities) {
+    public void updateAllProduct(List<ProductEntity> productEntities) {
         productJdbcRepository.batchUpdateProducts(productEntities);
     }
 
     @Override
-    public void deleteAll(List<Long> productIds) {
+    public void deleteAllProduct(List<Long> productIds) {
         productJdbcRepository.softDeleteAll(productIds);
     }
 

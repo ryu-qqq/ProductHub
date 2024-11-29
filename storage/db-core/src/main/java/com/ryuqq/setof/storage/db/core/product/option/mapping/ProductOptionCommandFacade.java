@@ -1,7 +1,6 @@
 package com.ryuqq.setof.storage.db.core.product.option.mapping;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

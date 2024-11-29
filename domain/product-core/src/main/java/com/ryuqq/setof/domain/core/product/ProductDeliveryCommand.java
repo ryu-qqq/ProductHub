@@ -18,6 +18,6 @@ public record ProductDeliveryCommand(
     public ProductDeliveryEntity toEntity(long productGroupId){
         return new ProductDeliveryEntity(productGroupId, deliveryArea, deliveryFee, deliveryPeriodAverage,
                 returnMethodDomestic, returnCourierDomestic, returnChargeDomestic, returnExchangeAreaDomestic
-                );
+        );
     }
 }

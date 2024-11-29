@@ -8,6 +8,7 @@ spring:
       - cache-core.yml
       - index-core.yml
       - batch-core.yml
+      - external-core.yml
 
   web.resources.add-mappings: false
   profiles:

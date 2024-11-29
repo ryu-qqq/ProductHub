@@ -4,33 +4,38 @@ import com.ryuqq.setof.domain.core.product.OptionCommand;
 import com.ryuqq.setof.domain.core.product.ProductCommand;
 import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
 import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
+import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigEntity;
 import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
 import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
-import com.ryuqq.setof.storage.db.core.site.ExternalProductEntity;
 import com.ryuqq.setof.storage.db.index.product.OptionDocument;
 import com.ryuqq.setof.storage.db.index.product.ProductGroupCommandContextDocument;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ProductGroupBatchProcessor implements ItemProcessor<List<ProductGroupProcessingData>, ProductGroupBatchInsertData> {
 
     @Override
     public ProductGroupBatchInsertData process(List<ProductGroupProcessingData> documents) {
-        ProductGroupBatchInsertEntities batchInsertEntities = new ProductGroupBatchInsertEntities();
+        ProductGroupBatchInsertEntities productGroupBatchInsertEntities = new ProductGroupBatchInsertEntities();
         List<ProductBatchInsertData> productBatchInserts = new ArrayList<>();
+        Set<Long> sellerIds = new HashSet<>();
         List<Long> productGroupIds = new ArrayList<>();
 
         documents.forEach(d -> {
             ProductGroupCommandContextDocument document = d.productGroupCommandContextDocument();
 
+            sellerIds.add(document.getProductGroupCommandDocument().sellerId());
+
             long productGroupId = Long.parseLong(document.getProductGroupId());
             productGroupIds.add(productGroupId);
 
-            batchInsertEntities.addDelivery(new ProductDeliveryEntity(
+            productGroupBatchInsertEntities.addDelivery(new ProductDeliveryEntity(
                     productGroupId,
                     document.getProductDelivery().deliveryArea(),
                     document.getProductDelivery().deliveryFee(),
@@ -41,7 +46,7 @@ public class ProductGroupBatchProcessor implements ItemProcessor<List<ProductGro
                     document.getProductDelivery().returnExchangeAreaDomestic()
             ));
 
-            batchInsertEntities.addNotice(new ProductNoticeEntity(
+            productGroupBatchInsertEntities.addNotice(new ProductNoticeEntity(
                     productGroupId,
                     document.getProductNotice().material(),
                     document.getProductNotice().color(),
@@ -55,19 +60,21 @@ public class ProductGroupBatchProcessor implements ItemProcessor<List<ProductGro
             ));
 
 
-            batchInsertEntities.addDetailDescription(new ProductDetailDescriptionEntity(
+            productGroupBatchInsertEntities.addDetailDescription(new ProductDetailDescriptionEntity(
                     productGroupId,
                     document.getDetailDescription().detailDescription()
             ));
 
             document.getProductImages().forEach(image ->
-                    batchInsertEntities.addImages(new ProductGroupImageEntity(
+                    productGroupBatchInsertEntities.addImages(new ProductGroupImageEntity(
                             productGroupId,
                             image.productImageType(),
                             image.imageUrl(),
                             image.originUrl()
                     ))
             );
+
+            productGroupBatchInsertEntities.addProductGroupConfig(new ProductGroupConfigEntity(productGroupId, true));
 
             List<ProductCommand> allProductCommands = document.getProducts().stream()
                     .map(product ->
@@ -82,15 +89,10 @@ public class ProductGroupBatchProcessor implements ItemProcessor<List<ProductGro
                             )
                     ).toList();
 
-            d.sitePolicies().forEach(policy ->
-                    batchInsertEntities.addExternalProduct(
-                            new ExternalProductEntity(policy.getSiteId(), productGroupId, policy.getPolicyId())
-                    ));
-
             productBatchInserts.add(new ProductBatchInsertData(productGroupId, allProductCommands));
         });
 
-        return new ProductGroupBatchInsertData(productGroupIds, batchInsertEntities, productBatchInserts);
+        return new ProductGroupBatchInsertData(sellerIds, productGroupIds, productGroupBatchInsertEntities, productBatchInserts);
     }
 
     private List<OptionCommand> toOptionCommands(List<OptionDocument> optionDocuments){

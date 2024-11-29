@@ -4,4 +4,5 @@ public interface ProductGroupContextCommandService {
 
     long insert(ProductGroupCommandContext context);
     long update(long productGroupId, ProductGroupCommandContext context);
+
 }

@@ -32,16 +32,16 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void shouldFetchBrandExists() {
-        boolean result = brandQueryDslRepository.fetchBrandExists(brandEntity.getId());
+    void shouldExistById() {
+        boolean result = brandQueryDslRepository.existById(brandEntity.getId());
         assertTrue(result);
     }
 
     @Test
-    void shouldFetchBrandById() {
+    void shouldFetchByIdById() {
         BrandEntity savedBrand = this.brandEntity;
 
-        Optional<BrandDto> result = brandQueryDslRepository.fetchBrand(savedBrand.getId());
+        Optional<BrandDto> result = brandQueryDslRepository.fetchById(savedBrand.getId());
 
         assertTrue(result.isPresent());
         assertEquals(savedBrand.getId(), result.get().getId());
@@ -52,16 +52,16 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
 
     @Test
     void shouldReturnEmptyWhenBrandNotFoundById() {
-        Optional<BrandDto> result = brandQueryDslRepository.fetchBrand(999L);
+        Optional<BrandDto> result = brandQueryDslRepository.fetchById(999L);
         assertTrue(result.isEmpty());
     }
 
 
     @Test
-    void shouldFetchBrandResponsesWithPagination() {
+    void shouldFetchByIdResponsesWithPagination() {
         BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of());
 
-        List<BrandDto> result = brandQueryDslRepository.fetchBrands((brandFilter));
+        List<BrandDto> result = brandQueryDslRepository.fetchByFilter((brandFilter));
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
@@ -74,7 +74,7 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
     void shouldReturnEmptyBrandResponsesWhenNoMatches() {
         BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
 
-        List<BrandDto> result = brandQueryDslRepository.fetchBrands(brandFilter);
+        List<BrandDto> result = brandQueryDslRepository.fetchByFilter(brandFilter);
 
         assertTrue(result.isEmpty());
     }
@@ -83,14 +83,14 @@ class BrandQueryDslRepositoryTest extends BaseRepositoryTest {
     @Test
     void shouldReturnBrandCount() {
         BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of());
-        long count = brandQueryDslRepository.fetchBrandCount(brandFilter);
+        long count = brandQueryDslRepository.countByFilter(brandFilter);
         assertEquals(1, count);
     }
 
     @Test
     void shouldReturnZeroBrandCountWhenNoMatches() {
         BrandStorageFilterDto brandFilter = BrandModuleHelper.toBrandFilter(List.of(99L));
-        long count = brandQueryDslRepository.fetchBrandCount(brandFilter);
+        long count = brandQueryDslRepository.countByFilter(brandFilter);
         assertEquals(0, count);
     }
 
