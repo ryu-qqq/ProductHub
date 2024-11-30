@@ -26,15 +26,21 @@ public class BuyMaOptionMapper {
     }
 
     private BuyMaVariantContext createNoOptionContext(List<ExternalMallProduct> products) {
-        List<BuyMaOption> options = List.of(
-                new BuyMaOption("color", "multicolor", 1, 99),
-                new BuyMaOption("size", "FREE", 1, 0)
-        );
+        List<BuyMaOption> options = new ArrayList<>();
+        List<BuyMaVariantOption> variantOptions = new ArrayList<>();
+        options.add(new BuyMaOption("color", "multicolor", 1, 99));
 
-        List<BuyMaVariantOption> variantOptions = List.of(
-                new BuyMaVariantOption("color", "multicolor"),
-                new BuyMaVariantOption("size", "FREE")
-        );
+        products.forEach(p ->{
+            options.add(new BuyMaOption("size", p.option(), 1, 0));
+        });
+
+        products.forEach(p ->{
+            variantOptions.add(new BuyMaVariantOption("color", "multicolor"));
+            variantOptions.add(new BuyMaVariantOption("size", p.option()));
+
+        });
+
+
 
         int totalQuantity = Math.min( calculateTotalQuantity(products), 50);
         String stockType = totalQuantity > 0 ? "stock_in_hand" : "out_of_stock";
@@ -182,17 +188,26 @@ public class BuyMaOptionMapper {
 
     private Double extractNumericPart(String value) {
         try {
-
-            Pattern pattern = Pattern.compile("([0-9.]+)(cm|mm)");
+            // 정규식: 숫자와 선택적 단위를 매칭
+            Pattern pattern = Pattern.compile("([0-9.]+)(cm|mm)?");
             Matcher matcher = pattern.matcher(value);
 
             if (matcher.find()) {
                 String numeric = matcher.group(1); // 숫자 부분 추출
-                String unit = matcher.group(2); // 단위 추출
-
+                String unit = matcher.group(2); // 단위 추출 (null일 수 있음)
 
                 double size = Double.parseDouble(numeric);
-                if (unit.equals("cm") && size >= 20 && size <= 40) { // cm 범위
+
+                // 단위가 없을 경우 기본 단위를 cm로 가정
+                if (unit == null) {
+                    if (size >= 20 && size <= 40) { // cm 범위
+                        return size;
+                    }
+                    if (size >= 200 && size <= 400) {
+                        return size;
+                    }
+
+                } else if (unit.equals("cm") && size >= 20 && size <= 40) { // cm 범위
                     return size;
                 } else if (unit.equals("mm") && size >= 200 && size <= 400) { // mm 범위
                     return size;

@@ -3,7 +3,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-
+!**/src/**/external-core.yml
+!**/src/**/db-core.yml
 ### IDEA ###
 .idea
 *.iws

@@ -17,6 +17,7 @@ public record ExternalProduct(
         Long sellerId,
         long internalBrandId,
         long internalCategoryId,
+        String categoryPath,
         String externalBrandId,
         String externalCategoryId
 ) {}

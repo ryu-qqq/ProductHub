@@ -6,6 +6,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryuqq.setof.enums.core.ManagementType;
 import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.enums.core.SyncStatus;
+import com.ryuqq.setof.storage.db.core.brand.QMappingBrandEntity;
+import com.ryuqq.setof.storage.db.core.category.QCategoryEntity;
+import com.ryuqq.setof.storage.db.core.category.QMappingCategoryEntity;
 import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductDto;
 import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.site.external.dto.QExternalProductDto;
@@ -15,6 +18,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.ryuqq.setof.storage.db.core.brand.QMappingBrandEntity.mappingBrandEntity;
+import static com.ryuqq.setof.storage.db.core.category.QCategoryEntity.categoryEntity;
+import static com.ryuqq.setof.storage.db.core.category.QMappingCategoryEntity.mappingCategoryEntity;
 import static com.ryuqq.setof.storage.db.core.product.group.QProductGroupEntity.productGroupEntity;
 import static com.ryuqq.setof.storage.db.core.site.external.QExternalProductEntity.externalProductEntity;
 
@@ -68,13 +74,22 @@ public class ExternalProductQueryDslRepository implements ExternalProductQueryRe
                                 productGroupEntity.sellerId,
                                 productGroupEntity.brandId,
                                 productGroupEntity.categoryId,
-                                Expressions.constant(""),
-                                Expressions.constant("")
+                                categoryEntity.path,
+                                mappingBrandEntity.siteBrandId.coalesce(""),
+                                mappingCategoryEntity.siteCategoryId.coalesce("")
                         )
                 )
                 .from(externalProductEntity)
                 .innerJoin(productGroupEntity)
                     .on(externalProductEntity.productGroupId.eq(productGroupEntity.id))
+                .innerJoin(categoryEntity)
+                    .on(categoryEntity.id.eq(productGroupEntity.categoryId))
+                .leftJoin(mappingBrandEntity)
+                    .on(mappingBrandEntity.internalBrandId.eq(productGroupEntity.brandId))
+                    .on(mappingBrandEntity.siteId.eq(externalProductEntity.siteId))
+                .leftJoin(mappingCategoryEntity)
+                    .on(mappingCategoryEntity.internalCategoryId.eq(productGroupEntity.categoryId))
+                    .on(mappingCategoryEntity.siteId.eq(externalProductEntity.siteId))
                 .orderBy(externalProductEntity.id.desc())
                 .limit(filter.pageSize())
                 .where(

@@ -34,7 +34,8 @@ public class ExternalSyncBatchContextMapper {
                 .collect(Collectors.toMap(GptOptionsResult::productGroupId, Function.identity(), (v1, v2) -> v2));
 
 
-        List<ExternalProduct> unmappedProducts = aggregate.externalProducts().stream()
+        List<ExternalProduct> unmappedProducts = aggregate.externalProducts()
+                .stream()
                 .filter(e -> !productMap.containsKey(e.productGroupId())
                         || !brandMap.containsKey(e.internalBrandId())
                         || !categoryMap.containsKey(e.internalCategoryId()))
@@ -46,7 +47,10 @@ public class ExternalSyncBatchContextMapper {
                 .filter(e -> productMap.containsKey(e.productGroupId())
                         && brandMap.containsKey(e.internalBrandId())
                         && categoryMap.containsKey(e.internalCategoryId()))
-                .map(e -> new ProductPreExternalSyncContext(
+                .map(e ->
+
+
+                        new ProductPreExternalSyncContext(
                         productMap.get(e.productGroupId()),
                         e,
                         brandMap.get(e.internalBrandId()),

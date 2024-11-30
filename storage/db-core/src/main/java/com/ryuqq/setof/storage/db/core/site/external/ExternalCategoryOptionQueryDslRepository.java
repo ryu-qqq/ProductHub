@@ -32,11 +32,8 @@ public class ExternalCategoryOptionQueryDslRepository implements ExternalCategor
                     )
                 )
                 .from(externalCategoryOptionEntity)
-                .innerJoin(siteEntity)
-                    .on(siteEntity.id.eq(externalCategoryOptionEntity.siteId))
                 .innerJoin(mappingCategoryEntity)
                     .on(mappingCategoryEntity.siteCategoryId.eq(externalCategoryOptionEntity.externalCategoryId))
-
                 .where(
                         siteIdEq(siteId),
                         categoryIdIn(categoryIds)

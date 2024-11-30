@@ -7,7 +7,11 @@ import com.ryuqq.setof.domain.core.product.ProductGroupFilter;
 import com.ryuqq.setof.enums.core.ProductDataType;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ProductPreExternalSyncAssembler {
@@ -30,16 +34,25 @@ public class ProductPreExternalSyncAssembler {
 
     public ProductPreExternalSyncAggregate assemble(long siteId, List<ExternalProduct> externalProducts){
         List<Long> brandIds = externalProducts.stream().map(ExternalProduct::internalBrandId).toList();
-        List<Long> categoryIds = externalProducts.stream().map(ExternalProduct::internalCategoryId).toList();
+        Set<Long> categoryIds = externalProducts.stream().map(ExternalProduct::internalCategoryId).collect(Collectors.toSet());
+        Set<Long> categoryPathIds = externalProducts.stream()
+                .flatMap(product -> Stream.of(product.categoryPath().split(",")))
+                .map(String::trim)
+                .map(Long::parseLong)
+                .collect(Collectors.toSet());
+
+        categoryIds.addAll(categoryPathIds);
+
+
         List<Long> productGroupIds = externalProducts.stream().map(ExternalProduct::productGroupId).toList();
 
         return ProductPreExternalSyncAggregate.of(
                 externalProducts,
                 productGroupContextQueryService.fetchProductGroupContextsByFilter(ProductGroupFilter.of(productGroupIds)),
                 externalPolicyContextQueryService.fetchById(siteId),
-                mappingCategoryQueryService.fetchBySiteIdAndCategoryIds(siteId, categoryIds),
+                mappingCategoryQueryService.fetchBySiteIdAndCategoryIds(siteId, new ArrayList<>(categoryIds)),
                 mappingBrandQueryService.fetchBySiteIdAndBrandIds(siteId, brandIds),
-                externalCategoryOptionFinder.fetchBySiteIdAndCategoryIds(siteId, categoryIds),
+                externalCategoryOptionFinder.fetchBySiteIdAndCategoryIds(siteId, new ArrayList<>(categoryIds)),
                 externalProductProcessingResultQueryService.fetchByProductGroupIdsAndDataType(productGroupIds, ProductDataType.OPTIONS)
         );
     }

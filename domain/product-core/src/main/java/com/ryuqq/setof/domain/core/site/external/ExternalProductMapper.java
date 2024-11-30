@@ -22,6 +22,7 @@ public class ExternalProductMapper {
                 externalProductDto.getSellerId(),
                 externalProductDto.getInternalBrandId(),
                 externalProductDto.getInternalCategoryId(),
+                externalProductDto.getCategoryPath(),
                 externalProductDto.getExternalBrandId(),
                 externalProductDto.getExternalCategoryId()
         );

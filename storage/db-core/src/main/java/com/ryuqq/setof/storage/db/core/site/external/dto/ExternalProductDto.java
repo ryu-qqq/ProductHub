@@ -21,11 +21,12 @@ public class ExternalProductDto {
     private final Long sellerId;
     private final long internalBrandId;
     private final long internalCategoryId;
+    private final String categoryPath;
     private final String externalBrandId;
     private final String externalCategoryId;
 
     @QueryProjection
-    public ExternalProductDto(long id, long siteId, long productGroupId, long policyId, String externalProductId, String productName, BigDecimal regularPrice, BigDecimal currentPrice, SyncStatus status, boolean soldOutYn, boolean displayYn, Long sellerId, long internalBrandId, long internalCategoryId, String externalBrandId, String externalCategoryId) {
+    public ExternalProductDto(long id, long siteId, long productGroupId, long policyId, String externalProductId, String productName, BigDecimal regularPrice, BigDecimal currentPrice, SyncStatus status, boolean soldOutYn, boolean displayYn, Long sellerId, long internalBrandId, long internalCategoryId, String categoryPath, String externalBrandId, String externalCategoryId) {
         this.id = id;
         this.siteId = siteId;
         this.productGroupId = productGroupId;
@@ -40,6 +41,7 @@ public class ExternalProductDto {
         this.sellerId = sellerId;
         this.internalBrandId = internalBrandId;
         this.internalCategoryId = internalCategoryId;
+        this.categoryPath = categoryPath;
         this.externalBrandId = externalBrandId;
         this.externalCategoryId = externalCategoryId;
     }
@@ -98,6 +100,10 @@ public class ExternalProductDto {
 
     public long getInternalCategoryId() {
         return internalCategoryId;
+    }
+
+    public String getCategoryPath() {
+        return categoryPath;
     }
 
     public String getExternalBrandId() {

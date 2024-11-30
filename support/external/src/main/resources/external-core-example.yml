@@ -1,0 +1,43 @@
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 10000
+        loggerLevel: FULL
+  logging:
+    level: DEBUG
+
+---
+
+spring:
+  config:
+    activate.on-profile: local
+
+
+external-site:
+  sellic:
+    host-url:
+    customer_id:
+    api_key:
+
+  oco:
+    id:
+    password:
+    host-url:
+    api-key:
+
+  buyMa:
+    host-url:
+    clientId:
+    secretKey:
+    code:
+    accessToken:
+    refreshToken:
+
+  sheIn:
+    host-url:
+    app-id:
+    secret_key:
+    open-key-id:
+    encoded_secret_key:
