@@ -35,13 +35,13 @@ public class ProductPreExternalSyncAssembler {
     public ProductPreExternalSyncAggregate assemble(long siteId, List<ExternalProduct> externalProducts){
         List<Long> brandIds = externalProducts.stream().map(ExternalProduct::internalBrandId).toList();
         Set<Long> categoryIds = externalProducts.stream().map(ExternalProduct::internalCategoryId).collect(Collectors.toSet());
-        Set<Long> categoryPathIds = externalProducts.stream()
-                .flatMap(product -> Stream.of(product.categoryPath().split(",")))
-                .map(String::trim)
-                .map(Long::parseLong)
-                .collect(Collectors.toSet());
-
-        categoryIds.addAll(categoryPathIds);
+//        Set<Long> categoryPathIds = externalProducts.stream()
+//                .flatMap(product -> Stream.of(product.categoryPath().split(",")))
+//                .map(String::trim)
+//                .map(Long::parseLong)
+//                .collect(Collectors.toSet());
+//
+//        categoryIds.addAll(categoryPathIds);
 
 
         List<Long> productGroupIds = externalProducts.stream().map(ExternalProduct::productGroupId).toList();

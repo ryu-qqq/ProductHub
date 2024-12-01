@@ -26,28 +26,24 @@ public class BuyMaOptionMapper {
     }
 
     private BuyMaVariantContext createNoOptionContext(List<ExternalMallProduct> products) {
-        List<BuyMaOption> options = new ArrayList<>();
-        List<BuyMaVariantOption> variantOptions = new ArrayList<>();
-        options.add(new BuyMaOption("color", "multicolor", 1, 99));
-
-        products.forEach(p ->{
-            options.add(new BuyMaOption("size", p.option(), 1, 0));
-        });
-
-        products.forEach(p ->{
-            variantOptions.add(new BuyMaVariantOption("color", "multicolor"));
-            variantOptions.add(new BuyMaVariantOption("size", p.option()));
-
-        });
+        List<BuyMaOption> options = List.of(
+                new BuyMaOption("color", "multicolor", 1, 99),
+                new BuyMaOption("size", "FREE", 1, 0)
+        );
+        List<BuyMaVariantOption> variantOptions = List.of(
+                new BuyMaVariantOption("color", "multicolor"),
+                new BuyMaVariantOption("size", "FREE")
+        );
 
 
-
-        int totalQuantity = Math.min( calculateTotalQuantity(products), 50);
+        int totalQuantity = Math.min(calculateTotalQuantity(products), 50);
         String stockType = totalQuantity > 0 ? "stock_in_hand" : "out_of_stock";
 
         List<BuyMaVariant> variants = List.of(new BuyMaVariant(variantOptions, stockType, totalQuantity));
 
-        return new BuyMaVariantContext(variants, options, "FREE SIZE", true);
+        String optionComment = getOptionComment(products);
+
+        return new BuyMaVariantContext(variants, options, optionComment, true);
     }
 
     private BuyMaVariantContext createOptionContext(long productGroupId, List<ExternalMallCategoryOption> categoryOptions, ProcessingOptionResult optionResult, List<ExternalMallProduct> products) {
@@ -63,9 +59,24 @@ public class BuyMaOptionMapper {
                 () -> populateOptionsWithProductSizes(options, categoryOptions, products, variants)
         );
 
-        return new BuyMaVariantContext(variants, options, "For more information, please contact us", variants.isEmpty());
+        if(variants.isEmpty()){
+            return createNoOptionContext(products);
+        }
+
+        String optionComment = getOptionComment(products);
+
+        return new BuyMaVariantContext(variants, options, optionComment, variants.isEmpty());
     }
 
+    private String getOptionComment(List<ExternalMallProduct> products){
+        StringBuilder sb = new StringBuilder();
+        products.forEach(p ->{
+            sb.append(p.option()).append("\n");
+        });
+
+        sb.append("For more information, please contact us");
+        return sb.toString();
+    }
 
 
     private void populateOptionsWithNormalizedSizes(List<BuyMaOption> options, List<ExternalMallCategoryOption> categoryOptions, ProcessingOptionResult optionsResult) {
@@ -103,7 +114,6 @@ public class BuyMaOptionMapper {
                 }
             }
         }
-
 
         int position = 1;
         for (Map.Entry<Long, String> entry : masterIdToOptionValue.entrySet()) {
@@ -188,17 +198,16 @@ public class BuyMaOptionMapper {
 
     private Double extractNumericPart(String value) {
         try {
-            // 정규식: 숫자와 선택적 단위를 매칭
             Pattern pattern = Pattern.compile("([0-9.]+)(cm|mm)?");
             Matcher matcher = pattern.matcher(value);
 
             if (matcher.find()) {
-                String numeric = matcher.group(1); // 숫자 부분 추출
-                String unit = matcher.group(2); // 단위 추출 (null일 수 있음)
+                String numeric = matcher.group(1);
+                String unit = matcher.group(2);
 
                 double size = Double.parseDouble(numeric);
 
-                // 단위가 없을 경우 기본 단위를 cm로 가정
+
                 if (unit == null) {
                     if (size >= 20 && size <= 40) { // cm 범위
                         return size;

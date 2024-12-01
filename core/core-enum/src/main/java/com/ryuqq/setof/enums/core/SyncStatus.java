@@ -7,7 +7,6 @@ public enum SyncStatus {
     REVIEW,
     UPLOADING,
     APPROVED,
-    SUCCESS,
     FAILED,
     ;
 
