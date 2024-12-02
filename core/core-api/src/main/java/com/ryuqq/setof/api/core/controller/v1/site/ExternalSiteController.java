@@ -1,17 +1,18 @@
 package com.ryuqq.setof.api.core.controller.v1.site;
 
 import com.ryuqq.setof.api.core.controller.support.ApiResponse;
+import com.ryuqq.setof.api.core.controller.v1.site.request.ExternalProductGetRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.request.ExternalProductIntegrationRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.request.SellerSiteRelationRequestDto;
+import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalProductContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.site.service.ExternalProductIntegrationService;
+import com.ryuqq.setof.api.core.controller.v1.site.service.ExternalProductServingService;
 import com.ryuqq.setof.api.core.controller.v1.site.temp.PartnerAdminProductRequestDto;
+import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.external.ExternalProductSyncCommandService;
 import com.ryuqq.setof.domain.core.site.external.ExternalSiteSellerRelationCommandService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.ryuqq.setof.api.core.controller.config.EndPointsConstants.BASE_END_POINT_V1;
 
@@ -23,12 +24,14 @@ public class ExternalSiteController {
     private final ExternalSiteSellerRelationCommandService externalSiteSellerRelationCommandService;
     private final ExternalProductSyncCommandService externalProductSyncCommandService;
     private final ExternalProductIntegrationService externalProductIntegrationService;
+    private final ExternalProductServingService externalProductServingService;
 
 
-    public ExternalSiteController(ExternalSiteSellerRelationCommandService externalSiteSellerRelationCommandService, ExternalProductSyncCommandService externalProductSyncCommandService, ExternalProductIntegrationService externalProductIntegrationService) {
+    public ExternalSiteController(ExternalSiteSellerRelationCommandService externalSiteSellerRelationCommandService, ExternalProductSyncCommandService externalProductSyncCommandService, ExternalProductIntegrationService externalProductIntegrationService, ExternalProductServingService externalProductServingService) {
         this.externalSiteSellerRelationCommandService = externalSiteSellerRelationCommandService;
         this.externalProductSyncCommandService = externalProductSyncCommandService;
         this.externalProductIntegrationService = externalProductIntegrationService;
+        this.externalProductServingService = externalProductServingService;
     }
 
 
@@ -47,8 +50,9 @@ public class ExternalSiteController {
         return ResponseEntity.ok(ApiResponse.success(externalProductIntegrationService.integration(externalProductIntegrationRequestDto)));
     }
 
-
-
-
+    @GetMapping("/site/external-product")
+    public ResponseEntity<ApiResponse<Slice<ExternalProductContextResponse>>> getExternalProducts(@ModelAttribute ExternalProductGetRequestDto requestDto){
+        return ResponseEntity.ok(ApiResponse.success(externalProductServingService.fetchExternalProductByFilter(requestDto)));
+    }
 
 }

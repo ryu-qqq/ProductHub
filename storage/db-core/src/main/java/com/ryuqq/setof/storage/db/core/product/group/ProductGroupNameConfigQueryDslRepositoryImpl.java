@@ -21,7 +21,7 @@ public class ProductGroupNameConfigQueryDslRepositoryImpl implements ProductGrou
     }
 
     @Override
-    public List<ProductGroupNameConfigDto> fetchByProductGroupIds(List<Long> configIds) {
+    public List<ProductGroupNameConfigDto> fetchByProductGroupIds(List<Long> productGroupIds) {
         return queryFactory
                 .select(
                         new QProductGroupNameConfigDto(
@@ -35,12 +35,12 @@ public class ProductGroupNameConfigQueryDslRepositoryImpl implements ProductGrou
                 .from(productGroupConfigEntity)
                 .innerJoin(productGroupNameConfigEntity)
                     .on(productGroupNameConfigEntity.productGroupConfigId.eq(productGroupConfigEntity.id))
-                .where(configIdIn(configIds))
+                .where(configIdIn(productGroupIds))
                 .fetch();
     }
 
     private BooleanExpression configIdIn(List<Long> configIds) {
-        return productGroupConfigEntity.id.in(configIds);
+        return productGroupConfigEntity.productGroupId.in(configIds);
     }
 
 }

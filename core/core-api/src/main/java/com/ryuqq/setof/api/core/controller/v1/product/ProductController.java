@@ -7,7 +7,7 @@ import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupInser
 import com.ryuqq.setof.api.core.controller.v1.product.response.GptTrainingDataResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.service.BatchResultCommandService;
 import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataServingService;
-import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextService;
+import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextServingService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.product.*;
 import jakarta.validation.Valid;
@@ -22,14 +22,14 @@ public class ProductController {
 
     private final ProductGroupContextCommandService productGroupContextCommandService;
     private final ProductGroupCommandService productGroupCommandService;
-    private final ProductGroupContextService productGroupContextService;
+    private final ProductGroupContextServingService productGroupContextServingService;
     private final GptTrainingDataServingService gptTrainingDataServingService;
     private final BatchResultCommandService batchResultCommandService;
 
-    public ProductController(ProductGroupCommandService productGroupCommandService, ProductGroupContextCommandService productGroupContextCommandService, ProductGroupContextService productGroupContextService, GptTrainingDataServingService gptTrainingDataServingService, BatchResultCommandService batchResultCommandService) {
+    public ProductController(ProductGroupCommandService productGroupCommandService, ProductGroupContextCommandService productGroupContextCommandService, ProductGroupContextServingService productGroupContextServingService, GptTrainingDataServingService gptTrainingDataServingService, BatchResultCommandService batchResultCommandService) {
         this.productGroupCommandService = productGroupCommandService;
         this.productGroupContextCommandService = productGroupContextCommandService;
-        this.productGroupContextService = productGroupContextService;
+        this.productGroupContextServingService = productGroupContextServingService;
         this.gptTrainingDataServingService = gptTrainingDataServingService;
         this.batchResultCommandService = batchResultCommandService;
     }
@@ -48,7 +48,7 @@ public class ProductController {
 
     @GetMapping("/product/group")
     public ResponseEntity<ApiResponse<Slice<ProductGroupContextResponse>>> getProductGroups(@ModelAttribute ProductGroupGetRequestDto productGroupGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(productGroupContextService.fetchProductGroupContextsByFilter(productGroupGetRequestDto)));
+        return ResponseEntity.ok(ApiResponse.success(productGroupContextServingService.fetchProductGroupContextsByFilter(productGroupGetRequestDto)));
     }
 
     @GetMapping("/product/group/{productGroupId}")

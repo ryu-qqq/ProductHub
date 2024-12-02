@@ -8,4 +8,5 @@ public record BuyMaVariantOption(
 
         @JsonProperty("value")
         String value
-) {}
+
+){}

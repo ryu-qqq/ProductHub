@@ -3,7 +3,13 @@ package com.ryuqq.setof.support.external.core.buyma;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class BuyMaResponse {
+public class BuyMaResponse<T> {
+
+    private T t;
+
+    public T getT() {
+        return t;
+    }
 
     public static class Success {
         private LocalDateTime requestReceivedAt;
@@ -16,20 +22,8 @@ public class BuyMaResponse {
             this.requestUid = requestUid;
         }
 
-        public LocalDateTime getRequestReceivedAt() {
-            return requestReceivedAt;
-        }
-
-        public void setRequestReceivedAt(LocalDateTime requestReceivedAt) {
-            this.requestReceivedAt = requestReceivedAt;
-        }
-
         public String getRequestUid() {
             return requestUid;
-        }
-
-        public void setRequestUid(String requestUid) {
-            this.requestUid = requestUid;
         }
 
         @Override
@@ -52,10 +46,6 @@ public class BuyMaResponse {
 
         public Map<String, String[]> getErrors() {
             return errors;
-        }
-
-        public void setErrors(Map<String, String[]> errors) {
-            this.errors = errors;
         }
 
         @Override

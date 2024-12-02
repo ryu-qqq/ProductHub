@@ -1,62 +1,78 @@
 package com.ryuqq.setof.support.external.core;
 
+import com.ryuqq.setof.support.utils.JsonUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class ExternalMallSyncService {
 
-    private final ExternalSyncProductMapperProvider externalSyncProductMapperProvider;
-    private final ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider;
+    private final AtomicBoolean tooManyRequestsFlag = new AtomicBoolean(false);
 
-    public ExternalMallSyncService(ExternalSyncProductMapperProvider externalSyncProductMapperProvider, ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider) {
-        this.externalSyncProductMapperProvider = externalSyncProductMapperProvider;
-        this.externalMallProductRegistrationServiceProvider = externalMallProductRegistrationServiceProvider;
+    private final SiteStepHandlerProvider siteStepHandlerProvider;
+
+    public ExternalMallSyncService(SiteStepHandlerProvider siteStepHandlerProvider) {
+        this.siteStepHandlerProvider = siteStepHandlerProvider;
     }
 
-    public List<ExternalMallRegistrationResult> sync(List<ExternalMallProductContext> externalMallProductContexts) {
-        List<ExternalMallRegistrationResult> results = new ArrayList<>();
+    public SyncResultSummary sync(List<ExternalMallPreProductContext> externalMallPreProductContexts) {
+        tooManyRequestsFlag.set(false);
 
-        for (ExternalMallProductContext context : externalMallProductContexts) {
-            results.add(handleSync(context));
-        }
+        List<DetailedSyncResult> detailedResults = externalMallPreProductContexts.stream()
+                .takeWhile(context -> !tooManyRequestsFlag.get())
+                .map(this::handleSync)
+                .toList();
 
-        return results;
+        List<ExternalMallSyncResponse> successResponses = detailedResults.stream()
+                .filter(DetailedSyncResult::isOverallSuccess)
+                .map(DetailedSyncResult::getLastStepResult)
+                .filter(result -> result != null && result.isSuccess())
+                .map(result -> (ExternalMallSyncResponse) result.getResultData())
+                .toList();
+
+        List<SyncFailureInfo> failureResponses = detailedResults.stream()
+                .filter(result -> !result.isOverallSuccess())
+                .map(detailedResult -> {
+                    SyncStepResult lastStepResult = detailedResult.getLastStepResult();
+                        return new SyncFailureInfo(
+                                lastStepResult.getErrorCode(),
+                                lastStepResult.getErrorMessage(),
+                                lastStepResult.getStep(),
+                                detailedResult.getProductGroupId(),
+                                JsonUtils.toJson(lastStepResult.getResultData())
+                        );
+                })
+                .toList();
+
+        return new SyncResultSummary(successResponses, failureResponses);
     }
 
     @SuppressWarnings("unchecked")
-    private ExternalMallRegistrationResult handleSync(ExternalMallProductContext context) {
-        try {
-            ExternalMallRegistrationRequest transform = transformRequest(context);
+    private DetailedSyncResult handleSync(ExternalMallPreProductContext context) {
+        DetailedSyncResult detailedResult = context.createDetailedSyncResult();
+        List<SyncStepHandler> stepHandlers = siteStepHandlerProvider.get(context.siteName());
 
-            return registerProduct(context, transform);
+        for (SyncStepHandler handler : stepHandlers) {
+            try {
+                SyncStepResult result = handler.execute(context);
+                detailedResult.addStepResult(result);
 
-        } catch (Exception e) {
-            return ExternalMallRegistrationResult.failedResult(
-                    context.productGroup().productGroupId(),
-                    e.getMessage(),
-                    context.siteId()
-            );
+                if (!result.isSuccess()) {
+                    if (result.getErrorCode() == 429) {
+                        tooManyRequestsFlag.set(true);
+                    }
+                    break;
+                }
+
+            } catch (Exception e) {
+                detailedResult.addStepResult(SyncStepResult.failure(handler.getStep(), 400, e.getMessage(), context));
+                break;
+            }
         }
-    }
 
-    private ExternalMallRegistrationRequest transformRequest(ExternalMallProductContext context) {
-        ExternalSyncProductMapper externalSyncProductMapper = externalSyncProductMapperProvider.get(context.siteName());
-        return externalSyncProductMapper.transform(context);
-    }
-
-
-    @SuppressWarnings("unchecked")
-    private ExternalMallRegistrationResult registerProduct(ExternalMallProductContext context, ExternalMallRegistrationRequest transform) {
-        ExternalMallProductRegistrationService<ExternalMallProductPayload> externalMallProductRegistrationService =
-                (ExternalMallProductRegistrationService<ExternalMallProductPayload>) externalMallProductRegistrationServiceProvider.get(context.siteName());
-        return externalMallProductRegistrationService.registration(
-                transform.productGroupId(),
-                transform.siteId(),
-                transform.externalMallProductPayload()
-        );
+        return detailedResult;
     }
 
 

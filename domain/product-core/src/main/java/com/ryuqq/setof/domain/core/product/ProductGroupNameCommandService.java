@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
+import com.ryuqq.setof.domain.core.site.external.ExternalPolicyContext;
 import com.ryuqq.setof.domain.core.site.external.ExternalPolicyContextFinder;
-import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicy;
 import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupNameConfigDto;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigPersistenceRepository;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
@@ -26,21 +26,21 @@ public class ProductGroupNameCommandService {
     }
 
     public void insertAll(List<Long> siteIds, List<Long> productGroupIds) {
-        Map<Long, ExternalProductPolicy> siteIdMap = toSiteIdMap(siteIds);
+        Map<Long, ExternalPolicyContext> siteIdMap = toSiteIdMap(siteIds);
         Map<Long, ProductGroupConfig> productGroupIdMap = toProductGroupIdMap(productGroupIds);
 
         Set<ProductGroupNameConfigEntity> nameConfigEntities = new HashSet<>();
 
 
         for(Long siteId : siteIds) {
-            ExternalProductPolicy policy = siteIdMap.get(siteId);
+            ExternalPolicyContext policy = siteIdMap.get(siteId);
 
             if(policy != null){
                 for (Long productGroupId : productGroupIds) {
                     ProductGroupConfig config = productGroupIdMap.get(productGroupId);
                     if (config == null) continue;
-                    if (policy.translated()) {
-                        nameConfigEntities.add(new ProductGroupNameConfigEntity(config.getConfigId(), policy.countryCode(), "", false));
+                    if (policy.productPolicy().translated()) {
+                        nameConfigEntities.add(new ProductGroupNameConfigEntity(config.getConfigId(), policy.productPolicy().countryCode(), "", false));
                     }
                 }
             }
@@ -58,10 +58,9 @@ public class ProductGroupNameCommandService {
 
 
 
-    private Map<Long, ExternalProductPolicy> toSiteIdMap(List<Long> siteIds) {
-        return null;
-//        return externalPolicyContextFinder.findExternalProductPolicies(siteIds).stream()
-//                .collect(Collectors.toMap(ExternalProductPolicy::siteId, Function.identity()));
+    private Map<Long, ExternalPolicyContext> toSiteIdMap(List<Long> siteIds) {
+        return externalPolicyContextFinder.fetchByIds(siteIds).stream()
+                .collect(Collectors.toMap(ExternalPolicyContext::getSiteId, Function.identity(), (v1, v2) -> v1));
     }
 
 

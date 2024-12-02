@@ -20,4 +20,6 @@ public class ExternalRequestCommandService {
         externalRequestPersistenceRepository.saveAllExternalRequest(entities);
     }
 
+
+
 }

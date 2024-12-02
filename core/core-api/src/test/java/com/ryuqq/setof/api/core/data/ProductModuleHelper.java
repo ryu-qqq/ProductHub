@@ -2,7 +2,6 @@ package com.ryuqq.setof.api.core.data;
 
 import com.ryuqq.setof.api.core.controller.v1.product.request.*;
 import com.ryuqq.setof.api.core.controller.v1.product.response.*;
-import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
 import com.ryuqq.setof.enums.core.*;
 
 import java.math.BigDecimal;
@@ -159,15 +158,6 @@ public class ProductModuleHelper {
         );
     }
 
-    public static ExternalMallProductPendingDataResponse toExternalMallProductPendingDataResponse(){
-        return new ExternalMallProductPendingDataResponse(
-                1L,
-                1L,
-                1L,
-                Origin.US,
-                true
-        );
-    }
 
 
 }

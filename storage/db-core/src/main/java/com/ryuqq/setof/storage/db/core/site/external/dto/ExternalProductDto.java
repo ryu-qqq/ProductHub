@@ -4,11 +4,13 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ryuqq.setof.enums.core.SyncStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class ExternalProductDto {
 
     private final long id;
     private final long siteId;
+    private final String siteName;
     private final long productGroupId;
     private final long policyId;
     private final String externalProductId;
@@ -24,11 +26,14 @@ public class ExternalProductDto {
     private final String categoryPath;
     private final String externalBrandId;
     private final String externalCategoryId;
+    private final LocalDateTime insertDate;
+    private final LocalDateTime updateDate;
 
     @QueryProjection
-    public ExternalProductDto(long id, long siteId, long productGroupId, long policyId, String externalProductId, String productName, BigDecimal regularPrice, BigDecimal currentPrice, SyncStatus status, boolean soldOutYn, boolean displayYn, Long sellerId, long internalBrandId, long internalCategoryId, String categoryPath, String externalBrandId, String externalCategoryId) {
+    public ExternalProductDto(long id, long siteId, String siteName, long productGroupId, long policyId, String externalProductId, String productName, BigDecimal regularPrice, BigDecimal currentPrice, SyncStatus status, boolean soldOutYn, boolean displayYn, Long sellerId, long internalBrandId, long internalCategoryId, String categoryPath, String externalBrandId, String externalCategoryId, LocalDateTime insertDate, LocalDateTime updateDate) {
         this.id = id;
         this.siteId = siteId;
+        this.siteName = siteName;
         this.productGroupId = productGroupId;
         this.policyId = policyId;
         this.externalProductId = externalProductId;
@@ -44,6 +49,8 @@ public class ExternalProductDto {
         this.categoryPath = categoryPath;
         this.externalBrandId = externalBrandId;
         this.externalCategoryId = externalCategoryId;
+        this.insertDate = insertDate;
+        this.updateDate = updateDate;
     }
 
     public long getId() {
@@ -112,5 +119,17 @@ public class ExternalProductDto {
 
     public String getExternalCategoryId() {
         return externalCategoryId;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public LocalDateTime getInsertDate() {
+        return insertDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
     }
 }

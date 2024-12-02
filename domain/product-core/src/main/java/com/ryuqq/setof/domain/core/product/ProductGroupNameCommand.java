@@ -8,7 +8,6 @@ public record ProductGroupNameCommand(
 ) {
 
     public ProductGroupNameConfigDto toProductGroupNameConfigDto(){
-        return null;
-        //return new ProductGroupNameConfigDto(productGroupNameConfigId, productGroupName);
+        return new ProductGroupNameConfigDto(productGroupNameConfigId, productGroupName);
     }
 }

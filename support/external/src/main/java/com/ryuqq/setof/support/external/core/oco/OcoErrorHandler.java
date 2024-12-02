@@ -1,6 +1,5 @@
 package com.ryuqq.setof.support.external.core.oco;
 
-import com.ryuqq.setof.support.external.core.oco.client.payload.OcoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 

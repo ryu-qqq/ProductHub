@@ -1,27 +1,26 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
+import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.support.external.core.*;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProduct;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProductContext;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProductNameContext;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariantContext;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaCategoryAndBrandContext;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaPriceContext;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProductDetailContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-public class BuyMaProductMapper implements ExternalSyncProductMapper {
+public class BuyMaProductMapper implements ExternalMallContextMapper {
 
-    private final BuyMaProductDetailGenerator productDetailGenerator;
+    private final BuyMaProductNameContextGenerator buyMaProductNameContextGenerator;
     private final BuyMaOptionMapper buyMaOptionMapper;
     private final BuyMaPriceGenerator buyMaPriceGenerator;
     private final BuyMaImageGenerator buyMaImageGenerator;
 
-    public BuyMaProductMapper(BuyMaProductDetailGenerator productDetailGenerator, BuyMaOptionMapper buyMaOptionMapper, BuyMaPriceGenerator buyMaPriceGenerator, BuyMaImageGenerator buyMaImageGenerator) {
-        this.productDetailGenerator = productDetailGenerator;
+    public BuyMaProductMapper(BuyMaProductNameContextGenerator buyMaProductNameContextGenerator, BuyMaOptionMapper buyMaOptionMapper, BuyMaPriceGenerator buyMaPriceGenerator, BuyMaImageGenerator buyMaImageGenerator) {
+        this.buyMaProductNameContextGenerator = buyMaProductNameContextGenerator;
         this.buyMaOptionMapper = buyMaOptionMapper;
         this.buyMaPriceGenerator = buyMaPriceGenerator;
         this.buyMaImageGenerator = buyMaImageGenerator;
@@ -33,51 +32,57 @@ public class BuyMaProductMapper implements ExternalSyncProductMapper {
     }
 
     @Override
-    public ExternalMallRegistrationRequest transform(ExternalMallProductContext externalMallProductContext) {
-        long productGroupId = externalMallProductContext.productGroup().productGroupId();
-        long siteId = externalMallProductContext.siteId();
-        return new ExternalMallRegistrationRequest(productGroupId, siteId, toBuyMaProduct(externalMallProductContext));
+    public BuyMaProductDetailContext generateProductDetailContext(ExternalMallPreProductContext externalMallPreProductContext) {
+        ExternalMallNameContext externalMallNameContext = generateNameContext(externalMallPreProductContext);
+        return new BuyMaProductDetailContext(
+                externalMallPreProductContext.getExternalProductId(),
+                externalMallPreProductContext.getStyleCode(),
+                externalMallPreProductContext.getProductGroupId(),
+                externalMallNameContext);
     }
 
-    public BuyMaProductContext toBuyMaProduct(ExternalMallProductContext externalMallProductContext){
+    private ExternalMallNameContext generateNameContext(ExternalMallPreProductContext externalMallPreProductContext) {
+        String brandName =  externalMallPreProductContext.brand().brandName();
+        ExternalSyncProductGroup productGroup = externalMallPreProductContext.productGroup();
+        return buyMaProductNameContextGenerator.generateBuyMaProductDetail(brandName, productGroup);
+    }
 
-        String externalProductId = externalMallProductContext.productGroup().externalProductId();
-        Integer id = StringUtils.hasText(externalProductId) ? Integer.parseInt(externalProductId) : null;
-
-        ExternalMallProductGroup productGroup = externalMallProductContext.productGroup();
-        List<ExternalMallProduct> products = externalMallProductContext.products();
-
-        ExternalMallCategory category = externalMallProductContext.category();
-        ExternalMallBrand brand = externalMallProductContext.brand();
-
-        BuyMaProductNameContext buyMaProductNameContext = productDetailGenerator.generateBuyMaProductDetail(brand.brandName(), productGroup);
-
+    @Override
+    public ExternalMallPriceContext generatePriceHolder(ExternalMallPreProductContext externalMallPreProductContext) {
+        ExternalSyncProductGroup productGroup = externalMallPreProductContext.productGroup();
         BigDecimal finalPrice = buyMaPriceGenerator.calculateFinalPrice(productGroup.currentPrice(), BigDecimal.valueOf(907));
         BigDecimal referencePrice = finalPrice.multiply(BigDecimal.valueOf(1.5));
-
-
-
-        BuyMaVariantContext variantContexts = buyMaOptionMapper.getVariants(productGroup.productGroupId(), externalMallProductContext.externalCategoryOptions(), externalMallProductContext.gptOptionsResult(), products);
-
-        BuyMaProduct buyMaProduct = new BuyMaProduct(
-                productGroup.styleCode(),
-                productGroup.setOfProductGroupId(),
-                buyMaProductNameContext.productName(),
-                buyMaProductNameContext.description(),
-                Integer.parseInt(brand.externalBrandId()),
-                brand.brandName(),
-                Integer.parseInt(category.externalCategoryId()),
-                finalPrice.intValue(),
-                referencePrice.intValue(),
-                buyMaImageGenerator.getImages(productGroup.images()),
-                variantContexts.buyMaVariants(),
-                variantContexts.buyMaOptions(),
-                id,
-                variantContexts.optionComment()
-        );
-
-        return new BuyMaProductContext(buyMaProduct);
+        return new BuyMaPriceContext(referencePrice, finalPrice, Origin.JP);
     }
 
+    @Override
+    public ExternalMallOptionContext generateOptionContext(ExternalMallPreProductContext externalMallPreProductContext) {
+        ExternalSyncProductGroup productGroup = externalMallPreProductContext.productGroup();
+        List<ExternalSyncProduct> products = externalMallPreProductContext.products();
+        return buyMaOptionMapper.getVariants(
+                productGroup.productGroupId(),
+                externalMallPreProductContext.externalCategoryOptions(),
+                externalMallPreProductContext.gptOptionsResult(),
+                products
+        );
+    }
+
+    @Override
+    public ExternalMallImageGroupContext generateImageGroupContext(ExternalMallPreProductContext externalMallPreProductContext) {
+        return buyMaImageGenerator.getImageGroupContext(externalMallPreProductContext.productGroup().images());
+    }
+
+
+    @Override
+    public ExternalMallCategoryAndBrandContext generateCategoryAndBrand(ExternalMallPreProductContext externalMallPreProductContext) {
+        String categoryId = externalMallPreProductContext.category().externalCategoryId();
+        ExternalSyncBrand brand = externalMallPreProductContext.brand();
+
+        if(categoryId ==null || categoryId.isBlank() || brand == null) {
+            throw new IllegalArgumentException("Mapping Brand or Category Id is null");
+        }
+
+        return new BuyMaCategoryAndBrandContext(categoryId, brand.externalBrandId(), brand.brandName());
+    }
 
 }

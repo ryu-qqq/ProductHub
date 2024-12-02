@@ -16,8 +16,8 @@ public class ProductGroupNameConfigFinder {
         this.productGroupNameConfigQueryRepository = productGroupNameConfigQueryRepository;
     }
 
-    public List<ProductGroupNameConfig> fetchByProductGroupIds(List<Long> configIds){
-        return productGroupNameConfigQueryRepository.fetchByProductGroupIds(configIds).stream()
+    public List<ProductGroupNameConfig> fetchByProductGroupIds(List<Long> productGroupIds){
+        return productGroupNameConfigQueryRepository.fetchByProductGroupIds(productGroupIds).stream()
                 .map(productGroupNameMapper::toDomain)
                 .toList();
     }

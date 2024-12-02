@@ -15,19 +15,19 @@ import java.util.List;
 @Component
 public class GptTrainingDataServingService {
 
-    private final ProductGroupContextService productGroupContextService;
+    private final ProductGroupContextServingService productGroupContextServingService;
     private final ProductGroupCommandService productGroupCommandService;
     private final ProductGroupProcessingDataSliceMapper productGroupProcessingDataSliceMapper;
 
-    public GptTrainingDataServingService(ProductGroupContextService productGroupContextService, ProductGroupCommandService productGroupCommandService, ProductGroupContextResponseMapper productGroupContextResponseMapper, ProductGroupProcessingDataSliceMapper productGroupProcessingDataSliceMapper) {
-        this.productGroupContextService = productGroupContextService;
+    public GptTrainingDataServingService(ProductGroupContextServingService productGroupContextServingService, ProductGroupCommandService productGroupCommandService, ProductGroupContextResponseMapper productGroupContextResponseMapper, ProductGroupProcessingDataSliceMapper productGroupProcessingDataSliceMapper) {
+        this.productGroupContextServingService = productGroupContextServingService;
         this.productGroupCommandService = productGroupCommandService;
         this.productGroupProcessingDataSliceMapper = productGroupProcessingDataSliceMapper;
     }
 
 
     public Slice<GptTrainingDataResponse> getProductGroupsForGptTraining(ProductGroupGetRequestDto requestDto){
-        Slice<ProductGroupContextResponse> productGroupContextResponseSlice = productGroupContextService.fetchProductGroupContextsByFilter(requestDto);
+        Slice<ProductGroupContextResponse> productGroupContextResponseSlice = productGroupContextServingService.fetchProductGroupContextsByFilter(requestDto);
         List<Long> productGroupIds = productGroupContextResponseSlice.getContent().stream().map(p -> p.productGroup().productGroupId()).toList();
         productGroupCommandService.updateStatus(productGroupIds, ProductStatus.GATHERING);
 

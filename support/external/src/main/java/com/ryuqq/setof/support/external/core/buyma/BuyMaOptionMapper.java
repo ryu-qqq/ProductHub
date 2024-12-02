@@ -1,12 +1,12 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
-import com.ryuqq.setof.support.external.core.ExternalMallCategoryOption;
-import com.ryuqq.setof.support.external.core.ExternalMallOption;
-import com.ryuqq.setof.support.external.core.ExternalMallProduct;
-import com.ryuqq.setof.support.external.core.ProcessingOptionResult;
+import com.ryuqq.setof.support.external.core.ExternalSyncCategoryOption;
+import com.ryuqq.setof.support.external.core.ExternalSyncOption;
+import com.ryuqq.setof.support.external.core.ExternalSyncProduct;
+import com.ryuqq.setof.support.external.core.ExternalSyncOptionResult;
 import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaOption;
 import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariant;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariantContext;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaOptionContext;
 import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariantOption;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +18,14 @@ import java.util.regex.Pattern;
 public class BuyMaOptionMapper {
 
 
-    public BuyMaVariantContext getVariants(long productGroupId, List<ExternalMallCategoryOption> categoryOptions, ProcessingOptionResult optionResult, List<ExternalMallProduct> products) {
+    public BuyMaOptionContext getVariants(long productGroupId, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products) {
         if (categoryOptions.isEmpty()) {
             return createNoOptionContext(products);
         }
         return createOptionContext(productGroupId, categoryOptions, optionResult, products);
     }
 
-    private BuyMaVariantContext createNoOptionContext(List<ExternalMallProduct> products) {
+    private BuyMaOptionContext createNoOptionContext(List<ExternalSyncProduct> products) {
         List<BuyMaOption> options = List.of(
                 new BuyMaOption("color", "multicolor", 1, 99),
                 new BuyMaOption("size", "FREE", 1, 0)
@@ -43,16 +43,16 @@ public class BuyMaOptionMapper {
 
         String optionComment = getOptionComment(products);
 
-        return new BuyMaVariantContext(variants, options, optionComment, true);
+        return new BuyMaOptionContext(options, variants, optionComment);
     }
 
-    private BuyMaVariantContext createOptionContext(long productGroupId, List<ExternalMallCategoryOption> categoryOptions, ProcessingOptionResult optionResult, List<ExternalMallProduct> products) {
+    private BuyMaOptionContext createOptionContext(long productGroupId, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products) {
         List<BuyMaOption> options = new ArrayList<>();
         options.add(new BuyMaOption("color", "MultiColor", 1, 99));
 
         List<BuyMaVariant> variants = new ArrayList<>();
 
-        Optional<ProcessingOptionResult> optionsResultOpt = Optional.ofNullable(optionResult);
+        Optional<ExternalSyncOptionResult> optionsResultOpt = Optional.ofNullable(optionResult);
 
         optionsResultOpt.ifPresentOrElse(
                 optionsResult -> populateOptionsWithProductSizes(options, categoryOptions, products, variants),
@@ -65,10 +65,10 @@ public class BuyMaOptionMapper {
 
         String optionComment = getOptionComment(products);
 
-        return new BuyMaVariantContext(variants, options, optionComment, variants.isEmpty());
+        return new BuyMaOptionContext(options, variants, optionComment);
     }
 
-    private String getOptionComment(List<ExternalMallProduct> products){
+    private String getOptionComment(List<ExternalSyncProduct> products){
         StringBuilder sb = new StringBuilder();
         products.forEach(p ->{
             sb.append(p.option()).append("\n");
@@ -79,7 +79,7 @@ public class BuyMaOptionMapper {
     }
 
 
-    private void populateOptionsWithNormalizedSizes(List<BuyMaOption> options, List<ExternalMallCategoryOption> categoryOptions, ProcessingOptionResult optionsResult) {
+    private void populateOptionsWithNormalizedSizes(List<BuyMaOption> options, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionsResult) {
         List<String> sizes = optionsResult.normalizedOptions().sizes();
         if (sizes != null) {
             int position = 1;
@@ -93,16 +93,16 @@ public class BuyMaOptionMapper {
 
     private void populateOptionsWithProductSizes(
             List<BuyMaOption> options,
-            List<ExternalMallCategoryOption> categoryOptions,
-            List<ExternalMallProduct> products,
+            List<ExternalSyncCategoryOption> categoryOptions,
+            List<ExternalSyncProduct> products,
             List<BuyMaVariant> variants
     ) {
 
         Map<Long, Integer> masterIdToStock = new HashMap<>();
         Map<Long, String> masterIdToOptionValue = new HashMap<>();
 
-        for (ExternalMallProduct product : products) {
-            for (ExternalMallOption productOption : product.options()) {
+        for (ExternalSyncProduct product : products) {
+            for (ExternalSyncOption productOption : product.options()) {
                 if (productOption.optionName().isSize() || productOption.optionName().isDefaultOne() || productOption.optionName().isDefaultTwo()) {
                     String optionValue = productOption.optionValue();
                     long masterId = findMatchingOptionId(optionValue, categoryOptions);
@@ -139,16 +139,16 @@ public class BuyMaOptionMapper {
         }
     }
 
-    private int calculateTotalQuantity(List<ExternalMallProduct> products) {
+    private int calculateTotalQuantity(List<ExternalSyncProduct> products) {
         return products.stream()
-                .map(ExternalMallProduct::quantity)
+                .map(ExternalSyncProduct::quantity)
                 .reduce(0, Integer::sum);
     }
 
-    private long findMatchingOptionId(String size, List<ExternalMallCategoryOption> categoryOptions) {
+    private long findMatchingOptionId(String size, List<ExternalSyncCategoryOption> categoryOptions) {
         return categoryOptions.stream()
                 .filter(option -> matchesRange(size, option.optionValue()))
-                .map(ExternalMallCategoryOption::optionId)
+                .map(ExternalSyncCategoryOption::optionId)
                 .findFirst()
                 .orElse(0L);
     }

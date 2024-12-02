@@ -27,7 +27,8 @@ public class Price {
 
     private int calculateDiscountRate(Money basePrice, Money salePrice) {
         if (basePrice.isLessThan(Money.wons(1))) {
-            throw new IllegalArgumentException("Base price cannot be zero.");
+            return 0;
+            //throw new IllegalArgumentException("Base price cannot be zero.");
         }
 
         Money discount = basePrice.minus(salePrice);

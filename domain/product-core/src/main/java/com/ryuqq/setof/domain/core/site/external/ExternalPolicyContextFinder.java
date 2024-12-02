@@ -30,7 +30,7 @@ public class ExternalPolicyContextFinder implements ExternalPolicyContextQuerySe
     }
 
     @Override
-    public List<ExternalPolicyContext> fetchExternalPolicies(List<Long> siteIds){
+    public List<ExternalPolicyContext> fetchByIds(List<Long> siteIds){
         List<ExternalPolicy> externalPolicies = externalPolicyFinder.fetchByIds(siteIds);
         if(externalPolicies.isEmpty()) return List.of();
         ExternalPolicyContextAggregate externalPolicyContextAggregate = assembler.assemble(externalPolicies);

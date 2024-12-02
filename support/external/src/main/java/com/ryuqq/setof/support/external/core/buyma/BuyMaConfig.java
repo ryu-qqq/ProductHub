@@ -1,12 +1,12 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
+import com.ryuqq.setof.support.external.core.config.GlobalFeignConfig;
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class BuyMaConfig {
+public class BuyMaConfig extends GlobalFeignConfig {
 
     @Value("${external-site.buyMa.accessToken}")
     private String accessToken;

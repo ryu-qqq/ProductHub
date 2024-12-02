@@ -5,6 +5,6 @@ import java.util.List;
 public interface ExternalPolicyContextQueryService {
 
     ExternalPolicyContext fetchById(long siteId);
-    List<ExternalPolicyContext> fetchExternalPolicies(List<Long> siteIds);
+    List<ExternalPolicyContext> fetchByIds(List<Long> siteIds);
 
 }

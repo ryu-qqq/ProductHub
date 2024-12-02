@@ -1,7 +1,6 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.product.ProductGroupNameCommandService;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyQueryRepository;
 import com.ryuqq.setof.storage.db.core.site.external.ExternalProductEntity;
 
 import jakarta.transaction.Transactional;
@@ -38,7 +37,7 @@ public class ExternalProductSyncCommandService {
             return 0L;
         }
 
-        List<Long> unlinkedProductGroupIds = externalProductQueryService.findUnlinkedProductGroupIds(
+        List<Long> unlinkedProductGroupIds = externalProductQueryService.fetchUnlinkedProductGroupIds(
                 command.sellerId(), command.siteIds());
 
         if (unlinkedProductGroupIds.isEmpty()) {
@@ -61,7 +60,7 @@ public class ExternalProductSyncCommandService {
     }
 
     private Map<Long, ExternalPolicyContext> toSiteIdMap(List<Long> siteIds) {
-        return externalPolicyContextQueryService.fetchExternalPolicies(siteIds).stream()
+        return externalPolicyContextQueryService.fetchByIds(siteIds).stream()
                 .collect(Collectors.toMap(ExternalPolicyContext::getSiteId, Function.identity()));
     }
 

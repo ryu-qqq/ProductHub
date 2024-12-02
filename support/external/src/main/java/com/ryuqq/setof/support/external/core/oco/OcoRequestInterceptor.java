@@ -17,8 +17,9 @@ public class OcoRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        //String token = ocoAuthManager.getToken();
-//        template.header("token", token);
-//        template.header("ApiKey", apiKey);
+        String token = ocoAuthManager.getToken();
+        template.header("token", token);
+        template.header("ApiKey", apiKey);
     }
+
 }

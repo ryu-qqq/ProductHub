@@ -9,6 +9,7 @@ import com.ryuqq.setof.enums.core.SyncStatus;
 import com.ryuqq.setof.storage.db.core.brand.QMappingBrandEntity;
 import com.ryuqq.setof.storage.db.core.category.QCategoryEntity;
 import com.ryuqq.setof.storage.db.core.category.QMappingCategoryEntity;
+import com.ryuqq.setof.storage.db.core.site.QSiteEntity;
 import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductDto;
 import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.site.external.dto.QExternalProductDto;
@@ -22,6 +23,7 @@ import static com.ryuqq.setof.storage.db.core.brand.QMappingBrandEntity.mappingB
 import static com.ryuqq.setof.storage.db.core.category.QCategoryEntity.categoryEntity;
 import static com.ryuqq.setof.storage.db.core.category.QMappingCategoryEntity.mappingCategoryEntity;
 import static com.ryuqq.setof.storage.db.core.product.group.QProductGroupEntity.productGroupEntity;
+import static com.ryuqq.setof.storage.db.core.site.QSiteEntity.siteEntity;
 import static com.ryuqq.setof.storage.db.core.site.external.QExternalProductEntity.externalProductEntity;
 
 @Repository
@@ -31,6 +33,34 @@ public class ExternalProductQueryDslRepository implements ExternalProductQueryRe
 
     public ExternalProductQueryDslRepository(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
+    }
+
+    @Override
+    public long countByFilter(ExternalProductStorageFilterDto filter) {
+        Long count = queryFactory
+                .select(
+                        externalProductEntity.count()
+                )
+                .from(externalProductEntity)
+                .innerJoin(productGroupEntity)
+                    .on(externalProductEntity.productGroupId.eq(productGroupEntity.id))
+                .where(
+                        siteIdEq(filter.siteId()),
+                        betweenTime(filter.startDate(), filter.endDate()),
+                        soldOutEq(filter.soldOutYn()),
+                        displayEq(filter.displayYn()),
+                        sellerIdEq(filter.sellerId()),
+                        betweenPrice(filter.minSalePrice(), filter.maxSalePrice()),
+                        betweenSalePercent(filter.minDiscountRate(), filter.maxDiscountRate()),
+                        categoryIn(filter.categoryIds()),
+                        brandIdIn(filter.brandIds()),
+                        styleCodeEq(filter.styleCode()),
+                        statusEq(filter.syncStatus()),
+                        externalProductIdLt(filter.cursorId()),
+                        productGroupIdIn(filter.productGroupIds())
+                ).fetchOne();
+
+        return count !=null ? count : 0;
     }
 
     @Override
@@ -62,6 +92,7 @@ public class ExternalProductQueryDslRepository implements ExternalProductQueryRe
                         new QExternalProductDto(
                                 externalProductEntity.id,
                                 externalProductEntity.siteId,
+                                siteEntity.name,
                                 externalProductEntity.productGroupId,
                                 externalProductEntity.policyId,
                                 externalProductEntity.externalProductId.coalesce(""),
@@ -76,10 +107,14 @@ public class ExternalProductQueryDslRepository implements ExternalProductQueryRe
                                 productGroupEntity.categoryId,
                                 categoryEntity.path,
                                 mappingBrandEntity.siteBrandId.coalesce(""),
-                                mappingCategoryEntity.siteCategoryId.coalesce("")
+                                mappingCategoryEntity.siteCategoryId.coalesce(""),
+                                externalProductEntity.insertTime,
+                                externalProductEntity.lastSyncTime
                         )
                 )
                 .from(externalProductEntity)
+                .innerJoin(siteEntity)
+                    .on(siteEntity.id.eq(externalProductEntity.siteId))
                 .innerJoin(productGroupEntity)
                     .on(externalProductEntity.productGroupId.eq(productGroupEntity.id))
                 .innerJoin(categoryEntity)

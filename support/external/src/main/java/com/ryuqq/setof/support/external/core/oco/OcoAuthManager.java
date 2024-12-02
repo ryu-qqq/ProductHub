@@ -1,7 +1,7 @@
 package com.ryuqq.setof.support.external.core.oco;
 
-import com.ryuqq.setof.support.external.core.oco.client.dto.OcoTokenRequestDto;
-import com.ryuqq.setof.support.external.core.oco.client.dto.OcoTokenResponseDto;
+import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenRequestDto;
+import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

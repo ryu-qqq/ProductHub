@@ -5,8 +5,7 @@ import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupComman
 import com.ryuqq.setof.api.core.controller.v1.product.response.ProductGroupContextResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.response.GptTrainingDataResponse;
 import com.ryuqq.setof.api.core.controller.v1.product.service.GptTrainingDataServingService;
-import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextService;
-import com.ryuqq.setof.api.core.controller.v1.site.response.ExternalMallProductPendingDataResponse;
+import com.ryuqq.setof.api.core.controller.v1.product.service.ProductGroupContextServingService;
 import com.ryuqq.setof.api.core.data.BrandModuleHelper;
 import com.ryuqq.setof.api.core.data.CategoryModuleHelper;
 import com.ryuqq.setof.domain.core.generic.Slice;
@@ -50,7 +49,7 @@ class ProductControllerTest extends RestDocsTest {
     private ProductGroupContextCommandManager productGroupCommandFacade;
 
     @Mock
-    private ProductGroupContextService productGroupContextService;
+    private ProductGroupContextServingService productGroupContextServingService;
 
     @InjectMocks
     private ProductController productController;
@@ -230,7 +229,7 @@ class ProductControllerTest extends RestDocsTest {
         Slice<ProductGroupContextResponse> slice = SliceUtils.toSlice(results, 20, 3);
         slice.setCursor(1L);
 
-        when(productGroupContextService.fetchProductGroupContextsByFilter(any())).thenReturn(slice);
+        when(productGroupContextServingService.fetchProductGroupContextsByFilter(any())).thenReturn(slice);
 
         // when
         given()

@@ -11,6 +11,4 @@ public record BuyMaOption(
         int position,
         @JsonProperty("master_id")
         long masterId
-) {
-
-}
+){}

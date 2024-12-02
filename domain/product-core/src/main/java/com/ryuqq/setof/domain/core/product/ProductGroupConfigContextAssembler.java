@@ -14,11 +14,11 @@ public class ProductGroupConfigContextAssembler {
     }
 
     public ProductGroupConfigContextAggregate assemble(List<ProductGroupConfig> productGroupConfigs) {
-        List<Long> configIds = productGroupConfigs.stream().map(ProductGroupConfig::getConfigId).toList();
+        List<Long> productGroupIds = productGroupConfigs.stream().map(ProductGroupConfig::getProductGroupId).toList();
 
         return ProductGroupConfigContextAggregate.of(
                 productGroupConfigs,
-                productGroupNameConfigFinder.fetchByProductGroupIds(configIds),
+                productGroupNameConfigFinder.fetchByProductGroupIds(productGroupIds),
                 List.of()
         );
     }

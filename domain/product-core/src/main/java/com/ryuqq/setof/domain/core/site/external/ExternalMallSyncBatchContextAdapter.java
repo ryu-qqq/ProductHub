@@ -7,65 +7,55 @@ import com.ryuqq.setof.domain.core.product.gpt.GptOptionsResult;
 import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.support.external.core.*;
+import com.ryuqq.setof.support.external.core.ExternalSyncOption;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class ExternalMallSyncBatchContextAdapter {
 
-    public List<ExternalMallProductContext> toExternalMallContexts(ExternalSyncBatchContext externalSyncBatchContext){
-
-
-        return externalSyncBatchContext.syncData().stream()
-                .map(p -> new ExternalMallProductContext(
-                        p.externalProduct().siteId(),
-                        getSiteNameEnum(externalSyncBatchContext.externalPolicyContext()),
-                        toExternalMallBrand(p.mappingBrand()),
-                        toExternalMallCategory(p.mappingCategory()),
-                        toExternalMallProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProduct()),
-                        toExternalMallProducts(p.productGroupContext().getProducts()),
-                        toExternalMallCategoryOptions(p.externalCategoryOptions()),
-                        toOptionProcessResult(p.gptOptionsResult())
-                        ))
-                .toList();
-
-
+    public List<ExternalMallPreProductContext> toExternalMallContexts(ExternalSyncBatchContext externalSyncBatchContext){
+        return externalSyncBatchContext
+                .syncData()
+                    .stream()
+                        .map(p ->
+                                new ExternalMallPreProductContext(
+                                    p.externalProduct().siteId(),
+                                    getSiteNameEnum(externalSyncBatchContext.externalPolicyContext()),
+                                    toExternalSyncBrand(p.mappingBrand()),
+                                    toExternalSyncCategory(p.mappingCategory()),
+                                    toExternalSyncProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProduct()),
+                                    toExternalSyncProducts(p.productGroupContext().getProducts()),
+                                    toExternalSyncCategoryOptions(p.externalCategoryOptions()),
+                                    toExternalSyncOptionResult(p.gptOptionsResult())
+                                )
+                        ).toList();
     }
-
 
     private SiteName getSiteNameEnum(ExternalPolicyContext externalPolicyContext){
         String name = externalPolicyContext.externalPolicy().siteName();
         return SiteName.of(name);
     }
 
-    private ExternalMallBrand toExternalMallBrand(MappingBrand mappingBrand){
-        return new ExternalMallBrand(mappingBrand.externalBrandId(), mappingBrand.brandName());
+    private ExternalSyncBrand toExternalSyncBrand(MappingBrand mappingBrand){
+        return new ExternalSyncBrand(mappingBrand.externalBrandId(), mappingBrand.brandName());
     }
 
-    private ExternalMallCategory toExternalMallCategory(MappingCategory mappingCategory){
-        return new ExternalMallCategory(mappingCategory.externalCategoryId(), mappingCategory.categoryName(), mappingCategory.targetGroup(), mappingCategory.categoryType());
+    private ExternalSyncCategory toExternalSyncCategory(MappingCategory mappingCategory){
+        return new ExternalSyncCategory(mappingCategory.externalCategoryId(), mappingCategory.categoryName(), mappingCategory.targetGroup(), mappingCategory.categoryType());
     }
 
-    private ExternalMallProductGroup toExternalMallProductGroup(ProductGroupContext productGroupContext, ExternalProductPolicy externalProductPolicy, ExternalProduct externalProduct){
-        String externalProductId = "";
-        String translatedName = getName(externalProductPolicy.countryCode(), productGroupContext.getProductGroup().productGroupName(), productGroupContext.getConfig());
-
-        if(externalProduct.status().isApproved()){
-            externalProductId = externalProduct.externalProductId();
-            translatedName = externalProduct.productName();
-        }
-
-        return new ExternalMallProductGroup(
+    private ExternalSyncProductGroup toExternalSyncProductGroup(ProductGroupContext productGroupContext, ExternalProductPolicy externalProductPolicy, ExternalProduct externalProduct){
+        return new ExternalSyncProductGroup(
                 productGroupContext.getProductGroup().productGroupId(),
                 productGroupContext.getProductGroup().setOfProductGroupId(),
-                externalProductId,
+                externalProduct.externalProductId(),
                 productGroupContext.getProductGroup().sellerId(),
                 productGroupContext.getProductGroup().colorIds(),
                 productGroupContext.getProductGroup().productGroupName(),
-                translatedName,
+                getName(externalProductPolicy.countryCode(), productGroupContext.getProductGroup().productGroupName(), productGroupContext.getConfig()),
                 productGroupContext.getProductGroup().styleCode(),
                 productGroupContext.getProductGroup().optionType(),
                 productGroupContext.getProductGroup().price().getRegularPrice(),
@@ -73,10 +63,10 @@ public class ExternalMallSyncBatchContextAdapter {
                 productGroupContext.getProductGroup().soldOutYn(),
                 productGroupContext.getProductGroup().displayYn(),
                 productGroupContext.getProductGroup().keywords(),
-                toExternalMallProductDelivery(productGroupContext.getProductGroup().delivery()),
-                toExternalMallproductNotice(productGroupContext.getProductGroup().notice()),
-                toExternalMallProductImages(productGroupContext.getProductGroup().images()),
-                toExternalMallProductDetailDescription(productGroupContext.getProductGroup().detailDescription())
+                toExternalSyncProductDelivery(productGroupContext.getProductGroup().delivery()),
+                toExternalSyncProductNotice(productGroupContext.getProductGroup().notice()),
+                toExternalSyncProductImages(productGroupContext.getProductGroup().images()),
+                toExternalSyncProductDetailDescription(productGroupContext.getProductGroup().detailDescription())
         );
     }
 
@@ -89,10 +79,8 @@ public class ExternalMallSyncBatchContextAdapter {
     }
 
 
-
-
-    private ExternalMallProductDelivery toExternalMallProductDelivery(ProductDelivery productDelivery){
-        return new ExternalMallProductDelivery(
+    private ExternalSyncProductDelivery toExternalSyncProductDelivery(ProductDelivery productDelivery){
+        return new ExternalSyncProductDelivery(
                 productDelivery.getDeliveryArea(),
                 productDelivery.getDeliveryFee(),
                 productDelivery.getDeliveryPeriodAverage(),
@@ -103,8 +91,8 @@ public class ExternalMallSyncBatchContextAdapter {
         );
     }
 
-    private ExternalMallProductNotice toExternalMallproductNotice(ProductNotice productNotice){
-        return new ExternalMallProductNotice(
+    private ExternalSyncProductNotice toExternalSyncProductNotice(ProductNotice productNotice){
+        return new ExternalSyncProductNotice(
                 productNotice.getMaterial(),
                 productNotice.getColor(),
                 productNotice.getSize(),
@@ -117,51 +105,51 @@ public class ExternalMallSyncBatchContextAdapter {
         );
     }
 
-    private List<ExternalMallProductImage> toExternalMallProductImages(List<ProductGroupImage> images) {
+    private List<ExternalSyncProductImage> toExternalSyncProductImages(List<ProductGroupImage> images) {
         return images.stream()
-                .map(i -> new ExternalMallProductImage(i.getProductImageType(), i.getImageUrl(), i.getOriginUrl()))
+                .map(i -> new ExternalSyncProductImage(i.getProductImageType(), i.getImageUrl(), i.getOriginUrl()))
                 .distinct()
                 .toList();
     }
 
 
-    private ExternalMallProductDetailDescription toExternalMallProductDetailDescription(ProductDetailDescription productDetailDescription){
-        return new ExternalMallProductDetailDescription(productDetailDescription.getDetailDescription());
+    private ExternalSyncProductDetailDescription toExternalSyncProductDetailDescription(ProductDetailDescription productDetailDescription){
+        return new ExternalSyncProductDetailDescription(productDetailDescription.getDetailDescription());
     }
 
 
-    private List<ExternalMallProduct> toExternalMallProducts(List<Product> products){
-        return products.stream().map(p -> new ExternalMallProduct(
+    private List<ExternalSyncProduct> toExternalSyncProducts(List<Product> products){
+        return products.stream().map(p -> new ExternalSyncProduct(
                 p.getQuantity(),
                 p.isSoldOutYn(),
                 p.isDisplayYn(),
                 p.getOption(),
-                toExternalMallOptions(p.getOptions()),
+                toExternalSyncOptions(p.getOptions()),
                 p.getAdditionalPrice()
                 ))
                 .toList();
     }
 
-    private List<ExternalMallOption> toExternalMallOptions(Set<Option> options){
+    private List<ExternalSyncOption> toExternalSyncOptions(Set<Option> options){
         return options.stream()
-                .map(o -> new ExternalMallOption(o.getOptionName(), o.getOptionValue()))
+                .map(o -> new ExternalSyncOption(o.getOptionName(), o.getOptionValue()))
                 .toList();
     }
 
 
-    private List<ExternalMallCategoryOption> toExternalMallCategoryOptions(List<ExternalCategoryOption> categoryOptions){
+    private List<ExternalSyncCategoryOption> toExternalSyncCategoryOptions(List<ExternalCategoryOption> categoryOptions){
         return categoryOptions.stream()
-                .map(c -> new ExternalMallCategoryOption(c.siteId(), c.externalCategoryId(), c.optionId(), c.optionValue()))
+                .map(c -> new ExternalSyncCategoryOption(c.siteId(), c.externalCategoryId(), c.optionId(), c.optionValue()))
                 .toList();
     }
 
-    private ProcessingOptionResult toOptionProcessResult(GptOptionsResult gptOptionsResult) {
+    private ExternalSyncOptionResult toExternalSyncOptionResult(GptOptionsResult gptOptionsResult) {
         if (gptOptionsResult != null) {
-            return new ProcessingOptionResult(
+            return new ExternalSyncOptionResult(
                     gptOptionsResult.productGroupId(),
                     gptOptionsResult.originalOptions(),
                     gptOptionsResult.normalizedOptions() != null
-                            ? new ProcessingOptionResult.NormalizedOptions(
+                            ? new ExternalSyncOptionResult.NormalizedOptions(
                             gptOptionsResult.normalizedOptions().sizes(),
                             gptOptionsResult.normalizedOptions().unit()
                     )

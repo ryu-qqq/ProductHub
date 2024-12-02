@@ -68,48 +68,4 @@ public class ProductChecker implements UpdateChecker<List<Product>, List<Product
                 !existingProduct.getAdditionalPrice().getAmount().equals(command.additionalPrice());
 
     }
-
-//
-//    public ProductContextChecker(Set<Product> existingProducts, List<ProductCommand> productCommands) {
-//        Map<String, Product> existingProductMap = existingProducts.stream()
-//                .collect(Collectors.toMap(Product::getOption, Function.identity()));
-//
-//        if(existingProductMap.isEmpty()){
-//            existingProducts.stream().findFirst().ifPresent(product -> {
-//                product.delete();
-//                productsToUpdate.add(product);
-//            });
-//        }
-//
-//        for (ProductCommand command : productCommands) {
-//            Product existingProduct = existingProductMap.get(command.getOption());
-//
-//            if (existingProduct != null) {
-//                if (requiresUpdate(existingProduct,command)) {
-//                    productsToUpdate.add(existingProduct);
-//                }
-//                existingProductMap.remove(command.getOption());
-//            } else {
-//                optionUpdaters.add(command);
-//            }
-//        }
-//
-//        existingProductMap.values().forEach(product -> {
-//            product.delete();
-//            productsToUpdate.add(product);
-//        });
-//    }
-//
-//
-//    public List<Product> getProductsToUpdate() {
-//        return productsToUpdate;
-//    }
-//
-//    public List<ProductCommand> getOptionUpdaters() {
-//        return optionUpdaters;
-//    }
-//
-
-
-
 }

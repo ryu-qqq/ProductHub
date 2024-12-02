@@ -5,9 +5,5 @@ import java.util.List;
 
 public record ExternalSyncBatchContext(
         ExternalPolicyContext externalPolicyContext,
-        List<ProductPreExternalSyncContext> syncData,
-        List<ExternalProduct> failProducts
-
-
-
+        List<ProductPreExternalSyncContext> syncData
 ) {}

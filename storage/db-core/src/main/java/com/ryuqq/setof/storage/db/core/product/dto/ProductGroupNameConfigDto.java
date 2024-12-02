@@ -22,6 +22,11 @@ public class ProductGroupNameConfigDto {
         this.customName = customName;
     }
 
+    public ProductGroupNameConfigDto(long productGroupNameConfigId, String customName){
+        this.productGroupNameConfigId = productGroupNameConfigId;
+        this.customName = customName;
+    }
+
     public long getProductGroupNameConfigId() {
         return productGroupNameConfigId;
     }

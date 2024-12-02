@@ -1,7 +1,8 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
-import com.ryuqq.setof.support.external.core.ExternalMallProductImage;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaImage;
+import com.ryuqq.setof.support.external.core.ExternalSyncProductImage;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaImageContext;
+import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaImageGroupContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,18 +12,18 @@ import java.util.List;
 @Component
 public class BuyMaImageGenerator {
 
-    public List<BuyMaImage> getImages(List<ExternalMallProductImage> images) {
-        List<BuyMaImage> buyMaImages = new ArrayList<>();
+    public BuyMaImageGroupContext getImageGroupContext(List<ExternalSyncProductImage> images) {
+        List<BuyMaImageContext> buyMaImages = new ArrayList<>();
         int imageSortCounter = 2;
 
-        for (ExternalMallProductImage img : images) {
+        for (ExternalSyncProductImage img : images) {
             if (img.productImageType().isMain()) {
-                buyMaImages.add(new BuyMaImage(
+                buyMaImages.add(new BuyMaImageContext(
                         img.imageUrl(),
                         1
                 ));
             } else {
-                buyMaImages.add(new BuyMaImage(
+                buyMaImages.add(new BuyMaImageContext(
                         img.imageUrl(),
                         imageSortCounter
                 ));
@@ -30,9 +31,12 @@ public class BuyMaImageGenerator {
             }
         }
 
-        return buyMaImages.stream()
-                .sorted(Comparator.comparingInt(BuyMaImage::position))
+
+        List<BuyMaImageContext> imageContexts = buyMaImages.stream()
+                .sorted(Comparator.comparingInt(BuyMaImageContext::position))
                 .toList();
+
+        return new BuyMaImageGroupContext(imageContexts);
     }
 
 }

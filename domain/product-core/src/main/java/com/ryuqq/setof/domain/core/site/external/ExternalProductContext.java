@@ -1,11 +1,13 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import java.util.List;
+import com.ryuqq.setof.domain.core.brand.MappingBrand;
+import com.ryuqq.setof.domain.core.category.MappingCategory;
 
 public record ExternalProductContext(
         ExternalProduct externalProduct,
-        ExternalProductPolicy externalProductPolicy,
-        List<ExternalProductProcessingResult> externalProductProcessingResults
+        MappingBrand mappingBrand,
+        MappingCategory mappingCategory
+
 ) {
     public long getProductGroupId(){
         return externalProduct.productGroupId();

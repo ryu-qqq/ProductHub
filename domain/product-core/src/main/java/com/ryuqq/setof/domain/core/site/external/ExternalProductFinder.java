@@ -18,7 +18,13 @@ public class ExternalProductFinder implements ExternalProductQueryService {
 
 
     @Override
-    public List<Long> findUnlinkedProductGroupIds(long sellerId, List<Long> siteIds){
+    public long countByFilter(ExternalProductFilter filter) {
+        return externalProductQueryRepository.countByFilter(filter.toStorageFilterDto());
+    }
+
+
+    @Override
+    public List<Long> fetchUnlinkedProductGroupIds(long sellerId, List<Long> siteIds){
         return externalProductQueryRepository.fetchUnlinkedProductGroupIdsBySellerIdAndSiteId(sellerId, siteIds);
     }
 
