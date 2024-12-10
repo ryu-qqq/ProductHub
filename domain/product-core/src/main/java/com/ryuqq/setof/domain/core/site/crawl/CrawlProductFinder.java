@@ -15,8 +15,8 @@ public class CrawlProductFinder implements CrawlProductQueryService {
         this.crawlProductQueryRepository = crawlProductQueryRepository;
     }
 
-    public List<CrawlProduct> getCrawlProducts(CrawlProductFilter crawlProductFilter){
-        List<CrawlProductDto> crawlProductDtos = crawlProductQueryRepository.fetchCrawlProducts(crawlProductFilter.toCrawlProductStorageDto());
+    public List<CrawlProduct> fetchByFilter(CrawlProductFilter crawlProductFilter){
+        List<CrawlProductDto> crawlProductDtos = crawlProductQueryRepository.fetchByFilter(crawlProductFilter.toCrawlProductStorageDto());
         return crawlProductDtos.stream()
                 .map(c ->
                         new CrawlProduct(c.getCrawlProductId(), c.getSiteId(), c.getSiteName(),
@@ -24,8 +24,8 @@ public class CrawlProductFinder implements CrawlProductQueryService {
                 .toList();
     }
 
-    public long getCrawlProductCount(CrawlProductFilter crawlProductFilter){
-        return crawlProductQueryRepository.fetchCrawlProductCount(crawlProductFilter.toCrawlProductStorageDto());
+    public long countByFilter(CrawlProductFilter crawlProductFilter){
+        return crawlProductQueryRepository.countByFilter(crawlProductFilter.toCrawlProductStorageDto());
     }
 
 }

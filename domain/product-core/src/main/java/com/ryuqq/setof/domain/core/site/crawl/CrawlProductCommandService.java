@@ -1,7 +1,8 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductCommandFacade;
+import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductCommandhybridService;
 import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,15 +10,16 @@ import java.util.List;
 @Service
 public class CrawlProductCommandService {
 
-    private final CrawlProductCommandFacade crawlProductCommandFacade;
+    private final CrawlProductCommandhybridService crawlProductCommandhybridService;
 
-    public CrawlProductCommandService(CrawlProductCommandFacade crawlProductCommandFacade) {
-        this.crawlProductCommandFacade = crawlProductCommandFacade;
+    public CrawlProductCommandService(CrawlProductCommandhybridService crawlProductCommandhybridService) {
+        this.crawlProductCommandhybridService = crawlProductCommandhybridService;
     }
 
-    public void inserts(List<CrawlProductCommand> crawlProductCommands){
+    @Transactional
+    public void saveAll(List<CrawlProductCommand> crawlProductCommands){
         List<CrawlProductEntity> crawlProductEntities = crawlProductCommands.stream().map(CrawlProductCommand::toCrawlProductEntity).toList();
-        crawlProductCommandFacade.saveIfNotExists(crawlProductEntities);
+        crawlProductCommandhybridService.saveIfNotExists(crawlProductEntities);
     }
 
 }

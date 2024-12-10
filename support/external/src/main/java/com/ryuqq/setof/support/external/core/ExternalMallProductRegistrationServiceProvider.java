@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ExternalMallProductRegistrationServiceProvider extends AbstractProvider<SiteName, ExternalMallProductRegistrationService<? extends ExternalMallProductContext>> {
+public class ExternalMallProductRegistrationServiceProvider extends AbstractProvider<SiteName, ExternalMallProductRegistrationService> {
 
-    public ExternalMallProductRegistrationServiceProvider(List<ExternalMallProductRegistrationService<? extends ExternalMallProductContext>> mappers) {
-        for (ExternalMallProductRegistrationService<? extends ExternalMallProductContext> mapper : mappers) {
+    public ExternalMallProductRegistrationServiceProvider(List<ExternalMallProductRegistrationService> mappers) {
+        for (ExternalMallProductRegistrationService mapper : mappers) {
             map.put(mapper.getSiteName(), mapper);
         }
     }

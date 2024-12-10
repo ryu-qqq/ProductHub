@@ -1,8 +1,8 @@
 package com.ryuqq.setof.domain.core.product.gpt;
 
 import com.ryuqq.setof.enums.core.ProductStatus;
+import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingResultEntity;
 import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingResultPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.gpt.ProuctProcessingResultEntity;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceRepository;
 import com.ryuqq.setof.support.utils.JsonUtils;
 
@@ -23,11 +23,11 @@ public abstract class AbstractGptBatchResultCommandService<T extends GptBatchRes
         return productGroupPersistenceRepository;
     }
 
-    protected void saveExternalProductResult(ProuctProcessingResultEntity processingResultEntity){
+    protected void saveExternalProductResult(ProductProcessingResultEntity processingResultEntity){
         saveExternalProductResults(List.of(processingResultEntity));
     }
 
-    protected void saveExternalProductResults(List<ProuctProcessingResultEntity> processingResultEntities){
+    protected void saveExternalProductResults(List<ProductProcessingResultEntity> processingResultEntities){
         productProcessingResultPersistenceRepository.saveAllExternalProcessingResult(processingResultEntities);
     }
 
@@ -36,15 +36,15 @@ public abstract class AbstractGptBatchResultCommandService<T extends GptBatchRes
         productGroupPersistenceRepository.updatesProductStatus(productGroupIds, ProductStatus.REVIEW);
     }
 
-    protected List<ProuctProcessingResultEntity> toEntities(List<T> results){
+    protected List<ProductProcessingResultEntity> toEntities(List<T> results){
         return results.stream()
                 .map(this::toEntity)
                 .toList();
     }
 
 
-    protected ProuctProcessingResultEntity toEntity(T result){
-        return new ProuctProcessingResultEntity(
+    protected ProductProcessingResultEntity toEntity(T result){
+        return new ProductProcessingResultEntity(
                 result.getProductGroupId(),
                 result.getProductDataType(),
                 JsonUtils.toJson(result)

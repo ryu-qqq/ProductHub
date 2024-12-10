@@ -18,7 +18,7 @@ public class MappingCategoryJdbcRepository {
 
     public int[] batchInsertMappingCategories(List<MappingCategoryEntity> mappingCategoryEntities) {
 
-        String sql = "INSERT MAPPING_CATEGORY(SITE_ID, SITE_CATEGORY_ID, STIE_CATEGORY_EXTRA_ID, INTERNAL_CATEGORY_ID, DESCRIPTOIN )" +
+        String sql = "INSERT MAPPING_CATEGORY(SITE_ID, SITE_CATEGORY_ID, SITE_CATEGORY_EXTRA_ID, INTERNAL_CATEGORY_ID, DESCRIPTION)" +
                 "VALUES(:siteId, :siteCategoryId, :siteCategoryExtraId, :internalCategoryId, :description)";
 
         List<Map<String, Object>> batchValues = mappingCategoryEntities.stream()

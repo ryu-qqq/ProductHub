@@ -1,28 +1,22 @@
 package com.ryuqq.setof.support.external.core;
 
 import com.ryuqq.setof.enums.core.SyncStep;
-import com.ryuqq.setof.support.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TransformProductDetailStepHandler implements SyncStepHandler {
 
-    private final ExternalMallContextMapper externalMallContextMapper;
-    private final ExternalMallContextBuilder externalMallContextBuilder;
+    private final ExternalMallContextMapperProvider externalMallContextMapperProvider;
 
-    public TransformProductDetailStepHandler(ExternalMallContextMapper externalMallContextMapper, ExternalMallContextBuilder externalMallContextBuilder) {
-        this.externalMallContextMapper = externalMallContextMapper;
-        this.externalMallContextBuilder = externalMallContextBuilder;
+    public TransformProductDetailStepHandler(ExternalMallContextMapperProvider externalMallContextMapperProvider) {
+        this.externalMallContextMapperProvider = externalMallContextMapperProvider;
     }
 
-
     @Override
-    public SyncStepResult execute(ExternalMallPreProductContext context) {
-        ExternalMallProductContext.Builder builder = externalMallContextBuilder.getBuilder();
-        ExternalMallProductDetailContext externalMallProductDetailContext = externalMallContextMapper.generateProductDetailContext(context);
-        builder.withDetailContext(context.getProductGroupId(), context.getSetOfProductGroupId(), externalMallProductDetailContext);
-        return SyncStepResult.success(SyncStep.TRANSFORM_PRODUCT_DETAIL, builder);
-
+    public SyncStepResult execute(ExternalMallPreProductContext context, ExternalMallProductContext.Builder builder) {
+        ExternalMallContextMapper externalMallContextMapper = externalMallContextMapperProvider.get(context.siteName());
+        ExternalMallProductContext.Builder externalMallProductContextBuilder = externalMallContextMapper.toExternalMallProductContextBuilder(context);
+        return SyncStepResult.success(SyncStep.TRANSFORM_PRODUCT_DETAIL, externalMallProductContextBuilder, "");
     }
 
     @Override

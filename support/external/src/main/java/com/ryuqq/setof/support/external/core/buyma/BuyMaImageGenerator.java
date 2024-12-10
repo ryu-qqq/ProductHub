@@ -1,8 +1,10 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
+import com.ryuqq.setof.support.external.core.ExternalMallImage;
+import com.ryuqq.setof.support.external.core.ExternalMallImageContext;
+import com.ryuqq.setof.support.external.core.ExternalMallPreProductContext;
 import com.ryuqq.setof.support.external.core.ExternalSyncProductImage;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaImageContext;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaImageGroupContext;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaImageDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,18 +14,20 @@ import java.util.List;
 @Component
 public class BuyMaImageGenerator {
 
-    public BuyMaImageGroupContext getImageGroupContext(List<ExternalSyncProductImage> images) {
-        List<BuyMaImageContext> buyMaImages = new ArrayList<>();
+    public ExternalMallImageContext generateImageContext(List<ExternalSyncProductImage> images){
+        List<ExternalMallImage> externalMallImages = new ArrayList<>();
         int imageSortCounter = 2;
 
         for (ExternalSyncProductImage img : images) {
             if (img.productImageType().isMain()) {
-                buyMaImages.add(new BuyMaImageContext(
+                externalMallImages.add(new ExternalMallImage(
+                        img.imageUrl(),
                         img.imageUrl(),
                         1
                 ));
             } else {
-                buyMaImages.add(new BuyMaImageContext(
+                externalMallImages.add(new ExternalMallImage(
+                        img.imageUrl(),
                         img.imageUrl(),
                         imageSortCounter
                 ));
@@ -31,12 +35,14 @@ public class BuyMaImageGenerator {
             }
         }
 
+        return new ExternalMallImageContext(externalMallImages);
+    }
 
-        List<BuyMaImageContext> imageContexts = buyMaImages.stream()
-                .sorted(Comparator.comparingInt(BuyMaImageContext::position))
+
+    public List<BuyMaImageDto> toBuyMaImageDto(ExternalMallImageContext imageGroupContext) {
+        return imageGroupContext.externalMallImages().stream().sorted(Comparator.comparingInt(ExternalMallImage::order))
+                .map(e -> new BuyMaImageDto(e.imageUrl(), e.order()))
                 .toList();
-
-        return new BuyMaImageGroupContext(imageContexts);
     }
 
 }

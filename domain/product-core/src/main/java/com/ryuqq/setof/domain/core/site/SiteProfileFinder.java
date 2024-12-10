@@ -7,6 +7,6 @@ import java.util.List;
 public interface SiteProfileFinder {
 
     SiteType getSiteType();
-    List<? extends SiteProfile> fetchSiteProfile(long siteId);
-    SiteProfile fetchSiteProfile(long siteId, long mappingId);
+    List<? extends SiteProfile> fetchBySiteId(long siteId);
+    SiteProfile fetchBySiteId(long siteId, long mappingId);
 }

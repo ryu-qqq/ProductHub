@@ -3,6 +3,7 @@ package com.ryuqq.setof.domain.core.site.external;
 import com.ryuqq.setof.domain.core.brand.MappingBrand;
 import com.ryuqq.setof.domain.core.category.MappingCategory;
 import com.ryuqq.setof.domain.core.product.ProductGroupContext;
+import com.ryuqq.setof.domain.core.site.StandardSize;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public record ProductPreExternalSyncAggregate(
         List<MappingCategory> mappingCategories,
         List<MappingBrand> mappingBrands,
         List<ExternalCategoryOption> externalCategoryOptions,
-        List<ExternalProductProcessingResult> externalProductProcessingResults
+        List<ExternalProductProcessingResult> externalProductProcessingResults,
+        List<StandardSize> standardSizes
 ) {
 
     public static ProductPreExternalSyncAggregate of(
@@ -23,7 +25,8 @@ public record ProductPreExternalSyncAggregate(
             List<MappingCategory> mappingCategories,
             List<MappingBrand> mappingBrands,
             List<ExternalCategoryOption> externalCategoryOptions,
-            List<ExternalProductProcessingResult> externalProductProcessingResults
+            List<ExternalProductProcessingResult> externalProductProcessingResults,
+            List<StandardSize> standardSizes
     ){
         return new ProductPreExternalSyncAggregate(
                 externalProducts,
@@ -32,7 +35,8 @@ public record ProductPreExternalSyncAggregate(
                 mappingCategories,
                 mappingBrands,
                 externalCategoryOptions,
-                externalProductProcessingResults
+                externalProductProcessingResults,
+                standardSizes
         );
     }
 }

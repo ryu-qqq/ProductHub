@@ -4,6 +4,7 @@ import com.ryuqq.setof.domain.core.brand.MappingBrand;
 import com.ryuqq.setof.domain.core.category.MappingCategory;
 import com.ryuqq.setof.domain.core.product.ProductGroupContext;
 import com.ryuqq.setof.domain.core.product.gpt.GptOptionsResult;
+import com.ryuqq.setof.domain.core.site.StandardSize;
 import com.ryuqq.setof.support.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +24,13 @@ public class ExternalSyncBatchContextMapper {
         Map<Long, ProductGroupContext> productMap = createProductGroupMap(aggregate);
         Map<String, List<ExternalCategoryOption>> externalCategoryMap = createExternalCategoryMap(aggregate);
         Map<Long, GptOptionsResult> gptOptionsResultMap = createGptOptionsResultMap(aggregate);
+        Map<Long, List<StandardSize>> standardSizeMap = createStandardSizeMap(aggregate);
 
         List<ProductPreExternalSyncContext> productPreExternalSyncContexts = aggregate.externalProducts()
                 .stream()
                 .filter(e -> isValidProduct(e, productMap, brandMap, categoryMap))
                 .map(e -> createProductPreExternalSyncContext(
-                        e, productMap, brandMap, categoryMap, externalCategoryMap, gptOptionsResultMap
+                        e, productMap, brandMap, categoryMap, externalCategoryMap, gptOptionsResultMap, standardSizeMap
                 ))
                 .toList();
 
@@ -68,6 +70,11 @@ public class ExternalSyncBatchContextMapper {
                 .collect(Collectors.toMap(GptOptionsResult::productGroupId, Function.identity(), (v1, v2) -> v2));
     }
 
+    private Map<Long, List<StandardSize>> createStandardSizeMap(ProductPreExternalSyncAggregate aggregate) {
+        return aggregate.standardSizes().stream()
+                .collect(Collectors.groupingBy(StandardSize::categoryId));
+    }
+
     private boolean isValidProduct(ExternalProduct product, Map<Long, ProductGroupContext> productMap,
                                    Map<Long, MappingBrand> brandMap, Map<Long, MappingCategory> categoryMap) {
         return productMap.containsKey(product.productGroupId())
@@ -81,7 +88,8 @@ public class ExternalSyncBatchContextMapper {
             Map<Long, MappingBrand> brandMap,
             Map<Long, MappingCategory> categoryMap,
             Map<String, List<ExternalCategoryOption>> externalCategoryMap,
-            Map<Long, GptOptionsResult> gptOptionsResultMap) {
+            Map<Long, GptOptionsResult> gptOptionsResultMap,
+            Map<Long, List<StandardSize>> standardSizeMap) {
 
         MappingCategory mappingCategory = categoryMap.get(externalProduct.internalCategoryId());
         if (mappingCategory == null) {
@@ -102,7 +110,8 @@ public class ExternalSyncBatchContextMapper {
                 brandMap.get(externalProduct.internalBrandId()),
                 mappingCategory,
                 externalCategoryOptions,
-                gptOptionsResultMap.get(externalProduct.productGroupId())
+                gptOptionsResultMap.get(externalProduct.productGroupId()),
+                standardSizeMap.getOrDefault(externalProduct.internalCategoryId(), List.of())
         );
     }
 

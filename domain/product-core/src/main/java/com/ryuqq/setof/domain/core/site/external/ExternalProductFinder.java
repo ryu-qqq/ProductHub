@@ -16,18 +16,15 @@ public class ExternalProductFinder implements ExternalProductQueryService {
         this.externalProductQueryRepository = externalProductQueryRepository;
     }
 
-
     @Override
     public long countByFilter(ExternalProductFilter filter) {
         return externalProductQueryRepository.countByFilter(filter.toStorageFilterDto());
     }
 
-
     @Override
     public List<Long> fetchUnlinkedProductGroupIds(long sellerId, List<Long> siteIds){
         return externalProductQueryRepository.fetchUnlinkedProductGroupIdsBySellerIdAndSiteId(sellerId, siteIds);
     }
-
 
     @Override
     public List<ExternalProduct> fetchByFilter(ExternalProductFilter filter){

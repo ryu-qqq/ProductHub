@@ -22,9 +22,9 @@ public class CrawlProductService {
     }
 
     public Slice<CrawlProductResponse> getCrawlProducts(CrawlProductFilter crawlProductFilter){
-        List<CrawlProduct> crawlProducts = crawlProductQueryService.getCrawlProducts(crawlProductFilter);
+        List<CrawlProduct> crawlProducts = crawlProductQueryService.fetchByFilter(crawlProductFilter);
         List<CrawlProductResponse> crawlProductResponses = crawlProducts.stream().map(CrawlProductResponse::toCrawlProductResponse).toList();
-        long crawlProductCount = crawlProductQueryService.getCrawlProductCount(crawlProductFilter);
+        long crawlProductCount = crawlProductQueryService.countByFilter(crawlProductFilter);
         return crawlProductSliceMapper.toSlice(crawlProductResponses, crawlProductFilter.pageSize(), crawlProductCount);
     }
 

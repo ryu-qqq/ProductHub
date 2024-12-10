@@ -1,13 +1,10 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
-import com.ryuqq.setof.support.external.core.ExternalSyncCategoryOption;
-import com.ryuqq.setof.support.external.core.ExternalSyncOption;
-import com.ryuqq.setof.support.external.core.ExternalSyncProduct;
-import com.ryuqq.setof.support.external.core.ExternalSyncOptionResult;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaOption;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariant;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaOptionContext;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariantOption;
+import com.ryuqq.setof.support.external.core.*;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaOptionContextDto;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaOptionDto;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaVariantDto;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaVariantOptionDto;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -17,40 +14,44 @@ import java.util.regex.Pattern;
 @Component
 public class BuyMaOptionMapper {
 
+    public BuyMaOptionContextDto toBuyMaOptionContext(ExternalMallOptionContext externalMallOptionContext) {
+        long productGroupId = externalMallOptionContext.productGroupId();
+        List<ExternalSyncProduct> products = externalMallOptionContext.products();
+        ExternalSyncOptionResult optionResult = externalMallOptionContext.gptOptionsResult();
+        List<ExternalSyncCategoryOption> categoryOptions = externalMallOptionContext.externalCategoryOptions();
 
-    public BuyMaOptionContext getVariants(long productGroupId, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products) {
         if (categoryOptions.isEmpty()) {
             return createNoOptionContext(products);
         }
         return createOptionContext(productGroupId, categoryOptions, optionResult, products);
     }
 
-    private BuyMaOptionContext createNoOptionContext(List<ExternalSyncProduct> products) {
-        List<BuyMaOption> options = List.of(
-                new BuyMaOption("color", "multicolor", 1, 99),
-                new BuyMaOption("size", "FREE", 1, 0)
+    private BuyMaOptionContextDto createNoOptionContext(List<ExternalSyncProduct> products) {
+        List<BuyMaOptionDto> options = List.of(
+                new BuyMaOptionDto("color", "multicolor", 1, 99),
+                new BuyMaOptionDto("size", "FREE", 1, 0)
         );
-        List<BuyMaVariantOption> variantOptions = List.of(
-                new BuyMaVariantOption("color", "multicolor"),
-                new BuyMaVariantOption("size", "FREE")
+        List<BuyMaVariantOptionDto> variantOptions = List.of(
+                new BuyMaVariantOptionDto("color", "multicolor"),
+                new BuyMaVariantOptionDto("size", "FREE")
         );
 
 
         int totalQuantity = Math.min(calculateTotalQuantity(products), 50);
         String stockType = totalQuantity > 0 ? "stock_in_hand" : "out_of_stock";
 
-        List<BuyMaVariant> variants = List.of(new BuyMaVariant(variantOptions, stockType, totalQuantity));
+        List<BuyMaVariantDto> variants = List.of(new BuyMaVariantDto(variantOptions, stockType, totalQuantity));
 
         String optionComment = getOptionComment(products);
 
-        return new BuyMaOptionContext(options, variants, optionComment);
+        return new BuyMaOptionContextDto(options, variants, optionComment);
     }
 
-    private BuyMaOptionContext createOptionContext(long productGroupId, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products) {
-        List<BuyMaOption> options = new ArrayList<>();
-        options.add(new BuyMaOption("color", "MultiColor", 1, 99));
+    private BuyMaOptionContextDto createOptionContext(long productGroupId, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products) {
+        List<BuyMaOptionDto> options = new ArrayList<>();
+        options.add(new BuyMaOptionDto("color", "MultiColor", 1, 99));
 
-        List<BuyMaVariant> variants = new ArrayList<>();
+        List<BuyMaVariantDto> variants = new ArrayList<>();
 
         Optional<ExternalSyncOptionResult> optionsResultOpt = Optional.ofNullable(optionResult);
 
@@ -65,7 +66,7 @@ public class BuyMaOptionMapper {
 
         String optionComment = getOptionComment(products);
 
-        return new BuyMaOptionContext(options, variants, optionComment);
+        return new BuyMaOptionContextDto(options, variants, optionComment);
     }
 
     private String getOptionComment(List<ExternalSyncProduct> products){
@@ -79,23 +80,23 @@ public class BuyMaOptionMapper {
     }
 
 
-    private void populateOptionsWithNormalizedSizes(List<BuyMaOption> options, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionsResult) {
+    private void populateOptionsWithNormalizedSizes(List<BuyMaOptionDto> options, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionsResult) {
         List<String> sizes = optionsResult.normalizedOptions().sizes();
         if (sizes != null) {
             int position = 1;
             for (String size : sizes) {
                 long masterId = findMatchingOptionId(size, categoryOptions);
                 validateMasterId(masterId, size);
-                options.add(new BuyMaOption("size", size, position++, masterId));
+                options.add(new BuyMaOptionDto("size", size, position++, masterId));
             }
         }
     }
 
     private void populateOptionsWithProductSizes(
-            List<BuyMaOption> options,
+            List<BuyMaOptionDto> options,
             List<ExternalSyncCategoryOption> categoryOptions,
             List<ExternalSyncProduct> products,
-            List<BuyMaVariant> variants
+            List<BuyMaVariantDto> variants
     ) {
 
         Map<Long, Integer> masterIdToStock = new HashMap<>();
@@ -119,7 +120,7 @@ public class BuyMaOptionMapper {
         for (Map.Entry<Long, String> entry : masterIdToOptionValue.entrySet()) {
             long masterId = entry.getKey();
             String optionValue = entry.getValue();
-            options.add(new BuyMaOption("size", optionValue, position++, masterId));
+            options.add(new BuyMaOptionDto("size", optionValue, position++, masterId));
         }
 
         for (Map.Entry<Long, Integer> entry : masterIdToStock.entrySet()) {
@@ -128,10 +129,10 @@ public class BuyMaOptionMapper {
             String optionValue = masterIdToOptionValue.get(masterId);
 
             String stockType = totalStock > 0 ? "stock_in_hand" : "out_of_stock";
-            variants.add(new BuyMaVariant(
+            variants.add(new BuyMaVariantDto(
                     List.of(
-                            new BuyMaVariantOption("color", "MultiColor"),
-                            new BuyMaVariantOption("size", optionValue)
+                            new BuyMaVariantOptionDto("color", "MultiColor"),
+                            new BuyMaVariantOptionDto("size", optionValue)
                     ),
                     stockType,
                     Math.min(totalStock, 50)
@@ -148,7 +149,7 @@ public class BuyMaOptionMapper {
     private long findMatchingOptionId(String size, List<ExternalSyncCategoryOption> categoryOptions) {
         return categoryOptions.stream()
                 .filter(option -> matchesRange(size, option.optionValue()))
-                .map(ExternalSyncCategoryOption::optionId)
+                .map(ExternalSyncCategoryOption::optionGroupId)
                 .findFirst()
                 .orElse(0L);
     }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ryuqq.setof.storage.db.core.product.gpt.QProuctProcessingResultEntity.prouctProcessingResultEntity;
+import static com.ryuqq.setof.storage.db.core.product.gpt.QProductProcessingResultEntity.productProcessingResultEntity;
 
 
 @Repository
@@ -27,17 +27,17 @@ public class ProductProcessingQueryDslRepository implements ProductProcessingQue
        return Optional.ofNullable(
                 queryFactory.select(
                             new QProductProcessingResultDto(
-                                    prouctProcessingResultEntity.productGroupId,
-                                    prouctProcessingResultEntity.productDataType,
-                                    prouctProcessingResultEntity.result
+                                    productProcessingResultEntity.productGroupId,
+                                    productProcessingResultEntity.productDataType,
+                                    productProcessingResultEntity.result
                             )
                         )
-                        .from(prouctProcessingResultEntity)
+                        .from(productProcessingResultEntity)
                         .where(
                                 productGroupIdEq(productGroupId),
                                 productDataTypeEq(productDataType)
                         )
-                        .orderBy(prouctProcessingResultEntity.id.desc())
+                        .orderBy(productProcessingResultEntity.id.desc())
                         .fetchOne()
         );
     }
@@ -46,30 +46,30 @@ public class ProductProcessingQueryDslRepository implements ProductProcessingQue
     public List<ProductProcessingResultDto> fetchByProductGroupIdsAndDataType(List<Long> productGroupIds, ProductDataType productDataType) {
         return queryFactory.select(
                                 new QProductProcessingResultDto(
-                                        prouctProcessingResultEntity.productGroupId,
-                                        prouctProcessingResultEntity.productDataType,
-                                        prouctProcessingResultEntity.result
+                                        productProcessingResultEntity.productGroupId,
+                                        productProcessingResultEntity.productDataType,
+                                        productProcessingResultEntity.result
                                 )
                         )
-                        .from(prouctProcessingResultEntity)
+                        .from(productProcessingResultEntity)
                         .where(
                                 productGroupIdIn(productGroupIds),
                                 productDataTypeEq(productDataType)
                         )
-                        .orderBy(prouctProcessingResultEntity.id.desc())
+                        .orderBy(productProcessingResultEntity.id.desc())
                         .fetch();
     }
 
     private BooleanExpression productGroupIdEq(long productGroupId){
-        return prouctProcessingResultEntity.productGroupId.eq(productGroupId);
+        return productProcessingResultEntity.productGroupId.eq(productGroupId);
     }
 
     private BooleanExpression productGroupIdIn(List<Long> productGroupIds){
-        if(!productGroupIds.isEmpty()) return prouctProcessingResultEntity.productGroupId.in(productGroupIds);
+        if(!productGroupIds.isEmpty()) return productProcessingResultEntity.productGroupId.in(productGroupIds);
         return null;
     }
 
     private BooleanExpression productDataTypeEq(ProductDataType productDataType){
-        return prouctProcessingResultEntity.productDataType.eq(productDataType);
+        return productProcessingResultEntity.productDataType.eq(productDataType);
     }
 }

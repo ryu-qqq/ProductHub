@@ -32,7 +32,7 @@ public class CrawlSiteController {
     public ResponseEntity<ApiResponse<SiteInsertResponseDto>> registerCrawlProducts(
             @RequestBody List<CrawlProductInsertRequestDto> crawlProductInsertRequests){
         List<CrawlProductCommand> crawlProductCommands = crawlProductInsertRequests.stream().map(CrawlProductInsertRequestDto::toCrawlProductCommand).toList();
-        crawlProductCommandService.inserts(crawlProductCommands);
+        crawlProductCommandService.saveAll(crawlProductCommands);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 

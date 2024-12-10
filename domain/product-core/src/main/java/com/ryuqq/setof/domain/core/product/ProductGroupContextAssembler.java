@@ -21,7 +21,6 @@ public class ProductGroupContextAssembler {
         this.categoryQueryService = categoryQueryService;
     }
 
-
     public ProductGroupContextAggregate assembleContexts(List<ProductGroup> productGroups) {
         List<Long> brandIds = productGroups.stream().map(ProductGroup::brandId).distinct().toList();
         List<Long> categoryIds = productGroups.stream().map(ProductGroup::categoryId).distinct().toList();

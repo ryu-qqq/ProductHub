@@ -4,10 +4,8 @@ import com.ryuqq.setof.enums.core.Origin;
 
 import java.math.BigDecimal;
 
-public interface ExternalMallPriceContext {
-
-    BigDecimal getRegularPrice();
-    BigDecimal getCurrentPrice();
-    Origin getCurrency();
-
-}
+public record ExternalMallPriceContext(
+        BigDecimal regularPrice,
+        BigDecimal currentPrice,
+        Origin currency
+) {}

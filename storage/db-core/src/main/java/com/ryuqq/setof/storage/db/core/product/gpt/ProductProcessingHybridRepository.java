@@ -14,7 +14,7 @@ public class ProductProcessingHybridRepository implements ProductProcessingResul
     }
 
     @Override
-    public void saveAllExternalProcessingResult(List<ProuctProcessingResultEntity> processingResultEntities) {
+    public void saveAllExternalProcessingResult(List<ProductProcessingResultEntity> processingResultEntities) {
         externalProductJdbcRepository.batchInsertExternalProcessingResults(processingResultEntities);
     }
 }

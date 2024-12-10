@@ -1,5 +1,6 @@
 package com.ryuqq.setof.support.external.core;
 
+import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.enums.core.SiteName;
 
 import java.util.List;
@@ -12,7 +13,8 @@ public record ExternalMallPreProductContext(
         ExternalSyncProductGroup productGroup,
         List<ExternalSyncProduct> products,
         List<ExternalSyncCategoryOption> externalCategoryOptions,
-        ExternalSyncOptionResult gptOptionsResult
+        ExternalSyncOptionResult gptOptionsResult,
+        List<ExternalSyncStandardSize> standardSizes
 ) {
 
     public String getExternalProductId(){
@@ -29,6 +31,10 @@ public record ExternalMallPreProductContext(
 
     public String getStyleCode(){
         return productGroup.styleCode();
+    }
+
+    public OptionType getOptionType(){
+        return productGroup.optionType();
     }
 
 

@@ -1,6 +1,7 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
-import com.ryuqq.setof.support.external.core.ExternalMallRequestStatus;
+import com.ryuqq.setof.enums.core.SiteName;
+import com.ryuqq.setof.support.external.core.SyncResult;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -8,44 +9,49 @@ import org.springframework.stereotype.Component;
 @Component
 public class BuyMaProductResponseHandler {
 
-    public <T> ExternalMallRequestStatus handleResponse(ResponseEntity<BuyMaResponse<T>> response) {
+    public SyncResult handleResponse(SiteName siteName, long productGroupId, ResponseEntity<BuyMaResponse<?>> response, String requestBody) {
         HttpStatusCode statusCode = response.getStatusCode();
-        BuyMaResponse<T> body = response.getBody();
 
-        if (statusCode.is2xxSuccessful()) {
-            return ExternalMallRequestStatus.fromResponse(
-                        statusCode.value(),
-                        null,
-                        true,
-                        null,
-                        0
-            );
+        if (statusCode.is2xxSuccessful() && response.getBody() != null && response.getBody().getT() instanceof BuyMaResponse.Success success) {
+            return handleSuccess(siteName, productGroupId, success, requestBody, statusCode.value());
+        } else if (statusCode.is4xxClientError() && response.getBody() != null && response.getBody().getT() instanceof BuyMaResponse.Failure failure) {
+            String errorMessage = failure.getErrors().toString();
 
-        } else if ((statusCode.is4xxClientError() || statusCode.is5xxServerError()) && body != null) {
-            if (body.getT() instanceof BuyMaResponse.Failure failure) {
-                return ExternalMallRequestStatus.fromResponse(
-                        statusCode.value(),
-                        null,
-                        false,
-                        failure.getErrors().toString(),
-                        0
-                );
-            }
+            return handleFailure(siteName, productGroupId, errorMessage, requestBody, statusCode.value());
         }
 
-        return ExternalMallRequestStatus.fromResponse(
+        return new SyncResult(
+                siteName,
                 statusCode.value(),
-                null,
                 false,
                 "Unhandled response type or missing body",
-                0
+                productGroupId,
+                "",
+                requestBody
         );
     }
 
-    public ExternalMallRequestStatus handleError(int statusCode, String errorMessage) {
-        return ExternalMallRequestStatus.failed(
+    private SyncResult handleSuccess(SiteName siteName, long productGroupId, BuyMaResponse.Success success, String requestBody, int statusCode) {
+        return new SyncResult(
+                siteName,
                 statusCode,
-                errorMessage
+                true,
+                "Product registered successfully",
+                productGroupId,
+                success.getRequestUid(),
+                requestBody
+        );
+    }
+
+    public SyncResult handleFailure(SiteName siteName, long productGroupId, String errorMessage, String requestBody, int statusCode) {
+        return new SyncResult(
+                siteName,
+                statusCode,
+                false,
+                errorMessage,
+                productGroupId,
+                "",
+                requestBody
         );
     }
 

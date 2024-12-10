@@ -1,7 +1,5 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProductContext;
-
 public class ExternalRequestContext {
     private long productGroupId;
     private boolean success;

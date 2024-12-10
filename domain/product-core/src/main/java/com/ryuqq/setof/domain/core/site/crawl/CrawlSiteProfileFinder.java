@@ -37,7 +37,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder {
     }
 
     @Override
-    public List<CrawlSiteProfile> fetchSiteProfile(long siteId) {
+    public List<CrawlSiteProfile> fetchBySiteId(long siteId) {
         Map<Long, CrawlSiteProfileDto> crawlProfileMap = fetchAndMapCrawlSiteProfiles(siteId);
         Map<Long, List<CrawlEndPointDto>> crawlEndPointMap = fetchAndMapCrawlEndpoints(siteId);
 
@@ -55,7 +55,7 @@ public class CrawlSiteProfileFinder implements SiteProfileFinder {
     }
 
     @Override
-    public CrawlSiteProfile fetchSiteProfile(long siteId, long mappingId) {
+    public CrawlSiteProfile fetchBySiteId(long siteId, long mappingId) {
         CrawlSiteProfileDto crawlSiteProfileDto = crawlSiteQueryDslQueryRepository.fetchSiteProfile(siteId, mappingId)
                 .orElseThrow(() -> new NotFoundException(SITE_PROFILE_NOT_FOUND_ERROR_MSG + siteId));
         List<CrawlEndPointDto> crawlEndPointDtos = crawlSiteQueryDslQueryRepository.fetchCrawlEndPoints(siteId, mappingId);

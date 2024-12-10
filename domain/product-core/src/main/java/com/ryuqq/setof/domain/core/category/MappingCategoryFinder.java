@@ -18,7 +18,10 @@ public class MappingCategoryFinder implements MappingCategoryQueryService{
     public List<MappingCategory> fetchBySiteIdAndCategoryIds(long siteId, List<Long> categoryIds) {
         return mappingCategoryQueryRepository.fetchByCategoryIdAndSiteId(siteId, categoryIds).stream()
                 .map(c -> new MappingCategory(
+                        c.getSiteId(),
                             c.getExternalCategoryId(),
+                            c.getExternalExtraCategoryId(),
+                            c.getDescription(),
                             c.getCategoryId(),
                             c.getCategoryName(),
                             c.getTargetGroup(),

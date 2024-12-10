@@ -1,35 +1,29 @@
 package com.ryuqq.setof.support.external.core;
 
 import com.ryuqq.setof.enums.core.SyncStep;
-import com.ryuqq.setof.support.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RequestStepHandler implements SyncStepHandler {
 
-    private final ExternalMallContextBuilder externalMallContextBuilder;
     private final ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider;
 
-    public RequestStepHandler(ExternalMallContextBuilder externalMallContextBuilder, ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider) {
-        this.externalMallContextBuilder = externalMallContextBuilder;
+    public RequestStepHandler(ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider) {
         this.externalMallProductRegistrationServiceProvider = externalMallProductRegistrationServiceProvider;
     }
 
+
     @Override
-    public SyncStepResult execute(ExternalMallPreProductContext context) {
-        ExternalMallProductContext.Builder builder = externalMallContextBuilder.getBuilder();
+    public SyncStepResult execute(ExternalMallPreProductContext context, ExternalMallProductContext.Builder builder) {
+        ExternalMallProductRegistrationService externalMallProductRegistrationService = externalMallProductRegistrationServiceProvider.get(context.siteName());
+        SyncResult response = externalMallProductRegistrationService.registration(context, builder.build());
 
-        @SuppressWarnings("unchecked")
-        ExternalMallProductRegistrationService<ExternalMallProductContext> externalMallProductRegistrationService =
-                (ExternalMallProductRegistrationService<ExternalMallProductContext>) externalMallProductRegistrationServiceProvider.get(context.siteName());
-
-        ExternalMallSyncResponse response = externalMallProductRegistrationService.registration(builder.build());
-        ExternalMallRequestStatus status = response.externalMallRequestStatus();
-        if (!status.success()) {
-            return SyncStepResult.failure(SyncStep.REQUEST, status.statusCode(), status.errorDetails(), builder.build());
+        if (!response.success()) {
+            return SyncStepResult.failure(SyncStep.REQUEST, response.statusCode(), response.message(), builder, response.requestBody());
         }
 
-        return SyncStepResult.success(SyncStep.REQUEST, response);
+        builder.withExternalProductId(response.externalProductId());
+        return SyncStepResult.success(SyncStep.REQUEST, builder, response.requestBody());
     }
 
     @Override

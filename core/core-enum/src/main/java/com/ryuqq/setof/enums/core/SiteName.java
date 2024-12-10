@@ -23,7 +23,7 @@ public enum SiteName {
     }
 
     public static List<SiteName> getExternalSyncSite(){
-        return Arrays.asList(BUYMA);
+        return Arrays.asList(BUYMA, OCO, SHEIN);
     }
 
 }

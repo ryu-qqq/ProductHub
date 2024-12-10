@@ -6,15 +6,15 @@ public class ExternalCategoryOptionDto {
 
     private long siteId;
     private String externalCategoryId;
-    private long optionId;
+    private long optionGroupId;
+    private Long optionId;
     private String optionValue;
 
-    protected ExternalCategoryOptionDto() {}
-
     @QueryProjection
-    public ExternalCategoryOptionDto(long siteId, String externalCategoryId, long optionId, String optionValue) {
+    public ExternalCategoryOptionDto(long siteId, String externalCategoryId, long optionGroupId, Long optionId, String optionValue) {
         this.siteId = siteId;
         this.externalCategoryId = externalCategoryId;
+        this.optionGroupId = optionGroupId;
         this.optionId = optionId;
         this.optionValue = optionValue;
     }
@@ -27,7 +27,11 @@ public class ExternalCategoryOptionDto {
         return externalCategoryId;
     }
 
-    public long getOptionId() {
+    public long getOptionGroupId() {
+        return optionGroupId;
+    }
+
+    public Long getOptionId() {
         return optionId;
     }
 

@@ -8,22 +8,24 @@ public class SyncStepResult {
     private final boolean success;
     private final Integer errorCode;
     private final String errorMessage;
-    private final Object resultData;
+    private final ExternalMallProductContext externalMallProductContext;
+    private final String requestBody;
 
-    private SyncStepResult(SyncStep step, boolean success, Integer errorCode, String errorMessage, Object resultData) {
+    private SyncStepResult(SyncStep step, boolean success, Integer errorCode, String errorMessage, ExternalMallProductContext.Builder externalMallProductContextBuilder, String requestBody) {
         this.step = step;
         this.success = success;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
-        this.resultData = resultData;
+        this.externalMallProductContext = externalMallProductContextBuilder.build();
+        this.requestBody = requestBody;
     }
 
-    public static SyncStepResult success(SyncStep step, Object resultData) {
-        return new SyncStepResult(step, true, null, null, resultData);
+    public static SyncStepResult success(SyncStep step, ExternalMallProductContext.Builder externalMallProductContextBuilder, String requestBody) {
+        return new SyncStepResult(step, true, null, null, externalMallProductContextBuilder, requestBody);
     }
 
-    public static SyncStepResult failure(SyncStep step, Integer errorCode, String errorMessage, Object resultData) {
-        return new SyncStepResult(step, false, errorCode, errorMessage, resultData);
+    public static SyncStepResult failure(SyncStep step, Integer errorCode, String errorMessage, ExternalMallProductContext.Builder externalMallProductContextBuilder, String requestBody) {
+        return new SyncStepResult(step, false, errorCode, errorMessage, externalMallProductContextBuilder, requestBody);
     }
 
     public SyncStep getStep() {
@@ -42,12 +44,11 @@ public class SyncStepResult {
         return errorMessage;
     }
 
-    public Object getResultData() {
-        return resultData;
+    public String getRequestBody() {
+        return requestBody;
     }
 
-
-
-
-
+    public ExternalMallProductContext getExternalMallProductContext() {
+        return externalMallProductContext;
+    }
 }

@@ -1,7 +1,7 @@
 package com.ryuqq.setof.support.external.core;
 
-public interface ExternalMallImageContext {
-    String getImageUrl();
-    String getOriginUrl();
-    int getOrder();
-}
+import java.util.List;
+
+public record ExternalMallImageContext(
+        List<ExternalMallImage> externalMallImages
+) {}

@@ -26,6 +26,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<Slice<CategoryResponse>>> getCategories(@ModelAttribute CategoryGetRequestDto categoryFilter) {
         return ResponseEntity.ok(ApiResponse.success(categoryService.fetchCategories(categoryFilter)));
@@ -35,6 +36,5 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getCategoryRelation(@ModelAttribute CategoryRelationGetRequestDto requestDto) {
         return ResponseEntity.ok(ApiResponse.success(categoryService.fetchCategoryRelation(requestDto)));
     }
-
 
 }
