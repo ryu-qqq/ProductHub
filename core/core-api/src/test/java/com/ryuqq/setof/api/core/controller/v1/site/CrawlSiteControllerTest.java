@@ -58,7 +58,7 @@ class CrawlSiteControllerTest  extends RestDocsTest {
         // given
         List<CrawlProductInsertRequestDto> crawlProductInsertRequestDto = SiteModuleHelper.toCrawlProductInsertRequestDto();
 
-        doNothing().when(crawlProductCommandService).inserts(any());
+        doNothing().when(crawlProductCommandService).saveAll(any());
 
         // when
         given()
@@ -81,7 +81,7 @@ class CrawlSiteControllerTest  extends RestDocsTest {
                         )
                 ));
 
-        verify(crawlProductCommandService).inserts(any());
+        verify(crawlProductCommandService).saveAll(any());
     }
 
 

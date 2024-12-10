@@ -24,7 +24,7 @@ public class UpdateDecisionExecutor {
     }
 
 
-    //Todo 실시간 반영로직 넣어야함
+    //Todo 외부몰에 실시간 반영로직 넣어야함
     private <T> void handleRealTimeUpdate(long productGroupId, UpdateDomain<T> entity) {
         handleUpdate(productGroupId, entity);
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.ryuqq.setof.storage.db.core.category.QMappingCategoryEntity.mappingCategoryEntity;
-import static com.ryuqq.setof.storage.db.core.site.QSiteEntity.siteEntity;
 import static com.ryuqq.setof.storage.db.core.site.external.QExternalCategoryOptionEntity.externalCategoryOptionEntity;
 
 @Repository
@@ -27,6 +26,7 @@ public class ExternalCategoryOptionQueryDslRepository implements ExternalCategor
                     new QExternalCategoryOptionDto(
                             externalCategoryOptionEntity.siteId,
                             externalCategoryOptionEntity.externalCategoryId,
+                            externalCategoryOptionEntity.optionGroupId,
                             externalCategoryOptionEntity.optionId,
                             externalCategoryOptionEntity.optionValue
                     )

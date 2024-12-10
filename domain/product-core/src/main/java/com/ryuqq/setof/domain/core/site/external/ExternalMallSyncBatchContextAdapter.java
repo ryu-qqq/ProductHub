@@ -4,6 +4,7 @@ import com.ryuqq.setof.domain.core.brand.MappingBrand;
 import com.ryuqq.setof.domain.core.category.MappingCategory;
 import com.ryuqq.setof.domain.core.product.*;
 import com.ryuqq.setof.domain.core.product.gpt.GptOptionsResult;
+import com.ryuqq.setof.domain.core.site.StandardSize;
 import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.support.external.core.*;
@@ -29,7 +30,8 @@ public class ExternalMallSyncBatchContextAdapter {
                                     toExternalSyncProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProduct()),
                                     toExternalSyncProducts(p.productGroupContext().getProducts()),
                                     toExternalSyncCategoryOptions(p.externalCategoryOptions()),
-                                    toExternalSyncOptionResult(p.gptOptionsResult())
+                                    toExternalSyncOptionResult(p.gptOptionsResult()),
+                                    toExternalSyncStandardSizes(p.standardSizes())
                                 )
                         ).toList();
     }
@@ -44,7 +46,15 @@ public class ExternalMallSyncBatchContextAdapter {
     }
 
     private ExternalSyncCategory toExternalSyncCategory(MappingCategory mappingCategory){
-        return new ExternalSyncCategory(mappingCategory.externalCategoryId(), mappingCategory.categoryName(), mappingCategory.targetGroup(), mappingCategory.categoryType());
+        return new ExternalSyncCategory(
+                mappingCategory.siteId(),
+                mappingCategory.externalCategoryId(),
+                mappingCategory.externalExtraCategoryId(),
+                mappingCategory.description(),
+                mappingCategory.categoryId(),
+                mappingCategory.categoryName(),
+                mappingCategory.targetGroup(),
+                mappingCategory.categoryType());
     }
 
     private ExternalSyncProductGroup toExternalSyncProductGroup(ProductGroupContext productGroupContext, ExternalProductPolicy externalProductPolicy, ExternalProduct externalProduct){
@@ -139,7 +149,7 @@ public class ExternalMallSyncBatchContextAdapter {
 
     private List<ExternalSyncCategoryOption> toExternalSyncCategoryOptions(List<ExternalCategoryOption> categoryOptions){
         return categoryOptions.stream()
-                .map(c -> new ExternalSyncCategoryOption(c.siteId(), c.externalCategoryId(), c.optionId(), c.optionValue()))
+                .map(c -> new ExternalSyncCategoryOption(c.siteId(), c.externalCategoryId(), c.optionGroupId(), c.optionId(), c.optionValue()))
                 .toList();
     }
 
@@ -157,6 +167,18 @@ public class ExternalMallSyncBatchContextAdapter {
             );
         }
         return null;
+    }
+
+    private List<ExternalSyncStandardSize> toExternalSyncStandardSizes(List<StandardSize> standardSizes){
+        return standardSizes.stream().map(
+                s -> new ExternalSyncStandardSize(
+                        s.categoryId(),
+                        s.regionId(),
+                        s.name(),
+                        s.sizeValue()
+                )
+            )
+                .toList();
     }
 
 }

@@ -1,9 +1,7 @@
 package com.ryuqq.setof.support.external.core;
 
-public interface ExternalMallCategoryAndBrandContext {
-
-    String getCategoryId();
-    String getBrandId();
-    String getBrandName();
-
-}
+public record ExternalMallCategoryAndBrandContext(
+        String categoryId,
+        String brandId,
+        String brandName
+) {}

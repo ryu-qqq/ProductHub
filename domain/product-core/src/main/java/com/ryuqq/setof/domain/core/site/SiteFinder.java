@@ -44,7 +44,7 @@ public class SiteFinder implements SiteQueryService{
     public SiteContext findSiteContext(long siteId){
         SiteContextDto siteContextDto = siteQueryRepository.fetchSiteContext(siteId).orElseThrow(RuntimeException::new);
         SiteProfileFinder siteProfileFinder = siteProfileFinderProvider.get(siteContextDto.getSiteType());
-        List<? extends SiteProfile> siteProfiles = siteProfileFinder.fetchSiteProfile(siteId);
+        List<? extends SiteProfile> siteProfiles = siteProfileFinder.fetchBySiteId(siteId);
         List<SiteProfile> castedSiteProfiles = (List<SiteProfile>) siteProfiles;
         return toSiteContext(siteContextDto, castedSiteProfiles);
     }

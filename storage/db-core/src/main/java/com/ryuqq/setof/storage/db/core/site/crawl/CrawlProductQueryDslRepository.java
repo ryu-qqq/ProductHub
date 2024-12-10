@@ -3,7 +3,7 @@ package com.ryuqq.setof.storage.db.core.site.crawl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductDto;
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductStorageDto;
+import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductStorageFilterDto;
 import com.ryuqq.setof.storage.db.core.site.crawl.dto.QCrawlProductDto;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,7 @@ import static com.ryuqq.setof.storage.db.core.site.crawl.QCrawlProductEntity.cra
 @Repository
 public class CrawlProductQueryDslRepository implements CrawlProductQueryRepository {
 
-    public List<CrawlProductDto> fetchCrawlProducts(CrawlProductStorageDto crawlProductStorageDto) {
+    public List<CrawlProductDto> fetchByFilter(CrawlProductStorageFilterDto crawlProductStorageFilterDto) {
 
         return queryFactory.select(
                     new QCrawlProductDto(
@@ -30,23 +30,23 @@ public class CrawlProductQueryDslRepository implements CrawlProductQueryReposito
                 .innerJoin(siteEntity)
                 .on(siteEntity.id.eq(crawlProductEntity.siteId))
                 .where(
-                        isProductGroupNull(crawlProductStorageDto.isProductGroupIdNull()),
-                        crawlProductIdGt(crawlProductStorageDto.cursorId())
+                        isProductGroupNull(crawlProductStorageFilterDto.isProductGroupIdNull()),
+                        crawlProductIdGt(crawlProductStorageFilterDto.cursorId())
                 )
-                .limit(crawlProductStorageDto.pageSize())
+                .limit(crawlProductStorageFilterDto.pageSize())
                 .orderBy(crawlProductEntity.id.asc())
                 .fetch();
     }
 
     @Override
-    public long fetchCrawlProductCount(CrawlProductStorageDto crawlProductStorageDto) {
+    public long countByFilter(CrawlProductStorageFilterDto crawlProductStorageFilterDto) {
         Long count = queryFactory.select(
                         crawlProductEntity.count()
                 ).from(crawlProductEntity)
                 .innerJoin(siteEntity)
                 .on(siteEntity.id.eq(crawlProductEntity.siteId))
                 .where(
-                        isProductGroupNull(crawlProductStorageDto.isProductGroupIdNull())
+                        isProductGroupNull(crawlProductStorageFilterDto.isProductGroupIdNull())
                 )
                 .fetchOne();
 

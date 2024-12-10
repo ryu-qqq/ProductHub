@@ -2,7 +2,6 @@ package com.ryuqq.setof.support.external.core.buyma;
 
 
 import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaProductInsertRequestDto;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaVariant;
 import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaStockUpdateRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface BuyMaClient {
 
     @PostMapping("/api/v1/products.json")
-    <T> ResponseEntity<BuyMaResponse<T>> insertProduct(@RequestBody BuyMaProductInsertRequestDto product);
+    ResponseEntity<BuyMaResponse<?>> insertProduct(@RequestBody BuyMaProductInsertRequestDto product);
 
     @PostMapping("/api/v1/products/variants.json")
-    ResponseEntity<BuyMaResponse.Success> updateProduct(@RequestBody BuyMaStockUpdateRequestDto variant);
+    ResponseEntity<BuyMaResponse<?>> updateProduct(@RequestBody BuyMaStockUpdateRequestDto variant);
 
 }

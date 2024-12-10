@@ -16,7 +16,7 @@ public class ProductProcessingResultJdbcRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public int[] batchInsertExternalProcessingResults(List<ProuctProcessingResultEntity> externalProcessingResultEntities) {
+    public int[] batchInsertExternalProcessingResults(List<ProductProcessingResultEntity> externalProcessingResultEntities) {
 
         String sql = "INSERT INTO PRODUCT_PROCESSING_RESULT " +
                 "(PRODUCT_GROUP_ID, PRODUCT_DATA_TYPE, RESULT) " +

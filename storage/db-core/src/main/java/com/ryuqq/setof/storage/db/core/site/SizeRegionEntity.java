@@ -1,20 +1,21 @@
 package com.ryuqq.setof.storage.db.core.site;
 
+import com.ryuqq.setof.enums.core.SizeOrigin;
 import com.ryuqq.setof.storage.db.core.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Table(name = "SIZE_REGION")
 @Entity
 public class SizeRegionEntity extends BaseEntity {
 
     @Column(name = "NAME", nullable = false, length = 50, unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private SizeOrigin name;
 
     public SizeRegionEntity() {}
 
-    public SizeRegionEntity(String name) {
+    public SizeRegionEntity(SizeOrigin name) {
         this.name = name;
     }
+
 }

@@ -10,5 +10,12 @@ public enum OptionType {
         return !this.equals(SINGLE);
     }
 
+    public boolean isOneDepthOption(){
+        return this.equals(OPTION_ONE);
+    }
+
+    public boolean isTwoDepthOption(){
+        return this.equals(OPTION_TWO);
+    }
 
 }

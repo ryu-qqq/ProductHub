@@ -19,13 +19,14 @@ public class ExternalProductImageJdbcRepository {
 
     public int[] batchInsertExternalProductImages(List<ExternalProductImageEntity> externalProductImageEntities) {
         String sql = "INSERT INTO EXTERNAL_PRODUCT_IMAGE " +
-                "(PRODUCT_GROUP_ID, EXTERNAL_PRODUCT_ID, DISPLAY_ORDER, IMAGE_URL, ORIGIN_URL) " +
-                "VALUES (:productGroupId, :externalProductId, :displayOrder, :imageUrl, :originUrl)";
+                "(PRODUCT_GROUP_ID, SITE_ID, EXTERNAL_PRODUCT_ID, DISPLAY_ORDER, IMAGE_URL, ORIGIN_URL) " +
+                "VALUES (:productGroupId, :siteId, :externalProductId, :displayOrder, :imageUrl, :originUrl)";
 
         List<Map<String, Object>> batchValues = externalProductImageEntities.stream()
                 .map(image -> {
                     MapSqlParameterSource params = new MapSqlParameterSource()
                             .addValue("productGroupId", image.getProductGroupId())
+                            .addValue("siteId", image.getSiteId())
                             .addValue("externalProductId", image.getExternalProductId())
                             .addValue("displayOrder", image.getDisplayOrder())
                             .addValue("imageUrl", image.getImageUrl())

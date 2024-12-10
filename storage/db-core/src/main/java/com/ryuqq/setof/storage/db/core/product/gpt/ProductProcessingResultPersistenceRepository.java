@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ProductProcessingResultPersistenceRepository {
 
-    void saveAllExternalProcessingResult(List<ProuctProcessingResultEntity> processingResultEntities);
+    void saveAllExternalProcessingResult(List<ProductProcessingResultEntity> processingResultEntities);
 }

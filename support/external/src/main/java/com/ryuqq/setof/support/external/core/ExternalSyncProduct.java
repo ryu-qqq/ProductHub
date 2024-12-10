@@ -13,6 +13,13 @@ public record ExternalSyncProduct(
         Money additionalPrice
 ) {
 
-
+    public ExternalSyncOption getOption(int index) {
+        if (options == null || options.size() <= index) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid option index %d for product with options: %s", index, options)
+            );
+        }
+        return options.get(index);
+    }
 
 }

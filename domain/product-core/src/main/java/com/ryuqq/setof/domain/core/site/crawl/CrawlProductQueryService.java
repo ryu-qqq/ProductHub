@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CrawlProductQueryService {
 
-    List<CrawlProduct> getCrawlProducts(CrawlProductFilter crawlProductFilter);
-    long getCrawlProductCount(CrawlProductFilter crawlProductFilter);
+    List<CrawlProduct> fetchByFilter(CrawlProductFilter crawlProductFilter);
+    long countByFilter(CrawlProductFilter crawlProductFilter);
 
 }

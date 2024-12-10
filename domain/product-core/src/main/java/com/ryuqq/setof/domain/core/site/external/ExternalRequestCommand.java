@@ -11,12 +11,13 @@ public record ExternalRequestCommand(
         long siteId,
         EntityType entityType,
         long entityId,
-        SyncStatus status,
+        int statusValue,
+        String statusMessage,
         String requestBody
 ) {
 
     public ExternalRequestEntity toEntity(){
-        return new ExternalRequestEntity(transactionId, requestType, siteId, entityType, entityId, status ,requestBody);
+        return new ExternalRequestEntity(transactionId, requestType, siteId, entityType, entityId, statusValue, statusMessage, requestBody);
     }
 
 }

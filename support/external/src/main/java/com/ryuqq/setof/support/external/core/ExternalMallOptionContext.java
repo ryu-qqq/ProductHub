@@ -1,7 +1,14 @@
 package com.ryuqq.setof.support.external.core;
 
-public interface ExternalMallOptionContext {
+import com.ryuqq.setof.enums.core.OptionType;
 
-    Object getCustomAttributes();
+import java.util.List;
 
-}
+public record ExternalMallOptionContext(
+        long productGroupId,
+        OptionType optionType,
+        List<ExternalSyncProduct> products,
+        List<ExternalSyncCategoryOption> externalCategoryOptions,
+        ExternalSyncOptionResult gptOptionsResult,
+        List<ExternalSyncStandardSize> standardSizes
+) {}

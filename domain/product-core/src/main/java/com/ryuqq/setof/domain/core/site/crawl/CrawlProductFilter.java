@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductStorageDto;
+import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductStorageFilterDto;
 
 public record CrawlProductFilter(
         boolean isProductGroupIdNull,
@@ -8,7 +8,7 @@ public record CrawlProductFilter(
         Integer pageSize
 ) {
 
-    public CrawlProductStorageDto toCrawlProductStorageDto(){
-        return new CrawlProductStorageDto(isProductGroupIdNull, cursorId, pageSize);
+    public CrawlProductStorageFilterDto toCrawlProductStorageDto(){
+        return new CrawlProductStorageFilterDto(isProductGroupIdNull, cursorId, pageSize);
     }
 }

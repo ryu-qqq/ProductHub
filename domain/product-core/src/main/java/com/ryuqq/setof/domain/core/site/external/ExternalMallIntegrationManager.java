@@ -28,28 +28,45 @@ public class ExternalMallIntegrationManager {
     }
 
     @Transactional
-    public Integer integration(long siteId, long sellerId, SyncStatus status, int pageSize){
-        ExternalSyncBatchContext externalSyncBatchContext = productPreExternalSyncContextFinder.fetchBySiteId(siteId, sellerId, status, pageSize);
+    public Integer integration(long siteId, long sellerId, SyncStatus status, int pageSize) {
+        ExternalSyncBatchContext syncBatchContext = fetchSyncBatchContext(siteId, sellerId, status, pageSize);
 
-        SyncResultSummary syncResultSummary = externalMallSyncService.sync(
-                externalMallSyncBatchContextAdapter.toExternalMallContexts(externalSyncBatchContext)
+        SyncResultSummary syncResultSummary = executeSync(syncBatchContext);
+
+        ExternalMallSyncResponseContext responseContext = processSyncResults(siteId, syncResultSummary);
+
+        persistSyncResults(responseContext);
+
+        return responseContext.externalProductUpdateCommands().size();
+    }
+
+    private ExternalSyncBatchContext fetchSyncBatchContext(long siteId, long sellerId, SyncStatus status, int pageSize) {
+        return productPreExternalSyncContextFinder.fetchBySiteId(siteId, sellerId, status, pageSize);
+    }
+
+    private SyncResultSummary executeSync(ExternalSyncBatchContext syncBatchContext) {
+        return externalMallSyncService.sync(
+                externalMallSyncBatchContextAdapter.toExternalMallContexts(syncBatchContext)
         );
+    }
 
-        ExternalMallSyncResponseContext domains = externalMallSyncResponseContextAdapter.toDomains(siteId, syncResultSummary);
+    private ExternalMallSyncResponseContext processSyncResults(long siteId, SyncResultSummary syncResultSummary) {
+        return externalMallSyncResponseContextAdapter.toDomains(siteId, syncResultSummary);
+    }
 
-        if(!domains.externalProductUpdateCommands().isEmpty()){
-            externalProductCommandService.updateExternalProduct(domains.externalProductUpdateCommands());
+
+    private void persistSyncResults(ExternalMallSyncResponseContext responseContext) {
+        if (!responseContext.externalProductUpdateCommands().isEmpty()) {
+            externalProductCommandService.updateExternalProduct(responseContext.externalProductUpdateCommands());
         }
 
-        if(!domains.externalProductImageCommands().isEmpty()){
-            externalProductImageCommandService.saveAllExternalProductImages(domains.externalProductImageCommands());
+        if (!responseContext.externalProductImageCommands().isEmpty()) {
+            externalProductImageCommandService.saveAllExternalProductImages(responseContext.externalProductImageCommands());
         }
 
-        if(!domains.externalRequestCommands().isEmpty()){
-            externalRequestCommandService.saveAllExternalRequest(domains.externalRequestCommands());
+        if (!responseContext.externalRequestCommands().isEmpty()) {
+            externalRequestCommandService.saveAllExternalRequest(responseContext.externalRequestCommands());
         }
-
-        return domains.externalProductUpdateCommands().size();
     }
 
 }

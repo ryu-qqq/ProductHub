@@ -54,7 +54,7 @@ public class CrawlSiteProfileCommandService implements SiteProfileCommandService
 
     @Override
     public void update(long siteId, long mappingId, CrawlSiteProfileCommand siteProfileCommand) {
-        CrawlSiteProfile crawlSiteProfile = crawlSiteProfileFinder.fetchSiteProfile(siteId, mappingId);
+        CrawlSiteProfile crawlSiteProfile = crawlSiteProfileFinder.fetchBySiteId(siteId, mappingId);
 
         CrawlAuthSetting crawlAuthSetting = crawlSiteProfile.getCrawlAuthSetting();
         CrawlAuthSettingCommand crawlAuthSettingCommand = siteProfileCommand.crawlAuthSettingCommand();

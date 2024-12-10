@@ -24,7 +24,10 @@ public class MappingCategoryQueryDslRepository implements MappingCategoryQueryRe
     public List<MappingCategoryDto> fetchByCategoryIdAndSiteId(long siteId, List<Long> categoryIds){
         return queryFactory.select(
                         new QMappingCategoryDto(
+                                mappingCategoryEntity.siteId,
                                 mappingCategoryEntity.siteCategoryId,
+                                mappingCategoryEntity.siteCategoryExtraId.coalesce(""),
+                                mappingCategoryEntity.description.coalesce(""),
                                 categoryEntity.id,
                                 categoryEntity.categoryName,
                                 categoryEntity.targetGroup,
@@ -33,8 +36,8 @@ public class MappingCategoryQueryDslRepository implements MappingCategoryQueryRe
                 )
                 .from(mappingCategoryEntity)
                 .innerJoin(categoryEntity)
-                .on(categoryEntity.id.eq(mappingCategoryEntity.internalCategoryId))
-                .where(categoryIdIn(categoryIds), siteIdEq(siteId))
+                    .on(categoryEntity.id.eq(mappingCategoryEntity.internalCategoryId))
+                .where(categoryIdIn(categoryIds), siteIdEq(siteId), mappingCategoryEntity.internalCategoryId.gt(0))
                 .fetch();
     }
 
@@ -47,6 +50,5 @@ public class MappingCategoryQueryDslRepository implements MappingCategoryQueryRe
     private BooleanExpression siteIdEq(long siteId){
         return mappingCategoryEntity.siteId.eq(siteId);
     }
-
 
 }

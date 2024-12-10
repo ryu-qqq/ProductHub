@@ -20,6 +20,7 @@ public class ExternalCategoryOptionFinder implements ExternalCategoryOptionQuery
                 .map(e -> new ExternalCategoryOption(
                         e.getSiteId(),
                         e.getExternalCategoryId(),
+                        e.getOptionGroupId(),
                         e.getOptionId(),
                         e.getOptionValue()
                 )).toList();

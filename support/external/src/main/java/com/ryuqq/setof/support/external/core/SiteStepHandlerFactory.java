@@ -13,25 +13,19 @@ import java.util.List;
 public class SiteStepHandlerFactory {
 
     private final ExternalMallContextMapperProvider externalMallContextMapperProvider;
-    private final ExternalMallContextBuilderProvider externalMallContextBuilderProvider;
     private final ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider;
 
-    public SiteStepHandlerFactory(ExternalMallContextMapperProvider externalMallContextMapperProvider, ExternalMallContextBuilderProvider externalMallContextBuilderProvider, ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider) {
+    public SiteStepHandlerFactory(ExternalMallContextMapperProvider externalMallContextMapperProvider, ExternalMallProductRegistrationServiceProvider externalMallProductRegistrationServiceProvider) {
         this.externalMallContextMapperProvider = externalMallContextMapperProvider;
-        this.externalMallContextBuilderProvider = externalMallContextBuilderProvider;
         this.externalMallProductRegistrationServiceProvider = externalMallProductRegistrationServiceProvider;
     }
 
-
     public List<SyncStepHandler> createHandlers(SiteName siteName) {
-        ExternalMallContextMapper externalMallContextMapper = externalMallContextMapperProvider.get(siteName);
-        ExternalMallContextBuilder externalMallContextBuilder = externalMallContextBuilderProvider.get(siteName);
-
         return switch (siteName) {
-            case BUYMA -> BuyMaContextHandlerFactory.createHandlers(externalMallContextMapper, externalMallContextBuilder, externalMallProductRegistrationServiceProvider);
-            case SHEIN -> SheInContextHandlerFactory.createHandlers();
-            case SELLIC -> SellicContextHandlerFactory.createHandlers();
-            case OCO -> OcoContextHandlerFactory.createHandlers();
+            case BUYMA -> BuyMaContextHandlerFactory.createHandlers(externalMallContextMapperProvider, externalMallProductRegistrationServiceProvider);
+            case SHEIN -> SheInContextHandlerFactory.createHandlers(externalMallContextMapperProvider, externalMallProductRegistrationServiceProvider);
+            case OCO -> OcoContextHandlerFactory.createHandlers(externalMallContextMapperProvider, externalMallProductRegistrationServiceProvider);
+            case SELLIC -> SellicContextHandlerFactory.createHandlers(externalMallContextMapperProvider, externalMallProductRegistrationServiceProvider);
             default -> throw new IllegalArgumentException("Unsupported site: " + siteName);
         };
     }

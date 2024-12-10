@@ -1,55 +1,52 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
 import com.ryuqq.setof.enums.core.SiteName;
+import com.ryuqq.setof.support.external.core.ExternalMallPreProductContext;
+import com.ryuqq.setof.support.external.core.ExternalMallProductContext;
 import com.ryuqq.setof.support.external.core.ExternalMallProductRegistrationService;
-import com.ryuqq.setof.support.external.core.ExternalMallRequestStatus;
-import com.ryuqq.setof.support.external.core.ExternalMallSyncResponse;
-import com.ryuqq.setof.support.external.core.buyma.domain.BuyMaProductContext;
+import com.ryuqq.setof.support.external.core.SyncResult;
+import com.ryuqq.setof.support.external.core.buyma.dto.BuyMaProductInsertRequestDto;
 import com.ryuqq.setof.support.utils.JsonUtils;
+import feign.FeignException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BuyMaProductRegistrationService implements ExternalMallProductRegistrationService<BuyMaProductContext> {
+public class BuyMaProductRegistrationService implements ExternalMallProductRegistrationService {
 
     private final BuyMaClient buyMaClient;
-    private final BuyMaProductResponseHandler buyMaProductResponseHandler;
+    private final BuyMaProductMapper buyMaProductMapper;
+    private final BuyMaProductResponseHandler responseHandler;
 
-
-    public BuyMaProductRegistrationService(BuyMaClient buyMaClient, BuyMaProductResponseHandler buyMaProductResponseHandler) {
+    public BuyMaProductRegistrationService(BuyMaClient buyMaClient, BuyMaProductMapper buyMaProductMapper, BuyMaProductResponseHandler responseHandler) {
         this.buyMaClient = buyMaClient;
-        this.buyMaProductResponseHandler = buyMaProductResponseHandler;
+        this.buyMaProductMapper = buyMaProductMapper;
+        this.responseHandler = responseHandler;
     }
 
     @Override
-    public ExternalMallSyncResponse registration(BuyMaProductContext context) {
+    public SyncResult registration(ExternalMallPreProductContext context, ExternalMallProductContext externalMallProductContext) {
+        BuyMaProductInsertRequestDto insertRequestDto = buyMaProductMapper.toInsertRequestDto(externalMallProductContext);
         try {
-            ResponseEntity<BuyMaResponse<Object>> response = buyMaClient.insertProduct(context.toProductInsertRequestDto());
-            ExternalMallRequestStatus externalMallRequestStatus = buyMaProductResponseHandler.handleResponse(response);
-            return toExternalMallSyncResponse(context, externalMallRequestStatus);
-        } catch (Exception e) {
-            ExternalMallRequestStatus externalMallRequestStatus = buyMaProductResponseHandler.handleError(500, e.getMessage());
-            return toExternalMallSyncResponse(context, externalMallRequestStatus);
+            ResponseEntity<BuyMaResponse<?>> response = buyMaClient.insertProduct(insertRequestDto);
+            return responseHandler.handleResponse(
+                    getSiteName(),
+                    externalMallProductContext.getProductGroupId(),
+                    response,
+                    JsonUtils.toJson(insertRequestDto)
+            );
+        } catch (FeignException.FeignClientException e) {
+            return responseHandler.handleFailure(
+                    getSiteName(),
+                    externalMallProductContext.getProductGroupId(),
+                    e.getMessage(),
+                    JsonUtils.toJson(insertRequestDto),
+                    e.status()
+            );
         }
     }
 
-    private ExternalMallSyncResponse toExternalMallSyncResponse(BuyMaProductContext context, ExternalMallRequestStatus externalMallRequestStatus){
-        return new ExternalMallSyncResponse(
-                getSiteName(),
-                context.getProductGroupId(),
-                context.getSetOfProductGroupId(),
-                "",
-                context.getDetailContext().getExternalMallNameContext().getName(),
-                context.getPriceContext().getRegularPrice(),
-                context.getPriceContext().getCurrentPrice(),
-                context.toImageRequestResult(),
-                context.getTotalQuantity(),
-                context.getTotalQuantity() <= 0,
-                true,
-                JsonUtils.toJson(context),
-                externalMallRequestStatus
-        );
-    }
+
 
     @Override
     public SiteName getSiteName() {
