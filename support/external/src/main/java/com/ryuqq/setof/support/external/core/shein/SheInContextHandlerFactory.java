@@ -12,9 +12,6 @@ public class SheInContextHandlerFactory {
     ) {
         return List.of(
                 new TransformProductDetailStepHandler(externalMallContextMapperProvider),
-                new TransformBrandCategoryStepHandler(externalMallContextMapperProvider),
-                new TransformImageStepHandler(externalMallContextMapperProvider),
-                new TransformOptionStepHandler(externalMallContextMapperProvider),
                 new RequestStepHandler(externalMallProductRegistrationServiceProvider)
         );
     }

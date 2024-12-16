@@ -129,7 +129,7 @@ public final class OcoProductPayload {
         this.mainImagePath = ocoImageDto.getFirst().relativePath();
         this.content = productGroup.detailDescription().detailDescription();
         this.optionList = ocoOptionContextDto.ocoOptionDto();
-        this.pid = Integer.valueOf(productGroup.externalProductId());
+        this.pid = Integer.valueOf(productGroup.externalProductGroupId());
         this.salePrice = null;
         this.saleStartDay = null;
         this.saleEndDay = null;

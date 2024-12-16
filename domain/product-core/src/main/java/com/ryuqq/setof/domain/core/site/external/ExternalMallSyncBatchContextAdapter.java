@@ -8,7 +8,6 @@ import com.ryuqq.setof.domain.core.site.StandardSize;
 import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteName;
 import com.ryuqq.setof.support.external.core.*;
-import com.ryuqq.setof.support.external.core.ExternalSyncOption;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,15 +22,15 @@ public class ExternalMallSyncBatchContextAdapter {
                     .stream()
                         .map(p ->
                                 new ExternalMallPreProductContext(
-                                    p.externalProduct().siteId(),
-                                    getSiteNameEnum(externalSyncBatchContext.externalPolicyContext()),
-                                    toExternalSyncBrand(p.mappingBrand()),
-                                    toExternalSyncCategory(p.mappingCategory()),
-                                    toExternalSyncProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProduct()),
-                                    toExternalSyncProducts(p.productGroupContext().getProducts()),
-                                    toExternalSyncCategoryOptions(p.externalCategoryOptions()),
-                                    toExternalSyncOptionResult(p.gptOptionsResult()),
-                                    toExternalSyncStandardSizes(p.standardSizes())
+                                        p.externalProductGroup().siteId(),
+                                        getSiteNameEnum(externalSyncBatchContext.externalPolicyContext()),
+                                        toExternalSyncBrand(p.mappingBrand()),
+                                        toExternalSyncCategory(p.mappingCategory()),
+                                        toExternalSyncProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProductGroup()),
+                                        toExternalSyncProducts(p.productGroupContext().getProducts()),
+                                        toExternalSyncCategoryOptions(p.externalCategoryOptions()),
+                                        toExternalSyncOptionResult(p.gptOptionsResult()),
+                                        toExternalSyncStandardSizes(p.standardSizes())
                                 )
                         ).toList();
     }
@@ -57,11 +56,11 @@ public class ExternalMallSyncBatchContextAdapter {
                 mappingCategory.categoryType());
     }
 
-    private ExternalSyncProductGroup toExternalSyncProductGroup(ProductGroupContext productGroupContext, ExternalProductPolicy externalProductPolicy, ExternalProduct externalProduct){
+    private ExternalSyncProductGroup toExternalSyncProductGroup(ProductGroupContext productGroupContext, ExternalProductPolicy externalProductPolicy, ExternalProductGroup externalProductGroup){
         return new ExternalSyncProductGroup(
                 productGroupContext.getProductGroup().productGroupId(),
                 productGroupContext.getProductGroup().setOfProductGroupId(),
-                externalProduct.externalProductId(),
+                externalProductGroup.externalProductGroupId(),
                 productGroupContext.getProductGroup().sellerId(),
                 productGroupContext.getProductGroup().colorIds(),
                 productGroupContext.getProductGroup().productGroupName(),

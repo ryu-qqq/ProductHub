@@ -26,4 +26,5 @@ public class StandardSizeFinder implements StandardSizeQueryService {
                 ))
                 .toList();
     }
+
 }

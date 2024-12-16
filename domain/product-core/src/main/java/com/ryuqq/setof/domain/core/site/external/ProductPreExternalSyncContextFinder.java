@@ -9,18 +9,18 @@ import java.util.List;
 public class ProductPreExternalSyncContextFinder {
 
     private final ExternalSyncBatchContextMapper externalSyncBatchContextMapper;
-    private final ExternalProductQueryService externalProductQueryService;
+    private final ExternalProductGroupQueryService externalProductGroupQueryService;
     private final ProductPreExternalSyncAssembler productPreExternalSyncAssembler;
 
-    public ProductPreExternalSyncContextFinder(ExternalSyncBatchContextMapper externalSyncBatchContextMapper, ExternalProductQueryService externalProductQueryService, ProductPreExternalSyncAssembler productPreExternalSyncAssembler) {
+    public ProductPreExternalSyncContextFinder(ExternalSyncBatchContextMapper externalSyncBatchContextMapper, ExternalProductGroupQueryService externalProductGroupQueryService, ProductPreExternalSyncAssembler productPreExternalSyncAssembler) {
         this.externalSyncBatchContextMapper = externalSyncBatchContextMapper;
-        this.externalProductQueryService = externalProductQueryService;
+        this.externalProductGroupQueryService = externalProductGroupQueryService;
         this.productPreExternalSyncAssembler = productPreExternalSyncAssembler;
     }
 
     public ExternalSyncBatchContext fetchBySiteId(long siteId, long sellerId, SyncStatus status, int pageSize){
-        List<ExternalProduct> externalProducts = externalProductQueryService.fetchByFilter(ExternalProductFilter.of(siteId, sellerId, status, pageSize));
-        ProductPreExternalSyncAggregate productPreExternalSyncAggregate = productPreExternalSyncAssembler.assemble(siteId, externalProducts);
+        List<ExternalProductGroup> externalProductGroups = externalProductGroupQueryService.fetchByFilter(ExternalProductGroupFilter.of(siteId, sellerId, status, pageSize));
+        ProductPreExternalSyncAggregate productPreExternalSyncAggregate = productPreExternalSyncAssembler.assemble(siteId, externalProductGroups);
         return externalSyncBatchContextMapper.toDomain(productPreExternalSyncAggregate);
     }
 

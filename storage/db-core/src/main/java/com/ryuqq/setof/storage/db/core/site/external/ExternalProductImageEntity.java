@@ -15,8 +15,8 @@ public class ExternalProductImageEntity extends BaseEntity {
     @Column(name = "SITE_ID", nullable = true)
     private long siteId;
 
-    @Column(name = "EXTERNAL_PRODUCT_ID", nullable = true)
-    private String externalProductId;
+    @Column(name = "EXTERNAL_PRODUCT_GROUP_ID", nullable = true)
+    private String externalProductGroupId;
 
     @Column(name = "DISPLAY_ORDER", nullable = false)
     private int displayOrder;
@@ -29,10 +29,10 @@ public class ExternalProductImageEntity extends BaseEntity {
 
     protected ExternalProductImageEntity() {}
 
-    public ExternalProductImageEntity(long productGroupId, long siteId, String externalProductId, int displayOrder, String imageUrl, String originUrl) {
+    public ExternalProductImageEntity(long productGroupId, long siteId, String externalProductGroupId, int displayOrder, String imageUrl, String originUrl) {
         this.productGroupId = productGroupId;
         this.siteId = siteId;
-        this.externalProductId = externalProductId;
+        this.externalProductGroupId = externalProductGroupId;
         this.displayOrder = displayOrder;
         this.imageUrl = imageUrl;
         this.originUrl = originUrl;
@@ -46,8 +46,8 @@ public class ExternalProductImageEntity extends BaseEntity {
         return siteId;
     }
 
-    public String getExternalProductId() {
-        return externalProductId;
+    public String getExternalProductGroupId() {
+        return externalProductGroupId;
     }
 
     public int getDisplayOrder() {

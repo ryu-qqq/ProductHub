@@ -10,7 +10,7 @@ import java.util.List;
 
 public record ProductPreExternalSyncContext(
         ProductGroupContext productGroupContext,
-        ExternalProduct externalProduct,
+        ExternalProductGroup externalProductGroup,
         MappingBrand mappingBrand,
         MappingCategory mappingCategory,
         List<ExternalCategoryOption> externalCategoryOptions,

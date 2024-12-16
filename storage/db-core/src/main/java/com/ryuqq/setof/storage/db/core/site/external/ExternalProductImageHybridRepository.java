@@ -7,17 +7,17 @@ import java.util.List;
 @Repository
 public class ExternalProductImageHybridRepository implements ExternalProductImagePersistenceRepository {
 
-    private final ExternalProductJpaRepository externalProductJpaRepository;
+    private final ExternalProductImageJpaRepository externalProductImageJpaRepository;
     private final ExternalProductImageJdbcRepository externalProductImageJdbcRepository;
 
-    public ExternalProductImageHybridRepository(ExternalProductJpaRepository externalProductJpaRepository, ExternalProductImageJdbcRepository externalProductImageJdbcRepository) {
-        this.externalProductJpaRepository = externalProductJpaRepository;
+    public ExternalProductImageHybridRepository(ExternalProductImageJpaRepository externalProductImageJpaRepository, ExternalProductImageJdbcRepository externalProductImageJdbcRepository) {
+        this.externalProductImageJpaRepository = externalProductImageJpaRepository;
         this.externalProductImageJdbcRepository = externalProductImageJdbcRepository;
     }
 
     @Override
     public void saveExternalProductImage(ExternalProductImageEntity externalProductImageEntity) {
-        externalProductJpaRepository.save(externalProductImageEntity);
+        externalProductImageJpaRepository.save(externalProductImageEntity);
     }
 
     @Override

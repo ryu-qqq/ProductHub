@@ -67,7 +67,7 @@ public class BuyMaProductPayload{
         private String colorSizeComment;
 
 
-        public BuyMaProductPayload(String styleCode, long productGroupId, String name, String comments, String brandId, String brandName, String categoryId, int price, int referencePrice, List<BuyMaImageDto> images, List<BuyMaVariantDto> variants, List<BuyMaOptionDto> options, Integer id, String colorSizeComment) {
+        public BuyMaProductPayload(String styleCode, long productGroupId, String name, String comments, String brandId, String brandName, String categoryId, int price, int referencePrice, List<BuyMaImageDto> images, List<BuyMaVariantDto> variants, List<BuyMaOptionDto> options, String id, String colorSizeComment) {
                 this.referenceNumber = DEFAULT_REFERENCE_NUMBER(styleCode, productGroupId);
                 this.control = "publish";
                 this.name = name;
@@ -81,20 +81,23 @@ public class BuyMaProductPayload{
                 this.buyingAreaId = 2002003001;
                 this.shippingAreaId = 2002003001;
                 this.images = images;
-                this.shippingMethods = DEFAULT_SHIPPING_METHODS;
+                this.shippingMethods = DEFAULT_SHIPPING_METHODS();
                 this.variants = variants;
                 this.options = options;
-                this.id = id;
+                this.id = id != null ? Integer.parseInt(id) : null;
                 this.duty = "included";
                 this.colorSizeComment = colorSizeComment;
         }
 
-        private final static List<BuyMaShippingMethodDto> DEFAULT_SHIPPING_METHODS = List.of(
-                new BuyMaShippingMethodDto(984481),
-                new BuyMaShippingMethodDto(984491)
-        );
 
-        private static String DEFAULT_REFERENCE_NUMBER(String styleCode, long productGroupId) {
+        private List<BuyMaShippingMethodDto> DEFAULT_SHIPPING_METHODS(){
+                return List.of(
+                        new BuyMaShippingMethodDto(984481),
+                        new BuyMaShippingMethodDto(984491)
+                );
+        }
+
+        private String DEFAULT_REFERENCE_NUMBER(String styleCode, long productGroupId) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(productGroupId);
 

@@ -93,7 +93,7 @@ public class CategoryFinder implements CategoryQueryService {
                     List<Category> categories = Arrays.stream(categoryIdMap.get(id).getPath().split(","))
                             .map(Long::parseLong)
                             .map(categoryIdMap::get)
-                            .filter(Objects::nonNull) // 재귀 결과에 없는 ID는 무시
+                            .filter(Objects::nonNull)
                             .map(categoryMapper::toDomain)
                             .toList();
                     return new CategoryRelation(id, categories, isParentRelation);

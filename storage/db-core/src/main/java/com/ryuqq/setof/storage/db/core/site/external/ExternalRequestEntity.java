@@ -25,6 +25,10 @@ public class ExternalRequestEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EntityType entityType;
 
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SyncStatus status;
+
     @Column(name = "ENTITY_ID", nullable = false)
     private long entityId;
 
@@ -39,11 +43,12 @@ public class ExternalRequestEntity extends BaseEntity {
 
     protected ExternalRequestEntity() {}
 
-    public ExternalRequestEntity(String transactionId, RequestType requestType, long siteId, EntityType entityType, long entityId, int statusValue, String statusMessage, String requestBody) {
+    public ExternalRequestEntity(String transactionId, RequestType requestType, long siteId, EntityType entityType, SyncStatus status, long entityId, int statusValue, String statusMessage, String requestBody) {
         this.transactionId = transactionId;
         this.requestType = requestType;
         this.siteId = siteId;
         this.entityType = entityType;
+        this.status = status;
         this.entityId = entityId;
         this.statusValue = statusValue;
         this.statusMessage = statusMessage;
@@ -80,5 +85,9 @@ public class ExternalRequestEntity extends BaseEntity {
 
     public String getRequestBody() {
         return requestBody;
+    }
+
+    public SyncStatus getStatus() {
+        return status;
     }
 }

@@ -3,11 +3,18 @@ package com.ryuqq.setof.support.external.core.shein;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SheInResponse<T>{
-        private String code;
-        @JsonProperty("msg")
-        private String message;
-        private Info<T> info;
+        private final String code;
 
+        @JsonProperty("msg")
+        private final String message;
+
+        private final T info;
+
+        public SheInResponse(String code, String message, T info) {
+                this.code = code;
+                this.message = message;
+                this.info = info;
+        }
 
         public String getCode() {
                 return code;
@@ -17,7 +24,9 @@ public class SheInResponse<T>{
                 return message;
         }
 
-        public Info<T> getInfo() {
+        public T getInfo() {
                 return info;
         }
+
+
 }

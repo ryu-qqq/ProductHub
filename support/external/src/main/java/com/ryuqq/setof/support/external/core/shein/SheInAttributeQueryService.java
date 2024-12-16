@@ -1,15 +1,12 @@
 package com.ryuqq.setof.support.external.core.shein;
 
 import com.ryuqq.setof.support.external.core.ExternalSyncCategoryOptionCommand;
-import com.ryuqq.setof.support.external.core.shein.dto.SheInAttributeRequestDto;
-import com.ryuqq.setof.support.external.core.shein.dto.SheInAttributeResponse;
+import com.ryuqq.setof.support.external.core.dto.SheInAttributeRequestDto;
+import com.ryuqq.setof.support.external.core.dto.SheInAttributeResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class SheInAttributeQueryService {
@@ -25,13 +22,13 @@ public class SheInAttributeQueryService {
     public List<ExternalSyncCategoryOptionCommand> fetchSheInAttributes(long extraCategoryId) {
         SheInAttributeRequestDto sheInAttributeRequestDto = new SheInAttributeRequestDto(List.of(extraCategoryId));
 
-        ResponseEntity<SheInResponse<List<SheInAttributeResponse>>> response = sheInClient.fetchAttributes(sheInAttributeRequestDto);
+        ResponseEntity<SheInResponse<SheInAttributeResponse>> response = sheInClient.fetchAttributes(sheInAttributeRequestDto);
 
         if (response.getStatusCode().is2xxSuccessful()) {
-            SheInResponse<List<SheInAttributeResponse>> body = response.getBody();
+            SheInResponse<SheInAttributeResponse> body = response.getBody();
             if (body != null) {
-                List<SheInAttributeResponse> attributeResponses = body.getInfo().data();
-                return attributeResponses.stream()
+               SheInAttributeResponse attributeResponses = body.getInfo();
+                return attributeResponses.data().stream()
                         .flatMap(attribute -> attribute.attributeInfos().stream()
                                 .filter(attributeInfo -> SIZE.equals(attributeInfo.attributeName()))
                                 .flatMap(attributeInfo -> attributeInfo.attributeValueInfos().stream()

@@ -44,7 +44,7 @@ public class MappingCategoryCommandService {
 
     @Transactional
     public int saveAllMappingCategoryOptions(long siteId){
-        List<MappingCategory> mappingCategories = mappingCategoryQueryService.fetchBySiteIdAndCategoryIds(siteId, List.of());
+        List<MappingCategory> mappingCategories = mappingCategoryQueryService.fetchBySiteIdAndCategoryIds(siteId, List.of(1447L));
 
         List<Long> extraCategoryIds = mappingCategories.stream()
                 .map(m -> Long.parseLong(m.externalExtraCategoryId()))

@@ -8,7 +8,7 @@ import java.util.List;
 public record ExternalSyncProductGroup(
         long productGroupId,
         long setOfProductGroupId,
-        String externalProductId,
+        String externalProductGroupId,
         long sellerId,
         List<Long> colorIds,
         String originName,

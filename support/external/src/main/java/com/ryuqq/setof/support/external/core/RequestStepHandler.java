@@ -22,8 +22,8 @@ public class RequestStepHandler implements SyncStepHandler {
             return SyncStepResult.failure(SyncStep.REQUEST, response.statusCode(), response.message(), builder, response.requestBody());
         }
 
-        builder.withExternalProductId(response.externalProductId());
-        return SyncStepResult.success(SyncStep.REQUEST, builder, response.requestBody());
+        builder.withExternalProductId(response.externalProductGroupId());
+        return SyncStepResult.success(SyncStep.REQUEST,  response.status(), builder, response.requestBody());
     }
 
     @Override

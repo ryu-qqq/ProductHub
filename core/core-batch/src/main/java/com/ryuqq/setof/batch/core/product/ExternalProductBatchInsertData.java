@@ -1,7 +1,7 @@
 package com.ryuqq.setof.batch.core.product;
 
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductEntity;
+import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,18 +10,18 @@ import java.util.Set;
 
 public class ExternalProductBatchInsertData {
 
-    private final List<ExternalProductEntity> externalProductEntities = new ArrayList<>();
+    private final List<ExternalProductGroupEntity> externalProductEntities = new ArrayList<>();
     private final Set<ProductGroupNameConfigEntity> productGroupNameConfigEntities = new HashSet<>();
 
-    public void addExternalProductEntity(ExternalProductEntity externalProductEntity) {
-        externalProductEntities.add(externalProductEntity);
+    public void addExternalProductEntity(ExternalProductGroupEntity externalProductGroupEntity) {
+        externalProductEntities.add(externalProductGroupEntity);
     }
 
     public void addProductGroupNameConfigEntity(ProductGroupNameConfigEntity productGroupNameConfigEntity) {
         productGroupNameConfigEntities.add(productGroupNameConfigEntity);
     }
 
-    public List<ExternalProductEntity> getExternalProductEntities() {
+    public List<ExternalProductGroupEntity> getExternalProductEntities() {
         return externalProductEntities;
     }
 

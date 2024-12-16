@@ -3,7 +3,6 @@ package com.ryuqq.setof.support.external.core.shein;
 import com.ryuqq.setof.support.external.core.config.GlobalFeignConfig;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 public class SheInConfig extends GlobalFeignConfig {
 

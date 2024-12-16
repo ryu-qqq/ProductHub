@@ -38,7 +38,8 @@ public class ProductDetailDescriptionJdbcRepository {
     public int[] batchUpdateProductDetailDescriptions(List<ProductDetailDescriptionEntity> productDetailDescriptionEntities) {
         String sql = "UPDATE PRODUCT_GROUP_DETAIL_DESCRIPTION " +
                 "SET PRODUCT_GROUP_ID = :productGroupId," +
-                " DETAIL_DESCRIPTION = :detailDescription";
+                " DETAIL_DESCRIPTION = :detailDescription " +
+                "WHERE PRODUCT_GROUP_ID = :productGroupId ";
 
         List<Map<String, Object>> batchValues = productDetailDescriptionEntities.stream()
                 .map(description -> {

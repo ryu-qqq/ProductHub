@@ -15,7 +15,7 @@ public class ProductGroupImageChecker implements UpdateChecker<List<ProductGroup
         UpdateDecision decision = new UpdateDecision();
 
         Map<String, ProductGroupImage> existingMap = existing.stream()
-                .collect(Collectors.toMap(ProductGroupImage::getOriginUrl, Function.identity()));
+                .collect(Collectors.toMap(ProductGroupImage::getOriginUrl, Function.identity(), (v1, v2) -> v1));
 
         for (ProductGroupImageCommand c : updated) {
             ProductGroupImage ei = existingMap.get(c.imageUrl());
@@ -32,8 +32,11 @@ public class ProductGroupImageChecker implements UpdateChecker<List<ProductGroup
 
         existingMap.values().forEach(
                 p -> {
-                    p.delete();
-                    decision.addBatchUpdate(new ProductGroupImageCommand(p.getProductGroupImageId(), p.getProductImageType(), p.getImageUrl(), true));
+                    if(!p.getOriginUrl().isBlank()){
+                        p.delete();
+                        decision.addBatchUpdate(new ProductGroupImageCommand(p.getProductGroupImageId(), p.getProductImageType(), p.getImageUrl(), true));
+                    }
+
                 }
         );
 

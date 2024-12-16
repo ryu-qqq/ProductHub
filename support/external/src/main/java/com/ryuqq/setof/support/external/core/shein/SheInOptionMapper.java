@@ -1,64 +1,123 @@
 package com.ryuqq.setof.support.external.core.shein;
 
-import com.ryuqq.setof.support.external.core.ExternalSyncCategoryOption;
-import com.ryuqq.setof.support.external.core.ExternalSyncOptionResult;
-import com.ryuqq.setof.support.external.core.ExternalSyncProduct;
-import com.ryuqq.setof.support.external.core.ExternalSyncStandardSize;
-import com.ryuqq.setof.support.external.core.shein.domain.*;
-import com.ryuqq.setof.support.utils.Money;
+import com.ryuqq.setof.enums.core.SizeOrigin;
+import com.ryuqq.setof.support.external.core.*;
+import com.ryuqq.setof.support.external.core.dto.SheInPriceDto;
+import com.ryuqq.setof.support.external.core.dto.SheInProductAttributeDto;
+import com.ryuqq.setof.support.external.core.dto.SheInSkuDto;
+import com.ryuqq.setof.support.external.core.dto.SheInStockDto;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class SheInOptionMapper {
 
-    private final SheInPriceGenerator sheInPriceGenerator;
+    private final static String ONE_SIZE = "one-size";
 
-    public SheInOptionMapper(SheInPriceGenerator sheInPriceGenerator) {
-        this.sheInPriceGenerator = sheInPriceGenerator;
-    }
-
-    public SheInOptionContext getAttributes(long productGroupId, String styleCode, Money currentPrice, List<ExternalSyncCategoryOption> categoryOptions, ExternalSyncOptionResult optionResult, List<ExternalSyncProduct> products, List<ExternalSyncStandardSize> externalSyncStandardSizes){
-        List<SheInSku> skus = products.stream().map(p ->
-                new SheInSku(300, 400, 1200, 1500, 1, 1,
+    public List<SheInSkuDto> getAttributes(String styleCode, ExternalMallPriceContext priceContext, ExternalMallOptionContext externalMallOptionContext){
+        return externalMallOptionContext.products().stream().map(p ->
+                new SheInSkuDto(300, 400, 1200, 1500, 1, 1,
                         getSupplierSku(styleCode, p.option()),
-                        getSheInPrice(currentPrice, p),
+                        getSheInPrice(priceContext, p),
                         getSheInStock(p.quantity()),
-                        getSheInProductAttribute(p, categoryOptions, externalSyncStandardSizes)
+                        getSheInProductAttribute(p, externalMallOptionContext)
                 )
         ).toList();
-
-        return new SheInOptionContext(skus);
     }
 
-    private String getSupplierSku(String styleCode, String optionName){
-        if(styleCode != null && !styleCode.isBlank()) return styleCode + "_" + optionName;
+    private String getSupplierSku(String styleCode, String optionValue){
+        if(styleCode != null && !styleCode.isBlank()) return styleCode + "_" + optionValue;
 
-        return optionName;
+        return optionValue;
     }
 
-    private List<SheInPrice> getSheInPrice(Money currentPrice, ExternalSyncProduct externalSyncProduct){
-        Money plusPrice = currentPrice.plus(externalSyncProduct.additionalPrice());
-        BigDecimal basePrice = sheInPriceGenerator.calculateFinalPrice(plusPrice, BigDecimal.valueOf(1415));
-        return List.of(new SheInPrice(basePrice, "USD", "shein-us"));
+    private List<SheInPriceDto> getSheInPrice(ExternalMallPriceContext priceContext, ExternalSyncProduct externalSyncProduct){
+        BigDecimal basePrice = priceContext.currentPrice().add(externalSyncProduct.additionalPrice().getAmount());
+        return List.of(new SheInPriceDto(basePrice, "USD", "shein-us"));
     }
 
-    private List<SheInStock> getSheInStock(int quantity){
-        return List.of(new SheInStock(quantity));
+    private List<SheInStockDto> getSheInStock(int quantity){
+        return List.of(new SheInStockDto(quantity));
     }
 
 
-    private List<SheInProductAttribute> getSheInProductAttribute(ExternalSyncProduct externalSyncProduct, List<ExternalSyncCategoryOption> categoryOptions, List<ExternalSyncStandardSize> externalSyncStandardSizes ){
+    private List<SheInProductAttributeDto> getSheInProductAttribute(ExternalSyncProduct externalSyncProduct, ExternalMallOptionContext externalMallOptionContext){
+        List<ExternalSyncCategoryOption> externalSyncCategoryOptions = externalMallOptionContext.externalCategoryOptions();
+        List<ExternalSyncStandardSize> externalSyncStandardSizes = externalMallOptionContext.standardSizes();
 
+        if(!externalMallOptionContext.optionType().isMultiOption()){
+            Optional<ExternalSyncCategoryOption> externalSyncCategoryOptionOpt = externalSyncCategoryOptions.stream()
+                    .filter(e -> e.optionValue().equals(ONE_SIZE))
+                    .findFirst();
 
+            if(externalSyncCategoryOptionOpt.isPresent()){
+                ExternalSyncCategoryOption externalSyncCategoryOption = externalSyncCategoryOptionOpt.get();
+                return List.of(new SheInProductAttributeDto(externalSyncCategoryOption.optionGroupId(), externalSyncCategoryOption.optionId()));
+            }
 
-        return List.of();
-        //return List.of(new SheInProductAttribute());
+            throw new IllegalArgumentException("Can't Match any option value");
+        }
+
+        String option = externalSyncProduct.option();
+        ExternalSyncCategoryOption externalSyncCategoryOption = getExternalSyncCategoryOption(externalSyncStandardSizes, externalSyncCategoryOptions, option);
+
+        return List.of(new SheInProductAttributeDto(externalSyncCategoryOption.optionGroupId(), externalSyncCategoryOption.optionId()));
+    }
+
+    public ExternalSyncCategoryOption getExternalSyncCategoryOption(List<ExternalSyncStandardSize> externalSyncStandardSizes, List<ExternalSyncCategoryOption> externalSyncCategoryOptions, String optionValue){
+        Map<SizeOrigin, List<ExternalSyncStandardSize>> standardSizeRegionGroupMap = externalSyncStandardSizes.stream().collect(Collectors.groupingBy(ExternalSyncStandardSize::name));
+
+        List<ExternalSyncStandardSize> standardSizes = standardSizeRegionGroupMap.get(SizeOrigin.STANDARD);
+        int idx = 0;
+        boolean match = false;
+
+        for (ExternalSyncStandardSize externalSyncStandardSize : standardSizes) {
+            String sizeValue = externalSyncStandardSize.sizeValue();
+
+            String normalizedOptionValue = normalize(optionValue);
+            String normalizedSizeValue = normalize(sizeValue);
+
+            if(normalizedOptionValue.equals(normalizedSizeValue)){
+                match = true;
+                break;
+            }
+
+            idx++;
+            if (idx == standardSizes.size()) break;
+
+        }
+
+        List<ExternalSyncStandardSize> usStandardSize = standardSizeRegionGroupMap.get(SizeOrigin.US);
+        if(match && usStandardSize.size() > idx){
+            ExternalSyncStandardSize externalSyncStandardSize = usStandardSize.get(idx);
+            String regionSize = externalSyncStandardSize.getRegionSize();
+
+            for(ExternalSyncCategoryOption externalSyncCategoryOption : externalSyncCategoryOptions){
+                if(externalSyncCategoryOption.optionValue().equals(regionSize)) return externalSyncCategoryOption;
+            }
+        }
+
+        throw new IllegalArgumentException("Can't Match any option value");
     }
 
 
+    private String normalize(Object value) {
+        if (value == null) {
+            return "";
+        }
+
+        String stringValue = value.toString().trim();
+
+        if (stringValue.matches("\\d+")) {
+            return String.valueOf(Integer.parseInt(stringValue));
+        }
+
+        return stringValue;
+    }
 
 }

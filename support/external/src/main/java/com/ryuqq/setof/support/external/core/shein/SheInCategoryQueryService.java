@@ -1,7 +1,7 @@
 package com.ryuqq.setof.support.external.core.shein;
 
 import com.ryuqq.setof.support.external.core.ExternalSyncCategoryCommand;
-import com.ryuqq.setof.support.external.core.shein.dto.SheInCategoryResponse;
+import com.ryuqq.setof.support.external.core.dto.SheInCategoryResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class SheInCategoryQueryService {
         if (response.getStatusCode().is2xxSuccessful()) {
             SheInResponse<List<SheInCategoryResponse>> body = response.getBody();
             if (body != null) {
-                List<SheInCategoryResponse> categories = body.getInfo().data();
+                List<SheInCategoryResponse> categories = body.getInfo();
                 return categories.stream()
                         .flatMap(category -> flattenCategory(category).stream())
                         .toList();

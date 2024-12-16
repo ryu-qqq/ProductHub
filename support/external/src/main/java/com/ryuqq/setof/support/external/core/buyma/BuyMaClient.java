@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface BuyMaClient {
 
     @PostMapping("/api/v1/products.json")
-    ResponseEntity<BuyMaResponse<?>> insertProduct(@RequestBody BuyMaProductInsertRequestDto product);
+    ResponseEntity<Object> insertProduct(@RequestBody BuyMaProductInsertRequestDto product);
 
     @PostMapping("/api/v1/products/variants.json")
     ResponseEntity<BuyMaResponse<?>> updateProduct(@RequestBody BuyMaStockUpdateRequestDto variant);

@@ -16,9 +16,9 @@ public class BuyMaProductRegistrationService implements ExternalMallProductRegis
 
     private final BuyMaClient buyMaClient;
     private final BuyMaProductMapper buyMaProductMapper;
-    private final BuyMaProductResponseHandler responseHandler;
+    private final BuyMaResponseHandler responseHandler;
 
-    public BuyMaProductRegistrationService(BuyMaClient buyMaClient, BuyMaProductMapper buyMaProductMapper, BuyMaProductResponseHandler responseHandler) {
+    public BuyMaProductRegistrationService(BuyMaClient buyMaClient, BuyMaProductMapper buyMaProductMapper, BuyMaResponseHandler responseHandler) {
         this.buyMaClient = buyMaClient;
         this.buyMaProductMapper = buyMaProductMapper;
         this.responseHandler = responseHandler;
@@ -28,7 +28,7 @@ public class BuyMaProductRegistrationService implements ExternalMallProductRegis
     public SyncResult registration(ExternalMallPreProductContext context, ExternalMallProductContext externalMallProductContext) {
         BuyMaProductInsertRequestDto insertRequestDto = buyMaProductMapper.toInsertRequestDto(externalMallProductContext);
         try {
-            ResponseEntity<BuyMaResponse<?>> response = buyMaClient.insertProduct(insertRequestDto);
+            ResponseEntity<Object> response = buyMaClient.insertProduct(insertRequestDto);
             return responseHandler.handleResponse(
                     getSiteName(),
                     externalMallProductContext.getProductGroupId(),
