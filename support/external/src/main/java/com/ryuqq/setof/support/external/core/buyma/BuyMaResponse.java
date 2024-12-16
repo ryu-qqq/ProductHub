@@ -1,7 +1,10 @@
 package com.ryuqq.setof.support.external.core.buyma;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 import java.util.Map;
+
 
 public class BuyMaResponse<T> {
 
@@ -12,7 +15,9 @@ public class BuyMaResponse<T> {
     }
 
     public static class Success {
+        @JsonProperty("request_received_at")
         private LocalDateTime requestReceivedAt;
+        @JsonProperty("request_uid")
         private String requestUid;
 
         public Success() {}

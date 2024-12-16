@@ -3,13 +3,11 @@ package com.ryuqq.setof.batch.core.product;
 import com.ryuqq.setof.domain.core.product.ProductGroupConfig;
 import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicy;
 import com.ryuqq.setof.enums.core.Origin;
-import com.ryuqq.setof.enums.core.SyncStatus;
 import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductEntity;
+import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -50,7 +48,7 @@ public class ExternalProductBatchProcessor implements ItemProcessor<List<Externa
     }
 
     private void addExternalProduct(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalProductPolicy policy) {
-        result.addExternalProductEntity(ExternalProductEntity.toWaitingStatusEntity(policy.siteId(), productGroupConfig.getProductGroupId(), policy.policyId()));
+        result.addExternalProductEntity(ExternalProductGroupEntity.toWaitingStatusEntity(policy.siteId(), productGroupConfig.getProductGroupId(), policy.policyId()));
     }
 
     private void addNameConfig(ExternalProductBatchInsertData result, ProductGroupConfig productGroupConfig, ExternalProductPolicy policy) {

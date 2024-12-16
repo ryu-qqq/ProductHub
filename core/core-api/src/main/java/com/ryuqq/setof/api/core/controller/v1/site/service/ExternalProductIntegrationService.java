@@ -13,7 +13,6 @@ public class ExternalProductIntegrationService {
         this.externalMallIntegrationManager = externalMallIntegrationManager;
     }
 
-
     public Integer integration(ExternalProductIntegrationRequestDto externalProductIntegrationRequestDto){
         return externalMallIntegrationManager.integration(externalProductIntegrationRequestDto.siteId(), externalProductIntegrationRequestDto.sellerId(), externalProductIntegrationRequestDto.status(), externalProductIntegrationRequestDto.pageSize());
     }

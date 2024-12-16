@@ -19,8 +19,8 @@ public class ExternalRequestJdbcRepository implements ExternalRequestPersistence
     public int[] batchInsertExternalProcessingResults(List<ExternalRequestEntity> externalRequestEntities) {
 
         String sql = "INSERT INTO EXTERNAL_REQUEST " +
-                "(TRANSACTION_ID, REQUEST_TYPE, SITE_ID, ENTITY_TYPE, ENTITY_ID, STATUS, REQUEST_BODY) " +
-                "VALUES (:transactionId, :requestType, :siteId, :entityType, :entityId, :status, :requestBody)";
+                "(TRANSACTION_ID, REQUEST_TYPE, SITE_ID, ENTITY_TYPE, ENTITY_ID, STATUS_VALUE, STATUS_MESSAGE, STATUS, REQUEST_BODY) " +
+                "VALUES (:transactionId, :requestType, :siteId, :entityType, :entityId, :statusValue, :statusMessage, :status, :requestBody)";
 
         List<Map<String, Object>> batchValues = externalRequestEntities.stream()
                 .map(request -> {
@@ -30,6 +30,8 @@ public class ExternalRequestJdbcRepository implements ExternalRequestPersistence
                             .addValue("siteId", request.getSiteId())
                             .addValue("entityType", request.getEntityType().name())
                             .addValue("entityId", request.getEntityId())
+                            .addValue("statusValue", request.getStatusValue())
+                            .addValue("statusMessage", request.getStatusMessage())
                             .addValue("status", request.getStatus().name())
                             .addValue("requestBody", request.getRequestBody());
                     return params.getValues();

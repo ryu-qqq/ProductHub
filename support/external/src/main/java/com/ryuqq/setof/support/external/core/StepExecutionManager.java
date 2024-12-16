@@ -20,11 +20,14 @@ public class StepExecutionManager {
     public DetailedSyncResult executeSteps(ExternalMallPreProductContext context, List<SyncStepHandler> stepHandlers) {
         DetailedSyncResult detailedResult = context.createDetailedSyncResult();
 
+        ExternalMallProductContext.Builder builder = new ExternalMallProductContext.Builder();
+
         for (SyncStepHandler handler : stepHandlers) {
-            ExternalMallProductContext.Builder builder = new ExternalMallProductContext.Builder();
             try {
                 SyncStepResult result = handler.execute(context, builder);
                 detailedResult.addStepResult(result);
+
+                builder = result.getExternalMallProductContextBuilder();
 
                 if (!result.isSuccess()) {
                     if (result.getErrorCode() == TOO_MANY_REQUEST_STATUS) {

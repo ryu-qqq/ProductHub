@@ -10,6 +10,7 @@ public record ExternalRequestCommand(
         RequestType requestType,
         long siteId,
         EntityType entityType,
+        SyncStatus syncStatus,
         long entityId,
         int statusValue,
         String statusMessage,
@@ -17,7 +18,7 @@ public record ExternalRequestCommand(
 ) {
 
     public ExternalRequestEntity toEntity(){
-        return new ExternalRequestEntity(transactionId, requestType, siteId, entityType, entityId, statusValue, statusMessage, requestBody);
+        return new ExternalRequestEntity(transactionId, requestType, siteId, entityType, syncStatus, entityId, statusValue, statusMessage, requestBody);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
+import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import com.ryuqq.setof.storage.db.index.product.ProductGroupDocumentIndexingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,14 @@ public class ProductGroupContextCommandManager implements ProductGroupContextCom
 
     @Transactional
     public long update(long productGroupId, ProductGroupCommandContext context) {
-        ProductGroupContext existingContext = productGroupContextQueryService.fetchProductGroupContextById(productGroupId);
-        UpdateDecision decision = productGroupContextUpdater.checkUpdates(existingContext, context);
-        updateDecisionExecutor.execute(productGroupId, decision);
-        return productGroupId;
+        try{
+            ProductGroupContext existingContext = productGroupContextQueryService.fetchProductGroupContextById(productGroupId);
+            UpdateDecision decision = productGroupContextUpdater.checkUpdates(existingContext, context);
+            updateDecisionExecutor.execute(existingContext.getProductGroup().productGroupId(), decision);
+            return productGroupId;
+        }catch (NotFoundException e){
+            return insert(context);
+        }
     }
 
 }

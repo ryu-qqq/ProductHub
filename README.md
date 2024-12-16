@@ -77,4 +77,4 @@ Domain 모듈은 비즈니스 로직을 담당하며, 각 도메인에 맞는 �
 
 
 ### **노션 링크**
-https://www.notion.so/ProductHub-12f72e942a1680eca722ef38feb8b5c1
+https://calm-violet-314.notion.site/ConneXt-11472e942a1680e59d42ca6e8bcd8a30

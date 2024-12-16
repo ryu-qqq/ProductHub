@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/group/{productGroupId}")
-    public ResponseEntity<ApiResponse<ProductGroupInsertResponseDto>> updateProductGroups(@PathVariable("productGroupId") long productGroupId, @RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
+    public ResponseEntity<ApiResponse<ProductGroupInsertResponseDto>> updateProductGroup(@PathVariable("productGroupId") long productGroupId, @RequestBody @Valid ProductGroupCommandContextRequestDto productGroupCommandContextRequestDto){
         productGroupContextCommandService.update(productGroupId, productGroupCommandContextRequestDto.toProductGroupCommandContext());
         return ResponseEntity.ok(ApiResponse.success(new ProductGroupInsertResponseDto(productGroupId)));
     }

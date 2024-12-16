@@ -9,6 +9,7 @@ import com.ryuqq.setof.support.external.core.SyncResultSummary;
 import com.ryuqq.setof.support.external.core.SyncStepResult;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +27,13 @@ public class ExternalMallSyncResponseContextAdapter {
         );
     }
 
-    private List<ExternalProductUpdateCommand> toExternalProductUpdateCommands(long siteId, SyncResultSummary syncResultSummary) {
+    private List<ExternalProductGroupUpdateCommand> toExternalProductUpdateCommands(long siteId, SyncResultSummary syncResultSummary) {
         return mergeCommands(
                 syncResultSummary.successResponses().stream()
-                        .map(e -> mapToProductUpdateCommand(siteId, e, SyncStatus.APPROVED))
+                        .map(e -> mapToProductUpdateCommand(siteId, e, e.getStatus()))
                         .toList(),
                 syncResultSummary.failureResponses().stream()
-                        .map(f -> mapToProductUpdateCommand(siteId, f, SyncStatus.FAILED))
+                        .map(f -> mapToProductUpdateCommand(siteId, f, f.getStatus()))
                         .toList()
         );
     }
@@ -48,18 +49,35 @@ public class ExternalMallSyncResponseContextAdapter {
         );
     }
 
-    private ExternalProductUpdateCommand mapToProductUpdateCommand(long siteId, SyncStepResult response, SyncStatus status) {
+    private ExternalProductGroupUpdateCommand mapToProductUpdateCommand(long siteId, SyncStepResult response, SyncStatus status) {
         ExternalMallProductContext context = response.getExternalMallProductContext();
-        return new ExternalProductUpdateCommand(
+
+        if(status.isApproved() || status.isReview()){
+            return new ExternalProductGroupUpdateCommand(
+                    siteId,
+                    context.getProductGroupId(),
+                    context.getExternalProductGroupId(),
+                    context.getNameContext().name() ,
+                    context.getPriceContext().regularPrice(),
+                    context.getPriceContext().currentPrice(),
+                    status,
+                    false,
+                    context.getProductStatusContext().soldOutYn(),
+                    context.getProductStatusContext().displayYn()
+            );
+        }
+
+        return new ExternalProductGroupUpdateCommand(
                 siteId,
                 context.getProductGroupId(),
-                context.getExternalProductId(),
-                context.getNameContext().name(),
-                context.getPriceContext().regularPrice(),
-                context.getPriceContext().currentPrice(),
+                context.getExternalProductGroupId(),
+                "",
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
                 status,
-                context.getProductStatusContext().soldOutYn(),
-                context.getProductStatusContext().displayYn()
+                false,
+                false,
+                true
         );
     }
 
@@ -70,10 +88,11 @@ public class ExternalMallSyncResponseContextAdapter {
                 RequestType.PRODUCT_REGISTER,
                 siteId,
                 EntityType.PRODUCT,
+                response.getStatus(),
                 context.getProductGroupId(),
                 statusCode,
                 message,
-                response.getRequestBody()
+                response.getRequestBody() == null || response.getRequestBody().isBlank() ? "{}" : response.getRequestBody()
         );
     }
 
@@ -88,7 +107,7 @@ public class ExternalMallSyncResponseContextAdapter {
                 .map(image -> new ExternalProductImageCommand(
                         context.getProductGroupId(),
                         siteId,
-                        context.getExternalProductId(),
+                        context.getExternalProductGroupId(),
                         image.order(),
                         image.imageUrl(),
                         image.originUrl()
@@ -96,17 +115,10 @@ public class ExternalMallSyncResponseContextAdapter {
                 .toList();
     }
 
-
-
-
-
     private <T> List<T> mergeCommands(List<T> successCommands, List<T> failureCommands) {
         List<T> merged = new ArrayList<>(successCommands);
         merged.addAll(failureCommands);
         return merged;
     }
-
-
-
 
 }

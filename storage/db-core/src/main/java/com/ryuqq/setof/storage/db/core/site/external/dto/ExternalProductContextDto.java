@@ -7,13 +7,13 @@ import java.util.Set;
 
 public class ExternalProductContextDto {
 
-    private ExternalProductDto externalProductDto;
+    private ExternalProductGroupDto externalProductGroupDto;
     private ExternalProductPolicyDto externalProductPolicyDto;
     private Set<ProductProcessingResultDto> productProcessingResultDto;
 
     @QueryProjection
-    public ExternalProductContextDto(ExternalProductDto externalProductDto, ExternalProductPolicyDto externalProductPolicyDto, Set<ProductProcessingResultDto> productProcessingResultDto) {
-        this.externalProductDto = externalProductDto;
+    public ExternalProductContextDto(ExternalProductGroupDto externalProductGroupDto, ExternalProductPolicyDto externalProductPolicyDto, Set<ProductProcessingResultDto> productProcessingResultDto) {
+        this.externalProductGroupDto = externalProductGroupDto;
         this.externalProductPolicyDto = externalProductPolicyDto;
         this.productProcessingResultDto = productProcessingResultDto;
     }
@@ -22,8 +22,8 @@ public class ExternalProductContextDto {
         return externalProductPolicyDto;
     }
 
-    public ExternalProductDto getExternalProductGroupDto() {
-        return externalProductDto;
+    public ExternalProductGroupDto getExternalProductGroupDto() {
+        return externalProductGroupDto;
     }
 
     public Set<ProductProcessingResultDto> getExternalProductProcessingResultDto() {

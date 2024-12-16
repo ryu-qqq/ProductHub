@@ -10,7 +10,7 @@ public class ExternalMallProductContext {
     private final ExternalMallOptionContext optionContext;
     private final ExternalMallCategoryAndBrandContext categoryAndBrandContext;
     private final ExternalMallProductStatusContext productStatusContext;
-    private String externalProductId;
+    private String externalProductGroupId;
 
     private ExternalMallProductContext(Builder builder) {
         this.productGroupId = builder.productGroupId;
@@ -55,12 +55,12 @@ public class ExternalMallProductContext {
         return productStatusContext;
     }
 
-    public String getExternalProductId() {
-        return externalProductId;
+    public String getExternalProductGroupId() {
+        return externalProductGroupId;
     }
 
-    public void setExternalProductId(String externalProductId) {
-        this.externalProductId = externalProductId;
+    public void setExternalProductGroupId(String externalProductGroupId) {
+        this.externalProductGroupId = externalProductGroupId;
     }
 
     public static class Builder {

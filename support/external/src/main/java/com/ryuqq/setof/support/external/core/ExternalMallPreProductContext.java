@@ -17,8 +17,8 @@ public record ExternalMallPreProductContext(
         List<ExternalSyncStandardSize> standardSizes
 ) {
 
-    public String getExternalProductId(){
-        return productGroup.externalProductId();
+    public String getExternalProductGroupId(){
+        return productGroup.externalProductGroupId();
     }
 
     public long getSetOfProductGroupId(){

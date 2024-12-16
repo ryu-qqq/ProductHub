@@ -8,7 +8,7 @@ import com.ryuqq.setof.domain.core.site.StandardSize;
 import java.util.List;
 
 public record ProductPreExternalSyncAggregate(
-        List<ExternalProduct> externalProducts,
+        List<ExternalProductGroup> externalProductGroups,
         List<ProductGroupContext> productGroupContexts,
         ExternalPolicyContext externalPolicyContext,
         List<MappingCategory> mappingCategories,
@@ -19,7 +19,7 @@ public record ProductPreExternalSyncAggregate(
 ) {
 
     public static ProductPreExternalSyncAggregate of(
-            List<ExternalProduct> externalProducts,
+            List<ExternalProductGroup> externalProductGroups,
             List<ProductGroupContext> productGroupContexts,
             ExternalPolicyContext externalPolicyContext,
             List<MappingCategory> mappingCategories,
@@ -29,7 +29,7 @@ public record ProductPreExternalSyncAggregate(
             List<StandardSize> standardSizes
     ){
         return new ProductPreExternalSyncAggregate(
-                externalProducts,
+                externalProductGroups,
                 productGroupContexts,
                 externalPolicyContext,
                 mappingCategories,

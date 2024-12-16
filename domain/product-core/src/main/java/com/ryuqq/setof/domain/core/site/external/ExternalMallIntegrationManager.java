@@ -13,16 +13,16 @@ public class ExternalMallIntegrationManager {
     private final ExternalMallSyncBatchContextAdapter externalMallSyncBatchContextAdapter;
     private final ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter;
     private final ExternalMallSyncService externalMallSyncService;
-    private final ExternalProductCommandService externalProductCommandService;
+    private final ExternalProductGroupCommandService externalProductGroupCommandService;
     private final ExternalRequestCommandService externalRequestCommandService;
     private final ExternalProductImageCommandService externalProductImageCommandService;
 
-    public ExternalMallIntegrationManager(ProductPreExternalSyncContextFinder productPreExternalSyncContextFinder, ExternalMallSyncBatchContextAdapter externalMallSyncBatchContextAdapter, ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter, ExternalMallSyncService externalMallSyncService, ExternalProductCommandService externalProductCommandService, ExternalRequestCommandService externalRequestCommandService, ExternalProductImageCommandService externalProductImageCommandService) {
+    public ExternalMallIntegrationManager(ProductPreExternalSyncContextFinder productPreExternalSyncContextFinder, ExternalMallSyncBatchContextAdapter externalMallSyncBatchContextAdapter, ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter, ExternalMallSyncService externalMallSyncService, ExternalProductGroupCommandService externalProductGroupCommandService, ExternalRequestCommandService externalRequestCommandService, ExternalProductImageCommandService externalProductImageCommandService) {
         this.productPreExternalSyncContextFinder = productPreExternalSyncContextFinder;
         this.externalMallSyncBatchContextAdapter = externalMallSyncBatchContextAdapter;
         this.externalMallSyncResponseContextAdapter = externalMallSyncResponseContextAdapter;
         this.externalMallSyncService = externalMallSyncService;
-        this.externalProductCommandService = externalProductCommandService;
+        this.externalProductGroupCommandService = externalProductGroupCommandService;
         this.externalRequestCommandService = externalRequestCommandService;
         this.externalProductImageCommandService = externalProductImageCommandService;
     }
@@ -37,7 +37,7 @@ public class ExternalMallIntegrationManager {
 
         persistSyncResults(responseContext);
 
-        return responseContext.externalProductUpdateCommands().size();
+        return responseContext.externalProductGroupUpdateCommands().size();
     }
 
     private ExternalSyncBatchContext fetchSyncBatchContext(long siteId, long sellerId, SyncStatus status, int pageSize) {
@@ -54,10 +54,9 @@ public class ExternalMallIntegrationManager {
         return externalMallSyncResponseContextAdapter.toDomains(siteId, syncResultSummary);
     }
 
-
     private void persistSyncResults(ExternalMallSyncResponseContext responseContext) {
-        if (!responseContext.externalProductUpdateCommands().isEmpty()) {
-            externalProductCommandService.updateExternalProduct(responseContext.externalProductUpdateCommands());
+        if (!responseContext.externalProductGroupUpdateCommands().isEmpty()) {
+            externalProductGroupCommandService.updateExternalProductGroup(responseContext.externalProductGroupUpdateCommands());
         }
 
         if (!responseContext.externalProductImageCommands().isEmpty()) {

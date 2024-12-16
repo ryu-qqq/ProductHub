@@ -22,7 +22,7 @@ public class ProductNoticeChecker implements UpdateChecker<ProductNotice, Produc
                 isUpdateAssuranceStandard(existing, updated.assuranceStandard()) ||
                 isUpdateAsPhone(existing, updated.asPhone())) {
 
-            decision.addBatchUpdate(updated.toEntity(existing.getProductGroupId()));
+            decision.addBatchUpdate(updated);
         }
 
         return decision;

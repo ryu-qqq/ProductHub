@@ -1,19 +1,26 @@
 package com.ryuqq.setof.domain.core.product;
 
+import com.ryuqq.setof.domain.core.site.external.ExternalProductGroupCommandService;
+import com.ryuqq.setof.enums.core.SyncStatus;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UpdateDecisionExecutor {
 
     private final ProductGroupUpdateHandlerProvider handlerProvider;
+    private final ExternalProductGroupCommandService externalProductGroupCommandService;
 
-    public UpdateDecisionExecutor(ProductGroupUpdateHandlerProvider handlerProvider) {
+    public UpdateDecisionExecutor(ProductGroupUpdateHandlerProvider handlerProvider, ExternalProductGroupCommandService externalProductGroupCommandService) {
         this.handlerProvider = handlerProvider;
+        this.externalProductGroupCommandService = externalProductGroupCommandService;
     }
 
     public void execute(long productGroupId, UpdateDecision decision) {
         decision.getRealTimeUpdates().forEach(entity -> handleRealTimeUpdate(productGroupId, entity));
         decision.getBatchUpdates().forEach(entity -> handleUpdate(productGroupId, entity));
+        externalProductGroupCommandService.updateSyncStatus(List.of(productGroupId), 4L, SyncStatus.SYNC_REQUIRED);
     }
 
 
@@ -24,10 +31,8 @@ public class UpdateDecisionExecutor {
     }
 
 
-    //Todo 외부몰에 실시간 반영로직 넣어야함
     private <T> void handleRealTimeUpdate(long productGroupId, UpdateDomain<T> entity) {
         handleUpdate(productGroupId, entity);
-
     }
 
 }

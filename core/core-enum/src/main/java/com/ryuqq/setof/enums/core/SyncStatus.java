@@ -96,4 +96,8 @@ public enum SyncStatus {
         return this.equals(SYNC_REQUIRED);
     }
 
+    public boolean isReview() {
+        return this.equals(REVIEW);
+    }
+
 }

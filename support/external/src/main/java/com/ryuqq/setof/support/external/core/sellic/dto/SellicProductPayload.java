@@ -6,7 +6,6 @@ import com.ryuqq.setof.support.external.core.*;
 import com.ryuqq.setof.support.external.core.sellic.SellicOrigin;
 
 import java.util.List;
-import java.util.Objects;
 
 public final class SellicProductPayload {
     @JsonProperty("product_name")
@@ -133,7 +132,7 @@ public final class SellicProductPayload {
         this.optionName1 = sellicOptionContextDto.optionName1();
         this.optionName2 = sellicOptionContextDto.optionName2();
         this.productStocks = sellicOptionContextDto.options();
-        this.productId = Long.parseLong(productGroup.externalProductId());
+        this.productId = Long.parseLong(productGroup.externalProductGroupId());
     }
 
 

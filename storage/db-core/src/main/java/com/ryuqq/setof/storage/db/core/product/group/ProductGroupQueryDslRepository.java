@@ -74,7 +74,7 @@ public class ProductGroupQueryDslRepository implements ProductGroupQueryReposito
                 .on(productNoticeEntity.productGroupId.eq(productGroupEntity.id))
                 .innerJoin(productDeliveryEntity)
                 .on(productDeliveryEntity.productGroupId.eq(productGroupEntity.id))
-                .innerJoin(productDetailDescriptionEntity)
+                .leftJoin(productDetailDescriptionEntity)
                 .on(productDetailDescriptionEntity.productGroupId.eq(productGroupEntity.id))
                 .leftJoin(productGroupConfigEntity)
                 .on(productGroupConfigEntity.productGroupId.eq(productGroupEntity.id))
@@ -141,8 +141,6 @@ public class ProductGroupQueryDslRepository implements ProductGroupQueryReposito
                                         new QProductDetailDescriptionDto(
                                                 productDetailDescriptionEntity.detailDescription
                                         )
-
-
                                 )
 
                         )
@@ -157,7 +155,7 @@ public class ProductGroupQueryDslRepository implements ProductGroupQueryReposito
                     .on(productNoticeEntity.productGroupId.eq(productGroupEntity.id))
                 .innerJoin(productDeliveryEntity)
                     .on(productDeliveryEntity.productGroupId.eq(productGroupEntity.id))
-                .innerJoin(productDetailDescriptionEntity)
+                .leftJoin(productDetailDescriptionEntity)
                     .on(productDetailDescriptionEntity.productGroupId.eq(productGroupEntity.id))
                 .leftJoin(productGroupConfigEntity)
                     .on(productGroupConfigEntity.productGroupId.eq(productGroupEntity.id))
@@ -258,7 +256,6 @@ public class ProductGroupQueryDslRepository implements ProductGroupQueryReposito
 
         return count !=null ? count : 0;
     }
-
 
     private BooleanExpression productGroupIdIn(List<Long> productGroupIds) {
         if(!productGroupIds.isEmpty()) return productGroupEntity.id.in(productGroupIds);

@@ -1,6 +1,7 @@
 package com.ryuqq.setof.support.external.core.sellic;
 
 import com.ryuqq.setof.enums.core.SiteName;
+import com.ryuqq.setof.enums.core.SyncStatus;
 import com.ryuqq.setof.support.external.core.SyncResult;
 import com.ryuqq.setof.support.external.core.oco.OcoResponse;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoProductInsertResponseDto;
@@ -25,6 +26,7 @@ public class SellicResponseHandler {
                 siteName,
                 statusCode.value(),
                 false,
+                SyncStatus.FAILED,
                 "Unhandled response type or missing body",
                 productGroupId,
                 "",
@@ -37,6 +39,7 @@ public class SellicResponseHandler {
                 siteName,
                 statusCode,
                 true,
+                SyncStatus.APPROVED,
                 "Product registered successfully",
                 productGroupId,
                 responseDto.productId(),
@@ -49,6 +52,7 @@ public class SellicResponseHandler {
                 siteName,
                 statusCode,
                 false,
+                SyncStatus.FAILED,
                 errorMessage,
                 productGroupId,
                 "",

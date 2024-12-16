@@ -26,7 +26,6 @@ public class SiteController {
     private final SiteContextCommandFacade siteContextCommandFacade;
     private final SiteProfileCommandFacade siteProfileCommandFacade;
 
-
     public SiteController(SiteService siteService, SiteContextCommandFacade siteContextCommandFacade, SiteProfileCommandFacade siteProfileCommandFacade) {
         this.siteService = siteService;
         this.siteContextCommandFacade = siteContextCommandFacade;
@@ -67,4 +66,5 @@ public class SiteController {
         siteProfileCommandFacade.update(siteType, siteId, mappingId, siteProfileRequestDto.toSiteProfileCommand());
         return ResponseEntity.ok(ApiResponse.success(new SiteInsertResponseDto(siteId)));
     }
+
 }

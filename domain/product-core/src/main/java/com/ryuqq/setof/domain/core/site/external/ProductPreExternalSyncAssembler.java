@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class ProductPreExternalSyncAssembler {
@@ -35,20 +34,20 @@ public class ProductPreExternalSyncAssembler {
         this.standardSizeQueryService = standardSizeQueryService;
     }
 
-    public ProductPreExternalSyncAggregate assemble(long siteId, List<ExternalProduct> externalProducts){
-        List<Long> brandIds = externalProducts.stream().map(ExternalProduct::internalBrandId).toList();
-        Set<Long> categoryIds = externalProducts.stream().map(ExternalProduct::internalCategoryId).collect(Collectors.toSet());
-        Set<Long> categoryPathIds = externalProducts.stream()
+    public ProductPreExternalSyncAggregate assemble(long siteId, List<ExternalProductGroup> externalProductGroups){
+        List<Long> brandIds = externalProductGroups.stream().map(ExternalProductGroup::internalBrandId).toList();
+        Set<Long> categoryIds = externalProductGroups.stream().map(ExternalProductGroup::internalCategoryId).collect(Collectors.toSet());
+        Set<Long> categoryPathIds = externalProductGroups.stream()
                 .flatMap(product -> product.categoryPath().stream())
                 .collect(Collectors.toSet());
 
         categoryIds.addAll(categoryPathIds);
         ArrayList<Long> categoryIdList = new ArrayList<>(categoryIds);
 
-        List<Long> productGroupIds = externalProducts.stream().map(ExternalProduct::productGroupId).toList();
+        List<Long> productGroupIds = externalProductGroups.stream().map(ExternalProductGroup::productGroupId).toList();
 
         return ProductPreExternalSyncAggregate.of(
-                externalProducts,
+                externalProductGroups,
                 productGroupContextQueryService.fetchProductGroupContextsByFilter(ProductGroupFilter.of(productGroupIds)),
                 externalPolicyContextQueryService.fetchById(siteId),
                 mappingCategoryQueryService.fetchBySiteIdAndCategoryIds(siteId, categoryIdList),

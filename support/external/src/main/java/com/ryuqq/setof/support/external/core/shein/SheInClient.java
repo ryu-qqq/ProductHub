@@ -1,6 +1,6 @@
 package com.ryuqq.setof.support.external.core.shein;
 
-import com.ryuqq.setof.support.external.core.shein.dto.*;
+import com.ryuqq.setof.support.external.core.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +15,10 @@ public interface SheInClient {
     ResponseEntity<SheInResponse<List<SheInCategoryResponse>>> fetchCategories();
 
     @PostMapping("/open-api/goods/query-attribute-template")
-    ResponseEntity<SheInResponse<List<SheInAttributeResponse>>> fetchAttributes(@RequestBody SheInAttributeRequestDto sheInAttributeRequestDto);
+    ResponseEntity<SheInResponse<SheInAttributeResponse>> fetchAttributes(@RequestBody SheInAttributeRequestDto sheInAttributeRequestDto);
 
     @PostMapping("/open-api/goods/transform-pic")
-    ResponseEntity<SheInResponse<SheInImageUploadResponse>> uploadImages(@RequestBody SheInImageUploadRequestDto sheInImageUploadRequestDto);
+    ResponseEntity<SheInResponse<SheInImageUploadResponseDto>> uploadImages(@RequestBody SheInImageUploadRequestDto sheInImageUploadRequestDto);
 
     @PostMapping("/open-api/goods/product/publishOrEdit")
     ResponseEntity<SheInResponse<SheInProductInsertResponseDto>> insertProduct(@RequestBody SheInProductInsertRequestDto requestDto);

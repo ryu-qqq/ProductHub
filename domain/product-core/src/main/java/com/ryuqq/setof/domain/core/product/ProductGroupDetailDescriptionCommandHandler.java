@@ -13,7 +13,7 @@ public class ProductGroupDetailDescriptionCommandHandler implements ProductGroup
 
     @Override
     public void handle(long productGroupId, ProductDetailDescriptionCommand command) {
-        productDetailDescriptionCommandService.update(productGroupId, command);
+        productDetailDescriptionCommandService.insert(productGroupId, command);
     }
 
     @Override

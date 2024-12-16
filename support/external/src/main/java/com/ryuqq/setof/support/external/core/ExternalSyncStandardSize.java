@@ -7,4 +7,9 @@ public record ExternalSyncStandardSize(
         Long regionId,
         SizeOrigin name,
         String sizeValue
-) {}
+) {
+
+    public String getRegionSize(){
+        return name.name()+sizeValue;
+    }
+}

@@ -1,5 +1,6 @@
 package com.ryuqq.setof.api.core.controller.v1.product.service;
 
+import com.ryuqq.setof.api.core.controller.v1.category.service.CategoryRelationProcessor;
 import com.ryuqq.setof.api.core.controller.v1.product.mapper.ProductGroupContextResponseMapper;
 import com.ryuqq.setof.api.core.controller.v1.product.mapper.ProductGroupContextSliceMapper;
 import com.ryuqq.setof.api.core.controller.v1.product.request.ProductGroupGetRequestDto;
@@ -16,26 +17,34 @@ public class ProductGroupContextServingService {
     private final ProductGroupContextQueryService productGroupContextQueryService;
     private final ProductGroupContextResponseMapper productGroupContextResponseMapper;
     private final ProductGroupContextSliceMapper productGroupContextSliceMapper;
+    private final ProductGroupFilterProcessor productGroupFilterProcessor;
 
-    public ProductGroupContextServingService(ProductGroupContextQueryService productGroupContextQueryService, ProductGroupContextResponseMapper productGroupContextResponseMapper, ProductGroupContextSliceMapper productGroupContextSliceMapper) {
+    public ProductGroupContextServingService(ProductGroupContextQueryService productGroupContextQueryService, ProductGroupContextResponseMapper productGroupContextResponseMapper, ProductGroupContextSliceMapper productGroupContextSliceMapper, ProductGroupFilterProcessor productGroupFilterProcessor) {
         this.productGroupContextQueryService = productGroupContextQueryService;
         this.productGroupContextResponseMapper = productGroupContextResponseMapper;
         this.productGroupContextSliceMapper = productGroupContextSliceMapper;
+        this.productGroupFilterProcessor = productGroupFilterProcessor;
     }
 
-    public Slice<ProductGroupContextResponse> fetchProductGroupContextsByFilter(ProductGroupGetRequestDto requestDto){
 
-        long productGroupCount = productGroupContextQueryService.countProductContextByFilter(requestDto.toProductGroupFilter());
+    public Slice<ProductGroupContextResponse> fetchProductGroupContextsByFilter(ProductGroupGetRequestDto requestDto) {
+        ProductGroupFilterRequest filterRequest = new ProductGroupFilterRequest(requestDto);
+        filterRequest = productGroupFilterProcessor.process(filterRequest);
 
-        if(productGroupCount == 0){
-            return productGroupContextSliceMapper.toSlice(List.of(), requestDto.toProductGroupFilter().pageSize(), productGroupCount);
+        ProductGroupGetRequestDto processedDto = filterRequest.toDto();
+
+        long productGroupCount = productGroupContextQueryService.countProductContextByFilter(processedDto.toProductGroupFilter());
+        if (productGroupCount == 0) {
+            return productGroupContextSliceMapper.toSlice(List.of(), processedDto.toProductGroupFilter().pageSize(), productGroupCount);
         }
 
-        List<ProductGroupContextResponse> responses = productGroupContextQueryService.fetchProductGroupContextsByFilter(requestDto.toProductGroupFilter()).stream()
+        List<ProductGroupContextResponse> responses = productGroupContextQueryService.fetchProductGroupContextsByFilter(processedDto.toProductGroupFilter()).stream()
                 .map(productGroupContextResponseMapper::toResponse)
                 .toList();
 
-        return productGroupContextSliceMapper.toSlice(responses, requestDto.toProductGroupFilter().pageSize(), productGroupCount);
+        return productGroupContextSliceMapper.toSlice(responses, processedDto.toProductGroupFilter().pageSize(), productGroupCount);
     }
+
+
 
 }
