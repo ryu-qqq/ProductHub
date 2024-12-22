@@ -1,11 +1,11 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
 
-import com.ryuqq.setof.storage.db.core.site.HeaderConfigurationQueryDslRepository;
-import com.ryuqq.setof.storage.db.core.site.HeaderQueryDslRepository;
-import com.ryuqq.setof.storage.db.core.site.UserAgentQueryDslRepository;
-import com.ryuqq.setof.storage.db.core.site.dto.HeaderConfigurationDto;
-import com.ryuqq.setof.storage.db.core.site.dto.HeaderDto;
+import com.ryuqq.setof.db.core.site.HeaderConfigurationQueryDslRepository;
+import com.ryuqq.setof.db.core.site.HeaderQueryDslRepository;
+import com.ryuqq.setof.db.core.site.UserAgentQueryDslRepository;
+import com.ryuqq.setof.db.core.site.dto.HeaderConfigurationDto;
+import com.ryuqq.setof.db.core.site.dto.HeaderDto;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

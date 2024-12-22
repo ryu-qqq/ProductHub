@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
+import com.ryuqq.setof.db.core.product.option.ProductEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +12,7 @@ public record ProductCommand(
         boolean displayYn,
         int quantity,
         BigDecimal additionalPrice,
+        String option,
         List<OptionCommand> options,
         boolean deleteYn
 ) {

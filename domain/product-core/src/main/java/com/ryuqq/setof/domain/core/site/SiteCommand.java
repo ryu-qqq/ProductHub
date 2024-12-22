@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site;
 
 import com.ryuqq.setof.enums.core.Origin;
 import com.ryuqq.setof.enums.core.SiteType;
-import com.ryuqq.setof.storage.db.core.site.SiteEntity;
+import com.ryuqq.setof.db.core.site.SiteEntity;
 
 public record SiteCommand(
         String name,

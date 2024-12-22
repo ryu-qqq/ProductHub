@@ -1,8 +1,8 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.enums.core.OptionName;
-import com.ryuqq.setof.storage.db.core.product.option.mapping.ProductOptionEntity;
-import com.ryuqq.setof.storage.db.core.product.option.mapping.ProductOptionPersistenceService;
+import com.ryuqq.setof.db.core.product.option.mapping.ProductOptionEntity;
+import com.ryuqq.setof.db.core.product.option.mapping.ProductOptionPersistenceService;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;

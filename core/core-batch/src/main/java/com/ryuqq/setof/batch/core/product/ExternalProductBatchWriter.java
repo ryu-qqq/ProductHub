@@ -1,7 +1,7 @@
 package com.ryuqq.setof.batch.core.product;
 
 import com.ryuqq.setof.domain.core.site.external.ExternalProductGroupCommandService;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupConfigPersistenceRepository;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;

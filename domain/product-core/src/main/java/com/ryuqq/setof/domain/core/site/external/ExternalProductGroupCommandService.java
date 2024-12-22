@@ -1,8 +1,8 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.SyncStatus;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalProductGroupEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductGroupPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

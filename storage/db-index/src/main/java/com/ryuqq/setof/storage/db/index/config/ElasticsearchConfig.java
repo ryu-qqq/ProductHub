@@ -13,8 +13,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Configuration
-@EnableElasticsearchRepositories(basePackages = "com.ryuqq.setof.storage.db.index")
+//@Configuration
+//@EnableElasticsearchRepositories(basePackages = "com.ryuqq.setof.storage.db.index")
 public class ElasticsearchConfig {
 
     private final ElasticsearchProperties elasticsearchProperties;

@@ -1,8 +1,7 @@
 package com.ryuqq.setof.domain.core.brand;
 
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
-import com.ryuqq.setof.storage.db.core.brand.BrandQueryRepository;
-import com.ryuqq.setof.storage.db.index.brand.BrandDocumentQueryRepository;
+import com.ryuqq.setof.db.core.brand.BrandQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -16,16 +15,15 @@ import java.util.stream.Collectors;
 public class BrandFinder implements BrandQueryService {
 
     private final BrandQueryRepository brandQueryRepository;
-    private final BrandDocumentQueryRepository brandDocumentQueryRepository;
     private final BrandCacheService brandCacheService;
     private final BrandMapper brandMapper;
 
-    public BrandFinder(BrandQueryRepository brandQueryRepository, BrandDocumentQueryRepository brandDocumentQueryRepository, BrandCacheService brandCacheService, BrandMapper brandMapper) {
+    public BrandFinder(BrandQueryRepository brandQueryRepository, BrandCacheService brandCacheService, BrandMapper brandMapper) {
         this.brandQueryRepository = brandQueryRepository;
-        this.brandDocumentQueryRepository = brandDocumentQueryRepository;
         this.brandCacheService = brandCacheService;
         this.brandMapper = brandMapper;
     }
+
     @Override
     public boolean existById(long brandId){
         return brandQueryRepository.existById(brandId);
@@ -50,11 +48,6 @@ public class BrandFinder implements BrandQueryService {
 
     @Override
     public List<Brand> fetchBrandsByFilter(BrandFilter brandFilter) {
-        if (brandFilter.hasBrandName()) {
-            List<Long> brandIdsFromEs = brandDocumentQueryRepository.fetchByBrandName(brandFilter.brandName());
-            brandFilter = brandFilter.withBrandIds(brandIdsFromEs);
-        }
-
         return brandQueryRepository.fetchByFilter(brandFilter.toStorageFilter()).stream()
                 .map(brandMapper::toDomain)
                 .toList();

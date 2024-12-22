@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.Origin;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPricePolicyEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalPricePolicyEntity;
 
 import java.util.List;
 

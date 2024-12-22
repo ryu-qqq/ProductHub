@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.option.ProductEntity;
-import com.ryuqq.setof.storage.db.core.product.option.ProductPersistenceRepository;
+import com.ryuqq.setof.db.core.product.option.ProductEntity;
+import com.ryuqq.setof.db.core.product.option.ProductPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

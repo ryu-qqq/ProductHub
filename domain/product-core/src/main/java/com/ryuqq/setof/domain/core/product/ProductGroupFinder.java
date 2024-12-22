@@ -1,8 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
-import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupDto;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupQueryRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,10 +19,12 @@ public class ProductGroupFinder implements ProductGroupQueryService{
         this.productGroupQueryRepository = productGroupQueryRepository;
     }
 
+    @Override
     public List<Long> fetchIdsByFilter(ProductGroupFilter productGroupFilter){
         return productGroupQueryRepository.fetchIdsByFilter(productGroupFilter.toStorageFilterDto());
     }
 
+    @Override
     public ProductGroup fetchById(long productGroupId) {
         return productGroupQueryRepository.fetchById(productGroupId)
                 .map(productGroupMapper::toDomain)
@@ -31,6 +32,7 @@ public class ProductGroupFinder implements ProductGroupQueryService{
                         new NotFoundException(String.format(PRODUCT_GROUP_NOT_FOUND_ERROR_MSG, productGroupId)));
     }
 
+    @Override
     public List<ProductGroup> fetchProductGroupsByFilter(ProductGroupFilter productGroupFilter){
         List<Long> productGroupIds = productGroupQueryRepository.fetchIdsByFilter(productGroupFilter.toStorageFilterDto());
         return productGroupQueryRepository.fetchByIds(productGroupIds)
@@ -39,8 +41,18 @@ public class ProductGroupFinder implements ProductGroupQueryService{
                 .toList();
     }
 
+    @Override
     public long countByFilter(ProductGroupFilter productGroupFilter){
         return productGroupQueryRepository.countByFilter(productGroupFilter.toStorageFilterDto());
     }
+
+
+    @Override
+    public List<ProductGroupInsertRequest> fetchProductGroupInsertRequestsByIds(List<Long> productGroupIds){
+        return productGroupQueryRepository.fetchInsertRequestDtoByIds(productGroupIds).stream()
+                .map(productGroupMapper::toProductGroupInsertRequest)
+                .toList();
+    }
+
 
 }

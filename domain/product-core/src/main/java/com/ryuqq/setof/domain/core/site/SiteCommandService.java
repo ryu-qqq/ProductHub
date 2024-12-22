@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.storage.db.core.site.SiteEntity;
-import com.ryuqq.setof.storage.db.core.site.SitePersistenceRepository;
+import com.ryuqq.setof.db.core.site.SiteEntity;
+import com.ryuqq.setof.db.core.site.SitePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 @Service

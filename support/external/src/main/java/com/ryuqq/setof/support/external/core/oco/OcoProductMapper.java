@@ -34,7 +34,7 @@ public class OcoProductMapper extends AbstractExternalMallContextMapper {
 
     public OcoProductInsertRequestDto toInsertRequestDto(ExternalMallPreProductContext externalMallPreProductContext, ExternalMallProductContext externalMallProductContext){
 
-        OcoOptionContextDto ocoOptionContextDto = ocoOptionMapper.generateOptionContext(externalMallProductContext.getOptionContext());
+        OcoOptionContextDto ocoOptionContextDto = ocoOptionMapper.generateOptionContext(externalMallPreProductContext.productGroup().externalProductGroupId(), externalMallProductContext.getOptionContext());
         List<OcoImageDto> ocoImageDto = ocoImageGenerator.toOcoImageDto(externalMallProductContext.getImageGroupContext());
 
         OcoProductPayload ocoProductPayload = new OcoProductPayload(

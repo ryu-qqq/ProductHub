@@ -44,7 +44,7 @@ public record ProductGroupGetRequestDto(
         List<Long> defaultProductGroupIds = productGroupIds == null ? List.of() : productGroupIds;
 
         return new ProductGroupFilter(productStatus, managementType, defaultCategoryIds, defaultProductGroupIds, defaultBrandIds, defaultColorIds, sellerId, cursorId,
-                styleCode, defaultSize, soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate);
+                styleCode, defaultSize, soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate, searchWord);
     }
 
 }

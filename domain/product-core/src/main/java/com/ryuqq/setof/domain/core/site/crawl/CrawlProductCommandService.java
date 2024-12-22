@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductCommandhybridService;
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductEntity;
+import com.ryuqq.setof.db.core.site.crawl.CrawlProductCommandhybridService;
+import com.ryuqq.setof.db.core.site.crawl.CrawlProductEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

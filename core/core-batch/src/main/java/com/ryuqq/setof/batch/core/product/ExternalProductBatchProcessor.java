@@ -3,8 +3,8 @@ package com.ryuqq.setof.batch.core.product;
 import com.ryuqq.setof.domain.core.product.ProductGroupConfig;
 import com.ryuqq.setof.domain.core.site.external.ExternalProductPolicy;
 import com.ryuqq.setof.enums.core.Origin;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
+import com.ryuqq.setof.db.core.product.group.ProductGroupNameConfigEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductGroupEntity;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 

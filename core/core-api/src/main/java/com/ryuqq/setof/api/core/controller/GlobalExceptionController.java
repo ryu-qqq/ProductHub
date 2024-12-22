@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.ryuqq.setof.api.core.controller.support.ApiResponse;
 import com.ryuqq.setof.api.core.controller.support.ErrorMessage;
 import com.ryuqq.setof.domain.core.exception.ApplicationException;
-import com.ryuqq.setof.domain.core.exception.ErrorType;
+import com.ryuqq.setof.enums.core.ErrorType;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

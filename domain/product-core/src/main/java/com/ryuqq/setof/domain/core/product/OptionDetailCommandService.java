@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.option.detail.OptionDetailPersistenceService;
+import com.ryuqq.setof.db.core.product.option.detail.OptionDetailPersistenceService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.AdjustmentType;
 import com.ryuqq.setof.enums.core.PriceConditionType;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPricePolicyRuleEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalPricePolicyRuleEntity;
 
 import java.math.BigDecimal;
 

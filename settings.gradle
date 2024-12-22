@@ -21,7 +21,6 @@ include 'support:external'
 
 include 'storage:db-core'
 include 'storage:db-cache'
-include 'storage:db-index'
 
 include 'domain:product-core'
 include 'tests:api-docs'

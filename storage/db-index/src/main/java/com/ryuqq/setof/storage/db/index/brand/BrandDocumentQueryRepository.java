@@ -5,6 +5,7 @@ import com.ryuqq.setof.storage.db.index.brand.dto.BrandIndexFilterDto;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 public interface BrandDocumentQueryRepository {
 
     boolean existById(long brandId);

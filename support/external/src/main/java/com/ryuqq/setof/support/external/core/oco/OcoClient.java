@@ -1,10 +1,7 @@
 package com.ryuqq.setof.support.external.core.oco;
 
 
-import com.ryuqq.setof.support.external.core.oco.dto.OcoProductInsertRequestDto;
-import com.ryuqq.setof.support.external.core.oco.dto.OcoProductInsertResponseDto;
-import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenRequestDto;
-import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenResponseDto;
+import com.ryuqq.setof.support.external.core.oco.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +14,9 @@ public interface OcoClient {
     ResponseEntity<OcoResponse<OcoTokenResponseDto>> getAccessToken(
             @RequestBody OcoTokenRequestDto externalTokenRequest);
 
-
     @PostMapping(value ="/product/add.do")
     ResponseEntity<OcoResponse<?>> insertProduct(@RequestBody OcoProductInsertRequestDto requestDto);
 
-
+    @PostMapping(value ="/product/update.do")
+    ResponseEntity<OcoResponse<?>> updateProduct(@RequestBody OcoProductUpdateRequestDto requestDto);
 }

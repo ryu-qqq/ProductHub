@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.site.external.ExternalPolicy;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalPolicyDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalPolicyDto;
 import org.springframework.stereotype.Component;
 
 @Component

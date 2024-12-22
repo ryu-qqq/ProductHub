@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
 import com.ryuqq.setof.enums.core.SiteName;
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlProductEntity;
+import com.ryuqq.setof.db.core.site.crawl.CrawlProductEntity;
 
 public record CrawlProductCommand(
         long siteId,

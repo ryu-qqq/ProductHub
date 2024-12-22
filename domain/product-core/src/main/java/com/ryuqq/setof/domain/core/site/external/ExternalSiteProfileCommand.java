@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.site.SiteProfileCommand;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalPolicyEntity;
 
 public record ExternalSiteProfileCommand(
         String name,

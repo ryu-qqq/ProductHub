@@ -8,6 +8,7 @@ import com.ryuqq.setof.support.external.core.SyncResult;
 import com.ryuqq.setof.support.external.core.buyma.BuyMaResponse;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoProductInsertRequestDto;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoProductInsertResponseDto;
+import com.ryuqq.setof.support.external.core.oco.dto.OcoProductUpdateRequestDto;
 import com.ryuqq.setof.support.utils.JsonUtils;
 import feign.FeignException;
 import org.springframework.http.ResponseEntity;
@@ -28,21 +29,34 @@ public class OcoProductRegistrationService implements ExternalMallProductRegistr
 
     @Override
     public SyncResult registration(ExternalMallPreProductContext context, ExternalMallProductContext externalMallProductContext) {
-        OcoProductInsertRequestDto insertRequestDto = ocoProductMapper.toInsertRequestDto(context, externalMallProductContext);
+        String requestBody = "";
         try {
-            ResponseEntity<OcoResponse<?>> response = ocoClient.insertProduct(insertRequestDto);
+            OcoProductInsertRequestDto insertRequestDto = ocoProductMapper.toInsertRequestDto(context, externalMallProductContext);
+            ResponseEntity<OcoResponse<?>> response;
+
+            if (insertRequestDto.product().getPid() != null) {
+                OcoProductUpdateRequestDto updateRequestDto = insertRequestDto.toOcoProductUpdateRequestDto();
+                requestBody = JsonUtils.toJson(updateRequestDto);
+                response = ocoClient.updateProduct(updateRequestDto);
+            } else {
+                requestBody = JsonUtils.toJson(insertRequestDto);
+                response = ocoClient.insertProduct(insertRequestDto);
+            }
+
             return responseHandler.handleResponse(
                     getSiteName(),
                     externalMallProductContext.getProductGroupId(),
+                    externalMallProductContext.getExternalProductGroupId(),
                     response,
-                    JsonUtils.toJson(insertRequestDto)
+                    requestBody
             );
         } catch (FeignException.FeignClientException e) {
             return responseHandler.handleFailure(
                     getSiteName(),
                     externalMallProductContext.getProductGroupId(),
+                    externalMallProductContext.getExternalProductGroupId(),
                     e.getMessage(),
-                    JsonUtils.toJson(insertRequestDto),
+                    requestBody,
                     e.status()
             );
         }

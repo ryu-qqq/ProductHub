@@ -5,7 +5,7 @@ import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductGetReques
 import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse;
 import com.ryuqq.setof.api.core.controller.v1.site.response.SiteInsertResponseDto;
-import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductService;
+import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductServingService;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommand;
 import com.ryuqq.setof.domain.core.site.crawl.CrawlProductCommandService;
@@ -21,11 +21,11 @@ import static com.ryuqq.setof.api.core.controller.config.EndPointsConstants.BASE
 public class CrawlProductController {
 
     private final CrawlProductCommandService crawlProductCommandService;
-    private final CrawlProductService crawlProductService;
+    private final CrawlProductServingService crawlProductServingService;
 
-    public CrawlProductController(CrawlProductCommandService crawlProductCommandService, CrawlProductService crawlProductService) {
+    public CrawlProductController(CrawlProductCommandService crawlProductCommandService, CrawlProductServingService crawlProductServingService) {
         this.crawlProductCommandService = crawlProductCommandService;
-        this.crawlProductService = crawlProductService;
+        this.crawlProductServingService = crawlProductServingService;
     }
 
     @PostMapping("/site/crawl/product")
@@ -39,7 +39,7 @@ public class CrawlProductController {
     @GetMapping("/site/crawl/product")
     public ResponseEntity<ApiResponse<Slice<CrawlProductResponse>>> getCrawlProducts(
             @ModelAttribute CrawlProductGetRequestDto crawlProductGetRequestDto){
-        return ResponseEntity.ok(ApiResponse.success(crawlProductService.getCrawlProducts(crawlProductGetRequestDto.toCrawlProductFilter())));
+        return ResponseEntity.ok(ApiResponse.success(crawlProductServingService.fetchByFilter(crawlProductGetRequestDto.toCrawlProductFilter())));
     }
 
 

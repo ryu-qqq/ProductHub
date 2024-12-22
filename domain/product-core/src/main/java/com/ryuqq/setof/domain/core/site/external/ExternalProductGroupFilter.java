@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.SearchKeyword;
 import com.ryuqq.setof.enums.core.SyncStatus;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductGroupStorageFilterDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalProductGroupStorageFilterDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;

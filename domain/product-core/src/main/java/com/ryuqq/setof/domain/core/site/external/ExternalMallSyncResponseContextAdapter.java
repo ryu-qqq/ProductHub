@@ -4,7 +4,9 @@ import com.ryuqq.setof.domain.core.TraceIdHolder;
 import com.ryuqq.setof.enums.core.EntityType;
 import com.ryuqq.setof.enums.core.RequestType;
 import com.ryuqq.setof.enums.core.SyncStatus;
+import com.ryuqq.setof.db.core.site.external.ExternalProductUpdateCommand;
 import com.ryuqq.setof.support.external.core.ExternalMallProductContext;
+import com.ryuqq.setof.support.external.core.ExternalMallSyncedOption;
 import com.ryuqq.setof.support.external.core.SyncResultSummary;
 import com.ryuqq.setof.support.external.core.SyncStepResult;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,10 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class ExternalMallSyncResponseContextAdapter {
@@ -19,21 +25,24 @@ public class ExternalMallSyncResponseContextAdapter {
     private final static int SUCCESS_VALUE = 200;
     private final static String SUCCESS_MESSAGE = "SUCCESS";
 
-    public ExternalMallSyncResponseContext toDomains(long siteId, SyncResultSummary syncResultSummary){
+    public ExternalMallSyncResponseContext toDomains(long siteId, SyncResultSummary syncResultSummary, List<ProductPreExternalSyncContext> syncData){
+        Map<Long, ProductPreExternalSyncContext> productPreExternalSyncContextMap = mapToProductPreExternalSyncContext(syncData);
+
         return new ExternalMallSyncResponseContext(
-                toExternalProductUpdateCommands(siteId, syncResultSummary),
+                toExternalProductGroupUpdateCommands(siteId, syncResultSummary),
+                toExternalProductUpdateCommands(syncResultSummary, productPreExternalSyncContextMap),
                 toExternalRequestCommands(siteId, syncResultSummary),
                 toExternalProductImageCommands(siteId, syncResultSummary)
         );
     }
 
-    private List<ExternalProductGroupUpdateCommand> toExternalProductUpdateCommands(long siteId, SyncResultSummary syncResultSummary) {
+    private List<ExternalProductGroupUpdateCommand> toExternalProductGroupUpdateCommands(long siteId, SyncResultSummary syncResultSummary) {
         return mergeCommands(
                 syncResultSummary.successResponses().stream()
-                        .map(e -> mapToProductUpdateCommand(siteId, e, e.getStatus()))
+                        .map(e -> mapToProductGroupUpdateCommand(siteId, e.getExternalMallProductContextBuilder().build(), e.getStatus()))
                         .toList(),
                 syncResultSummary.failureResponses().stream()
-                        .map(f -> mapToProductUpdateCommand(siteId, f, f.getStatus()))
+                        .map(f -> mapToProductGroupUpdateCommand(siteId, f.getExternalMallProductContextBuilder().build(), f.getStatus()))
                         .toList()
         );
     }
@@ -49,8 +58,65 @@ public class ExternalMallSyncResponseContextAdapter {
         );
     }
 
-    private ExternalProductGroupUpdateCommand mapToProductUpdateCommand(long siteId, SyncStepResult response, SyncStatus status) {
-        ExternalMallProductContext context = response.getExternalMallProductContext();
+    private List<ExternalProductUpdateCommand> toExternalProductUpdateCommands(SyncResultSummary syncResultSummary, Map<Long, ProductPreExternalSyncContext> productPreExternalSyncContextMap) {
+        return mergeCommands(
+                syncResultSummary.successResponses().stream()
+                        .flatMap(e -> mapToProductUpdateCommand(
+                                e.getExternalMallProductContextBuilder().build(),
+                                e.getStatus(),
+                                productPreExternalSyncContextMap
+                        ).stream())
+                        .toList(),
+                syncResultSummary.failureResponses().stream()
+                        .flatMap(f -> mapToProductUpdateCommand(
+                                f.getExternalMallProductContextBuilder().build(),
+                                f.getStatus(),
+                                productPreExternalSyncContextMap
+                        ).stream())
+                        .toList()
+        );
+    }
+
+    private List<ExternalProductUpdateCommand> mapToProductUpdateCommand(ExternalMallProductContext context, SyncStatus status, Map<Long, ProductPreExternalSyncContext> productPreExternalSyncContextMap) {
+
+        ProductPreExternalSyncContext productPreExternalSyncContext =
+                productPreExternalSyncContextMap.get(context.getProductGroupId());
+
+        if (productPreExternalSyncContext == null || !(status.isApproved() || status.isReview())) {
+            return List.of();
+        }
+
+
+        Map<String, ExternalMallSyncedOption> optionValueMap = context.getExternalMallSyncedOptions().stream()
+                .collect(Collectors.toMap(
+                        ExternalMallSyncedOption::optionValue,
+                        Function.identity(),
+                        (existing, replacement) -> existing
+                ));
+
+
+
+        return productPreExternalSyncContext.productGroupContext().getProducts().stream()
+                .map(product -> {
+                    ExternalMallSyncedOption syncedOption = optionValueMap.get(product.getOption());
+                    if (syncedOption != null) {
+                        return new ExternalProductUpdateCommand(
+                                context.getExternalProductGroupId(),
+                                syncedOption.externalProductId(),
+                                syncedOption.optionValue(),
+                                product.getQuantity(),
+                                product.getAdditionalPrice().getAmount(),
+                                product.isSoldOutYn(),
+                                product.isDisplayYn()
+                        );
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private ExternalProductGroupUpdateCommand mapToProductGroupUpdateCommand(long siteId, ExternalMallProductContext context, SyncStatus status) {
 
         if(status.isApproved() || status.isReview()){
             return new ExternalProductGroupUpdateCommand(
@@ -71,18 +137,18 @@ public class ExternalMallSyncResponseContextAdapter {
                 siteId,
                 context.getProductGroupId(),
                 context.getExternalProductGroupId(),
-                "",
-                BigDecimal.ZERO,
-                BigDecimal.ZERO,
+                context.getNameContext().name(),
+                context.getPriceContext().regularPrice(),
+                context.getPriceContext().currentPrice(),
                 status,
                 false,
-                false,
-                true
+                context.getProductStatusContext().soldOutYn(),
+                context.getProductStatusContext().displayYn()
         );
     }
 
     private ExternalRequestCommand mapToRequestCommand(long siteId, SyncStepResult response, int statusCode, String message) {
-        ExternalMallProductContext context = response.getExternalMallProductContext();
+        ExternalMallProductContext context = response.getExternalMallProductContextBuilder().build();
         return new ExternalRequestCommand(
                 TraceIdHolder.getTraceId(),
                 RequestType.PRODUCT_REGISTER,
@@ -119,6 +185,15 @@ public class ExternalMallSyncResponseContextAdapter {
         List<T> merged = new ArrayList<>(successCommands);
         merged.addAll(failureCommands);
         return merged;
+    }
+
+
+    private Map<Long, ProductPreExternalSyncContext> mapToProductPreExternalSyncContext(List<ProductPreExternalSyncContext> syncData){
+        return syncData.stream()
+                .collect(
+                        Collectors.toMap(ProductPreExternalSyncContext::getProductGroupId, Function.identity(),
+                                (v1, v2) -> v1)
+                );
     }
 
 }

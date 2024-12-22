@@ -6,6 +6,8 @@ import com.ryuqq.setof.support.external.core.SyncResultSummary;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ExternalMallIntegrationManager {
 
@@ -14,15 +16,17 @@ public class ExternalMallIntegrationManager {
     private final ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter;
     private final ExternalMallSyncService externalMallSyncService;
     private final ExternalProductGroupCommandService externalProductGroupCommandService;
+    private final ExternalProductCommandService externalProductCommandService;
     private final ExternalRequestCommandService externalRequestCommandService;
     private final ExternalProductImageCommandService externalProductImageCommandService;
 
-    public ExternalMallIntegrationManager(ProductPreExternalSyncContextFinder productPreExternalSyncContextFinder, ExternalMallSyncBatchContextAdapter externalMallSyncBatchContextAdapter, ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter, ExternalMallSyncService externalMallSyncService, ExternalProductGroupCommandService externalProductGroupCommandService, ExternalRequestCommandService externalRequestCommandService, ExternalProductImageCommandService externalProductImageCommandService) {
+    public ExternalMallIntegrationManager(ProductPreExternalSyncContextFinder productPreExternalSyncContextFinder, ExternalMallSyncBatchContextAdapter externalMallSyncBatchContextAdapter, ExternalMallSyncResponseContextAdapter externalMallSyncResponseContextAdapter, ExternalMallSyncService externalMallSyncService, ExternalProductGroupCommandService externalProductGroupCommandService, ExternalProductCommandService externalProductCommandService, ExternalRequestCommandService externalRequestCommandService, ExternalProductImageCommandService externalProductImageCommandService) {
         this.productPreExternalSyncContextFinder = productPreExternalSyncContextFinder;
         this.externalMallSyncBatchContextAdapter = externalMallSyncBatchContextAdapter;
         this.externalMallSyncResponseContextAdapter = externalMallSyncResponseContextAdapter;
         this.externalMallSyncService = externalMallSyncService;
         this.externalProductGroupCommandService = externalProductGroupCommandService;
+        this.externalProductCommandService = externalProductCommandService;
         this.externalRequestCommandService = externalRequestCommandService;
         this.externalProductImageCommandService = externalProductImageCommandService;
     }
@@ -33,7 +37,7 @@ public class ExternalMallIntegrationManager {
 
         SyncResultSummary syncResultSummary = executeSync(syncBatchContext);
 
-        ExternalMallSyncResponseContext responseContext = processSyncResults(siteId, syncResultSummary);
+        ExternalMallSyncResponseContext responseContext = processSyncResults(siteId, syncResultSummary, syncBatchContext.syncData());
 
         persistSyncResults(responseContext);
 
@@ -50,13 +54,18 @@ public class ExternalMallIntegrationManager {
         );
     }
 
-    private ExternalMallSyncResponseContext processSyncResults(long siteId, SyncResultSummary syncResultSummary) {
-        return externalMallSyncResponseContextAdapter.toDomains(siteId, syncResultSummary);
+    private ExternalMallSyncResponseContext processSyncResults(long siteId, SyncResultSummary syncResultSummary, List<ProductPreExternalSyncContext> syncData) {
+        return externalMallSyncResponseContextAdapter.toDomains(siteId, syncResultSummary, syncData);
     }
 
     private void persistSyncResults(ExternalMallSyncResponseContext responseContext) {
+
         if (!responseContext.externalProductGroupUpdateCommands().isEmpty()) {
             externalProductGroupCommandService.updateExternalProductGroup(responseContext.externalProductGroupUpdateCommands());
+        }
+
+        if(!responseContext.externalProductUpdateCommands().isEmpty()){
+            externalProductCommandService.updateExternalProducts(responseContext.externalProductUpdateCommands());
         }
 
         if (!responseContext.externalProductImageCommands().isEmpty()) {
@@ -66,6 +75,7 @@ public class ExternalMallIntegrationManager {
         if (!responseContext.externalRequestCommands().isEmpty()) {
             externalRequestCommandService.saveAllExternalRequest(responseContext.externalRequestCommands());
         }
+
     }
 
 }

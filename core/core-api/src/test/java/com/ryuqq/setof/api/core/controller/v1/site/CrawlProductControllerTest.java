@@ -2,7 +2,7 @@ package com.ryuqq.setof.api.core.controller.v1.site;
 
 import com.ryuqq.setof.api.core.controller.v1.site.request.CrawlProductInsertRequestDto;
 import com.ryuqq.setof.api.core.controller.v1.site.response.CrawlProductResponse;
-import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductService;
+import com.ryuqq.setof.api.core.controller.v1.site.service.CrawlProductServingService;
 import com.ryuqq.setof.api.core.data.SiteModuleHelper;
 import com.ryuqq.setof.domain.core.generic.Slice;
 import com.ryuqq.setof.domain.core.generic.SliceUtils;
@@ -40,7 +40,7 @@ class CrawlProductControllerTest extends RestDocsTest {
     private CrawlProductCommandService crawlProductCommandService;
 
     @Mock
-    private CrawlProductService crawlProductService;
+    private CrawlProductServingService crawlProductServingService;
 
 
     @InjectMocks
@@ -93,7 +93,7 @@ class CrawlProductControllerTest extends RestDocsTest {
 
         Slice<CrawlProductResponse> slice = SliceUtils.toSlice(results, 20, 1);
         slice.setCursor(1L);
-        when(crawlProductService.getCrawlProducts(any())).thenReturn(slice);
+        when(crawlProductServingService.fetchByFilter(any())).thenReturn(slice);
 
         // when
         given()

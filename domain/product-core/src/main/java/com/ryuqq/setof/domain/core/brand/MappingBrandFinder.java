@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.brand;
 
-import com.ryuqq.setof.storage.db.core.brand.MappingBrandQueryRepository;
+import com.ryuqq.setof.db.core.brand.MappingBrandQueryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

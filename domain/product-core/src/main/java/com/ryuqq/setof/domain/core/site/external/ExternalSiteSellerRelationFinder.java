@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.storage.db.core.site.external.ExternalSiteQueryRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalSiteQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

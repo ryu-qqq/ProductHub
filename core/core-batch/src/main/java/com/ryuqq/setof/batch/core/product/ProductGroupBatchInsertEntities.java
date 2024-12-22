@@ -1,10 +1,10 @@
 package com.ryuqq.setof.batch.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
-import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigEntity;
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
-import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticeEntity;
+import com.ryuqq.setof.db.core.product.delivery.ProductDeliveryEntity;
+import com.ryuqq.setof.db.core.product.description.ProductDetailDescriptionEntity;
+import com.ryuqq.setof.db.core.product.group.ProductGroupConfigEntity;
+import com.ryuqq.setof.db.core.product.image.ProductGroupImageEntity;
+import com.ryuqq.setof.db.core.product.notice.ProductNoticeEntity;
 
 import java.util.ArrayList;
 import java.util.List;

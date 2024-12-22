@@ -6,6 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record OcoResponseStatus(
         int shop_acid,
         String returnMessage,
-        String statusCode
+        int statusCode
 ) {
 }

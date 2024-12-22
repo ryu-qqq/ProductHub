@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImagePersistenceRepository;
+import com.ryuqq.setof.db.core.product.image.ProductGroupImageEntity;
+import com.ryuqq.setof.db.core.product.image.ProductGroupImagePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package com.ryuqq.setof.domain.core.product.gpt;
 
 import com.ryuqq.setof.enums.core.ProductStatus;
-import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingResultEntity;
-import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingResultPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceRepository;
+import com.ryuqq.setof.db.core.product.gpt.ProductProcessingResultEntity;
+import com.ryuqq.setof.db.core.product.gpt.ProductProcessingResultPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupPersistenceRepository;
 import com.ryuqq.setof.support.utils.JsonUtils;
 
 import java.util.List;

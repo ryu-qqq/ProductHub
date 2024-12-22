@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionEntity;
+import com.ryuqq.setof.db.core.product.description.ProductDetailDescriptionEntity;
 
 public record ProductDetailDescriptionCommand (
         String detailDescription

@@ -5,7 +5,7 @@ import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.enums.core.ProductCondition;
 import com.ryuqq.setof.enums.core.ProductStatus;
 import com.ryuqq.setof.support.utils.Money;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupEntity;
+import com.ryuqq.setof.db.core.product.group.ProductGroupEntity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

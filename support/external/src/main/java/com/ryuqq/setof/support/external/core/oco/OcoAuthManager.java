@@ -3,6 +3,8 @@ package com.ryuqq.setof.support.external.core.oco;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenRequestDto;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoTokenResponseDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +21,10 @@ public class OcoAuthManager {
     private String id;
     @Value("${external-site.oco.password}")
     private String password;
+
+    @Value("${external-site.oco.api-key}")
+    private String apiKey;
+
 
     private volatile String token;
     private volatile Instant expiryTime;
@@ -42,11 +48,28 @@ public class OcoAuthManager {
     private synchronized void fetchToken() {
         String url = hostUrl + "/auth/authentication.do";
         OcoTokenRequestDto request = new OcoTokenRequestDto(id, password);
-        var response = restTemplate.postForObject(url, request, OcoTokenResponseDto.class);
 
-        if (response != null) {
-            this.token = response.token();
-            this.expiryTime = Instant.now().plusSeconds(3600);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("ApiKey", apiKey);
+
+
+        HttpEntity<OcoTokenRequestDto> httpEntity = new HttpEntity<>(request, headers);
+
+
+        ParameterizedTypeReference<OcoResponse<OcoTokenResponseDto>> responseType =
+                new ParameterizedTypeReference<>() {};
+
+
+        ResponseEntity<OcoResponse<OcoTokenResponseDto>> responseEntity =
+                restTemplate.exchange(url, HttpMethod.POST, httpEntity, responseType);
+
+
+        OcoResponse<OcoTokenResponseDto> response = responseEntity.getBody();
+
+        if (response != null && response.apiResult() != null) {
+            this.token = response.apiResult().token();
+            this.expiryTime = Instant.now().plusSeconds(36000);
         } else {
             throw new RuntimeException("Failed to fetch token from OCO");
         }

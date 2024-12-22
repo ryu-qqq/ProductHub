@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site;
 
-import com.ryuqq.setof.storage.db.core.site.SiteQueryRepository;
-import com.ryuqq.setof.storage.db.core.site.dto.SiteContextDto;
+import com.ryuqq.setof.db.core.site.SiteQueryRepository;
+import com.ryuqq.setof.db.core.site.dto.SiteContextDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

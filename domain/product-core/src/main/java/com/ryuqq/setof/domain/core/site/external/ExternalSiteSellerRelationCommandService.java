@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site.external;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalSiteSellerEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalSiteSellerPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalSiteSellerEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalSiteSellerPersistenceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

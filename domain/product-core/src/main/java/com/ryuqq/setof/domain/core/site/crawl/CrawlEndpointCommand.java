@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
 
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlEndpointEntity;
+import com.ryuqq.setof.db.core.site.crawl.CrawlEndpointEntity;
 
 import java.util.List;
 

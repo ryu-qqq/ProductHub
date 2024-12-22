@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.product.ProductGroupNameCommandService;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductGroupEntity;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

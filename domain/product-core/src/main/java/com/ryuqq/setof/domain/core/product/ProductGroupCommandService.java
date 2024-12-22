@@ -3,7 +3,7 @@ package com.ryuqq.setof.domain.core.product;
 import com.ryuqq.setof.domain.core.brand.BrandQueryService;
 import com.ryuqq.setof.domain.core.category.CategoryQueryService;
 import com.ryuqq.setof.enums.core.ProductStatus;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

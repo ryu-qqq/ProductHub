@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.enums.core.ReturnMethod;
 import com.ryuqq.setof.enums.core.ShipmentCompanyCode;
-import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryEntity;
+import com.ryuqq.setof.db.core.product.delivery.ProductDeliveryEntity;
 
 import java.math.BigDecimal;
 

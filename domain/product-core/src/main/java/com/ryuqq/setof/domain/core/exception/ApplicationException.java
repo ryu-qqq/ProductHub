@@ -2,6 +2,7 @@ package com.ryuqq.setof.domain.core.exception;
 
 
 
+import com.ryuqq.setof.enums.core.ErrorType;
 import org.springframework.validation.BindingResult;
 
 public class ApplicationException extends RuntimeException{

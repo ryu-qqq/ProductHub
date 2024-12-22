@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record ProductInsertRequestDto(
         boolean soldOutYn,
@@ -31,7 +32,12 @@ public record ProductInsertRequestDto(
                 .map(ProductOptionInsertRequestDto::toOption)
                 .toList();
 
-        return new ProductCommand(null, soldOutYn, displayYn, quantity, additionalPrice, optionCommands, false);
+        String option = options.stream()
+                    .map(ProductOptionInsertRequestDto::optionValue)
+                    .collect(Collectors.joining(" "));
+
+
+        return new ProductCommand(null, soldOutYn, displayYn, quantity, additionalPrice, option, optionCommands, false);
     }
 
 

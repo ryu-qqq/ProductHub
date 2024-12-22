@@ -25,4 +25,5 @@ public class ProductGroupIndexingHybridRepository implements ProductGroupDocumen
         productGroupEsHighLevelRepository.bulkInsert(productGroupCommandContextDocuments);
     }
 
+
 }

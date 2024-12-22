@@ -1,9 +1,9 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.storage.db.core.category.MappingCategoryEntity;
-import com.ryuqq.setof.storage.db.core.category.MappingCategoryPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalCategoryOptionEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalCategoryOptionPersistenceRepository;
+import com.ryuqq.setof.db.core.category.MappingCategoryEntity;
+import com.ryuqq.setof.db.core.category.MappingCategoryPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalCategoryOptionEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalCategoryOptionPersistenceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

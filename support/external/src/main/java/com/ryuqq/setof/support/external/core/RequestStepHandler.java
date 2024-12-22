@@ -22,7 +22,9 @@ public class RequestStepHandler implements SyncStepHandler {
             return SyncStepResult.failure(SyncStep.REQUEST, response.statusCode(), response.message(), builder, response.requestBody());
         }
 
-        builder.withExternalProductId(response.externalProductGroupId());
+        builder.withExternalProductGroupId(response.externalProductGroupId());
+        builder.withExternalMallSyncedOptions(response.externalMallSyncedOptions());
+
         return SyncStepResult.success(SyncStep.REQUEST,  response.status(), builder, response.requestBody());
     }
 

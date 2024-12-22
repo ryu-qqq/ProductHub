@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site.crawl;
 
 import com.ryuqq.setof.enums.core.ActionType;
 import com.ryuqq.setof.enums.core.ProcessType;
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlTaskEntity;
+import com.ryuqq.setof.db.core.site.crawl.CrawlTaskEntity;
 
 public record CrawlTaskCommand(
         int stepOrder,

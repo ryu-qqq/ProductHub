@@ -1,6 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.dto.*;
+import com.ryuqq.setof.db.core.product.dto.*;
+import com.ryuqq.setof.support.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -83,6 +84,11 @@ public class ProductGroupMapper {
     }
 
 
-
+    public ProductGroupInsertRequest toProductGroupInsertRequest(ProductGroupInsertRequestDto productGroupInsertRequestDto){
+        return new ProductGroupInsertRequest(
+                productGroupInsertRequestDto.getProductGroupId(),
+                JsonUtils.fromJson(productGroupInsertRequestDto.getRequestBody(), ProductGroupCommandContext.class)
+        );
+    }
 
 }

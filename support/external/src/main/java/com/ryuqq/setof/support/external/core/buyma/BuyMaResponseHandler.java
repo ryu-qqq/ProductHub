@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class BuyMaResponseHandler {
 
@@ -25,6 +27,7 @@ public class BuyMaResponseHandler {
                 "Unhandled response type or missing body",
                 productGroupId,
                 "",
+                List.of(),
                 requestBody
         );
     }
@@ -38,6 +41,7 @@ public class BuyMaResponseHandler {
                 "Product registered successfully",
                 productGroupId,
                 "",
+                List.of(),
                 requestBody
         );
     }
@@ -51,6 +55,7 @@ public class BuyMaResponseHandler {
                 errorMessage,
                 productGroupId,
                 "",
+                List.of(),
                 requestBody
         );
     }

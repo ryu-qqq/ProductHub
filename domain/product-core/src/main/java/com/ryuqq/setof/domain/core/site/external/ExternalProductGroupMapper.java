@@ -1,8 +1,9 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.product.Price;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductGroupDto;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductImageDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalProductDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalProductGroupDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalProductImageDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -35,6 +36,7 @@ public class ExternalProductGroupMapper {
                 externalProductGroupDto.getExternalExtraCategoryId(),
                 externalProductGroupDto.getInsertDate(),
                 externalProductGroupDto.getUpdateDate(),
+                toExternalProducts(externalProductGroupDto.getExternalProducts()),
                 toExternalProductImages(externalProductGroupDto.getExternalProductImages())
         );
     }
@@ -46,17 +48,42 @@ public class ExternalProductGroupMapper {
                 .toList();
     }
 
+    private List<ExternalProduct> toExternalProducts(List<ExternalProductDto> externalProductDtos){
+        if(externalProductDtos == null || externalProductDtos.isEmpty()){
+            return List.of();
+        }
+
+        return externalProductDtos.stream()
+                .map(e -> new ExternalProduct(
+                        e.getExternalProductGroupId(),
+                        e.getExternalProductId(),
+                        e.getOptionValue(),
+                        e.getQuantity(),
+                        e.getAdditionalPrice(),
+                        e.isDisplayYn(),
+                        e.isDisplayYn()
+                ))
+                .distinct()
+                .toList();
+    }
+
 
     private List<ExternalProductImage> toExternalProductImages(List<ExternalProductImageDto> externalProductImageDtos){
+        if(externalProductImageDtos == null || externalProductImageDtos.isEmpty()){
+            return List.of();
+        }
+
         return externalProductImageDtos.stream()
                 .sorted(Comparator.comparingInt(ExternalProductImageDto::getDisplayOrder))
                 .map(e -> new ExternalProductImage(
+                                e.getExternalProductImageId(),
                                 e.getProductGroupId(),
                                 e.getExternalProductGroupId(),
                                 e.getDisplayOrder(),
                                 e.getImageUrl(),
                                 e.getOriginUrl()
                 ))
+                .distinct()
                 .toList();
     }
 

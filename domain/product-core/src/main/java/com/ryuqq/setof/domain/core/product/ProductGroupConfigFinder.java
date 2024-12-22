@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigQueryRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupConfigQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
 import com.ryuqq.setof.enums.core.AuthType;
-import com.ryuqq.setof.storage.db.core.site.SiteAuthSettingEntity;
+import com.ryuqq.setof.db.core.site.SiteAuthSettingEntity;
 
 public record CrawlAuthSettingCommand(
         AuthType authType,

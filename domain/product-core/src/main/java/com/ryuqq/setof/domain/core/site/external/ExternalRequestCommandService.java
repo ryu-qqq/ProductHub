@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.storage.db.core.site.external.ExternalRequestEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalRequestPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalRequestEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalRequestPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

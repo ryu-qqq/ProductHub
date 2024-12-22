@@ -2,9 +2,9 @@ package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.domain.core.site.external.ExternalPolicyContext;
 import com.ryuqq.setof.domain.core.site.external.ExternalPolicyContextFinder;
-import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupNameConfigDto;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
+import com.ryuqq.setof.db.core.product.dto.ProductGroupNameConfigDto;
+import com.ryuqq.setof.db.core.product.group.ProductGroupConfigPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupNameConfigEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

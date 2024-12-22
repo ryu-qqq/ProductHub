@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.enums.core.ProductImageType;
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImageEntity;
+import com.ryuqq.setof.db.core.product.image.ProductGroupImageEntity;
 
 public record ProductGroupImageCommand(
         Long id,

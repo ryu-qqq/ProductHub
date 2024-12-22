@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.color;
 
-import com.ryuqq.setof.storage.db.core.color.ColorQueryRepository;
+import com.ryuqq.setof.db.core.color.ColorQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

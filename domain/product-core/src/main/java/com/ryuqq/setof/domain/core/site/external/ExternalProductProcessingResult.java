@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.ProductDataType;
-import com.ryuqq.setof.storage.db.core.product.dto.ProductProcessingResultDto;
+import com.ryuqq.setof.db.core.product.dto.ProductProcessingResultDto;
 
 public record ExternalProductProcessingResult(
         long productGroupId,

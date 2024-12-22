@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductImageEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductImageEntity;
 
 public record ExternalProductImageCommand(
         long productGroupId,

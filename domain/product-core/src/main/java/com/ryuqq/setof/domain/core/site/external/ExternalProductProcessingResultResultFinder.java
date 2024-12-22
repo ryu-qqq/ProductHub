@@ -1,8 +1,8 @@
 package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.enums.core.ProductDataType;
-import com.ryuqq.setof.storage.db.core.product.dto.ProductProcessingResultDto;
-import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingQueryRepository;
+import com.ryuqq.setof.db.core.product.dto.ProductProcessingResultDto;
+import com.ryuqq.setof.db.core.product.gpt.ProductProcessingQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

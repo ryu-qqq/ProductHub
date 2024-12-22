@@ -4,11 +4,11 @@ import com.ryuqq.setof.domain.core.site.SiteProfileFinder;
 import com.ryuqq.setof.enums.core.CrawlType;
 import com.ryuqq.setof.enums.core.SiteType;
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
-import com.ryuqq.setof.storage.db.core.site.crawl.CrawlSiteQueryDslQueryRepository;
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlAuthSettingDto;
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlEndPointDto;
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlSiteProfileDto;
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlTaskDto;
+import com.ryuqq.setof.db.core.site.crawl.CrawlSiteQueryDslQueryRepository;
+import com.ryuqq.setof.db.core.site.crawl.dto.CrawlAuthSettingDto;
+import com.ryuqq.setof.db.core.site.crawl.dto.CrawlEndPointDto;
+import com.ryuqq.setof.db.core.site.crawl.dto.CrawlSiteProfileDto;
+import com.ryuqq.setof.db.core.site.crawl.dto.CrawlTaskDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

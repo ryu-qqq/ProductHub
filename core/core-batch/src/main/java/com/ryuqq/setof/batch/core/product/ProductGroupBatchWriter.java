@@ -2,12 +2,12 @@ package com.ryuqq.setof.batch.core.product;
 
 import com.ryuqq.setof.domain.core.product.ProductCommandService;
 import com.ryuqq.setof.enums.core.ProductStatus;
-import com.ryuqq.setof.storage.db.core.product.delivery.ProductDeliveryPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.description.ProductDetailDescriptionPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupConfigPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.image.ProductGroupImagePersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticePersistenceRepository;
+import com.ryuqq.setof.db.core.product.delivery.ProductDeliveryPersistenceRepository;
+import com.ryuqq.setof.db.core.product.description.ProductDetailDescriptionPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupConfigPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupPersistenceRepository;
+import com.ryuqq.setof.db.core.product.image.ProductGroupImagePersistenceRepository;
+import com.ryuqq.setof.db.core.product.notice.ProductNoticePersistenceRepository;
 import org.springframework.batch.item.Chunk;
 import org.springframework.stereotype.Component;
 

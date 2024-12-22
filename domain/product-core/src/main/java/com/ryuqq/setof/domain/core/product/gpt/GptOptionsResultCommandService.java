@@ -1,8 +1,8 @@
 package com.ryuqq.setof.domain.core.product.gpt;
 
 import com.ryuqq.setof.enums.core.ProductDataType;
-import com.ryuqq.setof.storage.db.core.product.gpt.ProductProcessingResultPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupPersistenceRepository;
+import com.ryuqq.setof.db.core.product.gpt.ProductProcessingResultPersistenceRepository;
+import com.ryuqq.setof.db.core.product.group.ProductGroupPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.brand;
 
-import com.ryuqq.setof.storage.db.cache.brand.BrandCacheRepository;
+import com.ryuqq.setof.cache.core.brand.BrandCacheRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.dto.ProductContextDto;
+import com.ryuqq.setof.db.core.product.dto.ProductContextDto;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

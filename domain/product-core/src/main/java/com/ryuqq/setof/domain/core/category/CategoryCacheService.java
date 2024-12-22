@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.storage.db.cache.category.CategoryCacheRepository;
+import com.ryuqq.setof.cache.core.category.CategoryCacheRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

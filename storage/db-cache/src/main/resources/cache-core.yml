@@ -17,3 +17,12 @@ spring:
       host: localhost
 
 ---
+
+spring:
+  config:
+    activate.on-profile: prod
+  data:
+    redis:
+      cluster:
+        nodes: 10.0.140.138:5001, 10.0.141.162:5001, 10.0.137.166:5001
+      password: luxurypassword

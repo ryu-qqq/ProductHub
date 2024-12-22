@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.storage.db.cache.category.CategoryCacheDto;
-import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
+import com.ryuqq.setof.cache.core.category.CategoryCacheDto;
+import com.ryuqq.setof.db.core.category.dto.CategoryDto;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -11,7 +11,10 @@ import com.ryuqq.setof.support.external.core.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class ExternalMallSyncBatchContextAdapter {
@@ -27,7 +30,7 @@ public class ExternalMallSyncBatchContextAdapter {
                                         toExternalSyncBrand(p.mappingBrand()),
                                         toExternalSyncCategory(p.mappingCategory()),
                                         toExternalSyncProductGroup(p.productGroupContext(), externalSyncBatchContext.externalPolicyContext().productPolicy(), p.externalProductGroup()),
-                                        toExternalSyncProducts(p.productGroupContext().getProducts()),
+                                        toExternalSyncProducts(p.productGroupContext().getProducts(), p.externalProductGroup().externalProducts()),
                                         toExternalSyncCategoryOptions(p.externalCategoryOptions()),
                                         toExternalSyncOptionResult(p.gptOptionsResult()),
                                         toExternalSyncStandardSizes(p.standardSizes())
@@ -127,15 +130,27 @@ public class ExternalMallSyncBatchContextAdapter {
     }
 
 
-    private List<ExternalSyncProduct> toExternalSyncProducts(List<Product> products){
-        return products.stream().map(p -> new ExternalSyncProduct(
-                p.getQuantity(),
-                p.isSoldOutYn(),
-                p.isDisplayYn(),
-                p.getOption(),
-                toExternalSyncOptions(p.getOptions()),
-                p.getAdditionalPrice()
-                ))
+    private List<ExternalSyncProduct> toExternalSyncProducts(List<Product> products, List<ExternalProduct> externalProducts) {
+        Map<String, ExternalProduct> optionValueMap = externalProducts.stream()
+                .collect(Collectors.toMap(
+                        ExternalProduct::optionValue,
+                        Function.identity(),
+                        (v1, v2) -> v1
+                ));
+
+        return products.stream().map(p -> {
+                    ExternalProduct externalProduct = optionValueMap.get(p.getOption());
+
+                    return new ExternalSyncProduct(
+                            externalProduct == null ? null :externalProduct.externalProductId(),
+                            p.getQuantity(),
+                            p.isSoldOutYn(),
+                            p.isDisplayYn(),
+                            p.getOption(),
+                            toExternalSyncOptions(p.getOptions()),
+                            p.getAdditionalPrice()
+                    );
+                })
                 .toList();
     }
 

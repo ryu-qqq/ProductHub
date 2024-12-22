@@ -50,6 +50,7 @@ public class ProductChecker implements UpdateChecker<List<Product>, List<Product
         return new ProductCommand(productId,
                 command.soldOutYn(), command.displayYn(),
                 command.quantity(), command.additionalPrice(),
+                command.option(),
                 command.options(), false);
     }
 
@@ -57,6 +58,7 @@ public class ProductChecker implements UpdateChecker<List<Product>, List<Product
         return new ProductCommand(product.getProductId(),
                 product.isSoldOutYn(), product.isDisplayYn(),
                 product.getQuantity(), product.getAdditionalPrice().getAmount(),
+                product.getOption(),
                 List.of(), product.isDeleteYn());
     }
 

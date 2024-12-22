@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.site.external;
 
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalProductPolicyDto;
-import com.ryuqq.setof.storage.db.core.site.external.dto.ExternalSiteSellerRelationDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalProductPolicyDto;
+import com.ryuqq.setof.db.core.site.external.dto.ExternalSiteSellerRelationDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

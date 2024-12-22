@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.notice.ProductNoticePersistenceRepository;
+import com.ryuqq.setof.db.core.product.notice.ProductNoticePersistenceRepository;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -19,4 +19,5 @@ public enum OptionName {
     public boolean isDefaultTwo(){
         return this.equals(DEFAULT_TWO);
     }
+
 }

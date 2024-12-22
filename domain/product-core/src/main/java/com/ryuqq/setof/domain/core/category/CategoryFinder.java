@@ -1,7 +1,7 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.storage.db.core.category.CategoryQueryRepository;
-import com.ryuqq.setof.storage.db.core.category.dto.CategoryDto;
+import com.ryuqq.setof.db.core.category.CategoryQueryRepository;
+import com.ryuqq.setof.db.core.category.dto.CategoryDto;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

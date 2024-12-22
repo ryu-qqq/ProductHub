@@ -34,6 +34,9 @@ public class OcoImageGenerator {
                 imageSortCounter++;
             }
         }
+        if(externalMallImages.size() > 4) {
+            externalMallImages = externalMallImages.subList(0, 4);
+        }
 
         return new ExternalMallImageContext(externalMallImages);
     }

@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.category;
 
 import com.ryuqq.setof.enums.core.CategoryType;
 import com.ryuqq.setof.enums.core.TargetGroup;
-import com.ryuqq.setof.storage.db.core.category.dto.CategoryStorageFilterDto;
+import com.ryuqq.setof.db.core.category.dto.CategoryStorageFilterDto;
 
 import java.util.ArrayList;
 import java.util.List;

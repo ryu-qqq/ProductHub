@@ -2,10 +2,10 @@ package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.site.SiteProfileCommandService;
 import com.ryuqq.setof.enums.core.SiteType;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPricePolicyPersistenceRepository;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPricePolicyRuleEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductPolicyPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalPolicyPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalPricePolicyPersistenceRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalPricePolicyRuleEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductPolicyPersistenceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

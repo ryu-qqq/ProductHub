@@ -1,5 +1,6 @@
 package com.ryuqq.setof.batch.core.product;
 
+import com.ryuqq.setof.domain.core.product.ProductGroupInsertRequest;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -51,7 +52,7 @@ public class ProductGroupRegistrationBatchConfig {
     @Bean
     public Step productGroupInsertStep() {
         return new StepBuilder("productGroupInsertStep", jobRepository)
-                .<List<ProductGroupProcessingData>, ProductGroupBatchInsertData>chunk(5, transactionManager)
+                .<List<ProductGroupInsertRequest>, ProductGroupBatchInsertData>chunk(5, transactionManager)
                 .reader(productGroupInsertReader)
                 .processor(productGroupInsertProcessor)
                 .writer(productGroupInsertWriter)

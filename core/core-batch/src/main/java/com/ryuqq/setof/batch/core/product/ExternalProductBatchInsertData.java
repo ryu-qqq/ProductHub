@@ -1,7 +1,7 @@
 package com.ryuqq.setof.batch.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.group.ProductGroupNameConfigEntity;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalProductGroupEntity;
+import com.ryuqq.setof.db.core.product.group.ProductGroupNameConfigEntity;
+import com.ryuqq.setof.db.core.site.external.ExternalProductGroupEntity;
 
 import java.util.ArrayList;
 import java.util.HashSet;

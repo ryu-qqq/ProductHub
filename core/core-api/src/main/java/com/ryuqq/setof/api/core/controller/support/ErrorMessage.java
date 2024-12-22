@@ -1,7 +1,7 @@
 package com.ryuqq.setof.api.core.controller.support;
 
 
-import com.ryuqq.setof.domain.core.exception.ErrorType;
+import com.ryuqq.setof.enums.core.ErrorType;
 import org.springframework.http.HttpStatus;
 
 public class ErrorMessage {

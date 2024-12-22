@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class SellicResponseHandler {
 
@@ -30,6 +32,7 @@ public class SellicResponseHandler {
                 "Unhandled response type or missing body",
                 productGroupId,
                 "",
+                List.of(),
                 requestBody
         );
     }
@@ -43,6 +46,7 @@ public class SellicResponseHandler {
                 "Product registered successfully",
                 productGroupId,
                 responseDto.productId(),
+                List.of(),
                 requestBody
         );
     }
@@ -56,6 +60,7 @@ public class SellicResponseHandler {
                 errorMessage,
                 productGroupId,
                 "",
+                List.of(),
                 requestBody
         );
     }

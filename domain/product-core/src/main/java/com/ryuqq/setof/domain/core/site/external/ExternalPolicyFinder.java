@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.site.external;
 
 import com.ryuqq.setof.domain.core.exception.NotFoundException;
 import com.ryuqq.setof.domain.core.product.ExternalPolicyMapper;
-import com.ryuqq.setof.storage.db.core.site.external.ExternalPolicyQueryRepository;
+import com.ryuqq.setof.db.core.site.external.ExternalPolicyQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.ryuqq.setof.domain.core.product;
 
 import com.ryuqq.setof.enums.core.ManagementType;
 import com.ryuqq.setof.enums.core.ProductStatus;
-import com.ryuqq.setof.storage.db.core.product.dto.ProductGroupStorageFilterDto;
+import com.ryuqq.setof.db.core.product.dto.ProductGroupStorageFilterDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -28,20 +28,27 @@ public record ProductGroupFilter(
         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime startDate,
         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime endDate
+        LocalDateTime endDate,
+        String productGroupName
 )  {
 
     public ProductGroupStorageFilterDto toStorageFilterDto(){
         return new ProductGroupStorageFilterDto(productStatus, managementType, categoryIds, productGroupIds, brandIds, colorIds, sellerId, cursorId, styleCode, pageSize,
-                soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate);
+                soldOutYn, displayYn, minSalePrice, maxSalePrice, minDiscountRate, maxDiscountRate, startDate, endDate, productGroupName);
     }
 
     public static ProductGroupFilter of(List<Long> productGroupIds) {
         return new ProductGroupFilter(null, null, List.of(), productGroupIds, List.of(), List.of(), null,
                 null, null, productGroupIds.size(), null, null, null, null, null
-        ,null, null, null);
+        ,null, null, null, null);
     }
 
+
+    public static ProductGroupFilter of(ProductStatus productStatus, Long cursorId, int pageSize){
+        return new ProductGroupFilter(productStatus, null, List.of(), List.of(), List.of(), List.of(), null,
+                cursorId, null, pageSize, null, null, null, null, null
+                ,null, null, null, null);
+    }
 
 
 

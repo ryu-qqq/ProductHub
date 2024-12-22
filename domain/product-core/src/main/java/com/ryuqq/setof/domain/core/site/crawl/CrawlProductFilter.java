@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.site.crawl;
 
-import com.ryuqq.setof.storage.db.core.site.crawl.dto.CrawlProductStorageFilterDto;
+import com.ryuqq.setof.db.core.site.crawl.dto.CrawlProductStorageFilterDto;
 
 public record CrawlProductFilter(
         boolean isProductGroupIdNull,

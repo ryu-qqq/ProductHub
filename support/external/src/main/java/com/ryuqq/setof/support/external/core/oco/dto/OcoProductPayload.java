@@ -10,6 +10,8 @@ import com.ryuqq.setof.support.external.core.ExternalSyncProductGroup;
 import java.util.List;
 
 public final class OcoProductPayload {
+    @JsonProperty("preAddYn")
+    private final String preAddYn;
     @JsonProperty("pgid")
     private final int pgid;
     @JsonProperty("pcid")
@@ -66,13 +68,15 @@ public final class OcoProductPayload {
     private final String deliveryPriceFreeYn;
     @JsonProperty("re_delivery_view_yn")
     private final String reDeliveryViewYn;
-    @JsonProperty("file_list")
+    @JsonProperty("list_image_file")
+    private final String listImageFile;
+    @JsonProperty("fileList")
     private final List<OcoImageDto> fileList;
     @JsonProperty("main_image_path")
     private final String mainImagePath;
     @JsonProperty("content")
     private final String content;
-    @JsonProperty("option_list")
+    @JsonProperty("optionList")
     private final List<OcoOptionDto> optionList;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("pid")
@@ -88,6 +92,7 @@ public final class OcoProductPayload {
     @JsonProperty("sale_time_end_date")
     private final String saleTimeEndDate;
 
+
     public OcoProductPayload(
             ExternalSyncProductGroup productGroup,
             ExternalMallNameContext externalMallNameContext,
@@ -96,7 +101,7 @@ public final class OcoProductPayload {
             OcoOptionContextDto ocoOptionContextDto,
             List<OcoImageDto> ocoImageDto
     ) {
-
+        this.preAddYn = "N";
         this.pgid = Integer.parseInt(externalMallCategoryAndBrandContext.brandId());
         this.pcid = Integer.parseInt(externalMallCategoryAndBrandContext.categoryId());
         this.productType = "N";
@@ -118,7 +123,7 @@ public final class OcoProductPayload {
         this.soldOut =  productGroup.soldOutYn() ? 1 : 0;
         this.findYn = productGroup.displayYn() ? "Y" : "N";
         this.useCouponYn = "Y";
-        this.hidden = productGroup.displayYn() ? 1 : 0;
+        this.hidden = productGroup.displayYn() ? 0 : 1;
         this.productNaverYn = "Y";
         this.optionYn = ocoOptionContextDto.optionProduct() ? "Y" : "N";
         this.optionInputYn = "N";
@@ -127,9 +132,10 @@ public final class OcoProductPayload {
         this.reDeliveryViewYn = "N";
         this.fileList = ocoImageDto;
         this.mainImagePath = ocoImageDto.getFirst().relativePath();
+        this.listImageFile = ocoImageDto.getFirst().relativePath();
         this.content = productGroup.detailDescription().detailDescription();
         this.optionList = ocoOptionContextDto.ocoOptionDto();
-        this.pid = Integer.valueOf(productGroup.externalProductGroupId());
+        this.pid = !productGroup.externalProductGroupId().isBlank() ? Integer.valueOf(productGroup.externalProductGroupId()) : null;
         this.salePrice = null;
         this.saleStartDay = null;
         this.saleEndDay = null;
@@ -137,4 +143,7 @@ public final class OcoProductPayload {
         this.saleTimeEndDate = null;
     }
 
+    public Integer getPid() {
+        return pid;
+    }
 }

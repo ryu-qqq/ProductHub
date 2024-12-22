@@ -1,5 +1,8 @@
 package com.ryuqq.setof.support.external.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExternalMallProductContext {
 
     private final long productGroupId;
@@ -11,6 +14,7 @@ public class ExternalMallProductContext {
     private final ExternalMallCategoryAndBrandContext categoryAndBrandContext;
     private final ExternalMallProductStatusContext productStatusContext;
     private String externalProductGroupId;
+    private List<ExternalMallSyncedOption> externalMallSyncedOptions;
 
     private ExternalMallProductContext(Builder builder) {
         this.productGroupId = builder.productGroupId;
@@ -21,6 +25,8 @@ public class ExternalMallProductContext {
         this.optionContext = builder.optionContext;
         this.categoryAndBrandContext = builder.categoryAndBrandContext;
         this.productStatusContext = builder.productStatusContext;
+        this.externalProductGroupId = builder.externalProductGroupId;
+        this.externalMallSyncedOptions = builder.externalMallSyncedOptions;
     }
 
     public long getProductGroupId() {
@@ -59,8 +65,8 @@ public class ExternalMallProductContext {
         return externalProductGroupId;
     }
 
-    public void setExternalProductGroupId(String externalProductGroupId) {
-        this.externalProductGroupId = externalProductGroupId;
+    public List<ExternalMallSyncedOption> getExternalMallSyncedOptions() {
+        return externalMallSyncedOptions;
     }
 
     public static class Builder {
@@ -72,7 +78,8 @@ public class ExternalMallProductContext {
         private ExternalMallOptionContext optionContext;
         private ExternalMallCategoryAndBrandContext categoryAndBrandContext;
         private ExternalMallProductStatusContext productStatusContext;
-        private String externalProductId;
+        private String externalProductGroupId;
+        private List<ExternalMallSyncedOption> externalMallSyncedOptions;
 
         public Builder withNames(long productGroupId, long setOfProductGroupId, ExternalMallNameContext nameContext) {
             this.productGroupId = productGroupId;
@@ -107,10 +114,17 @@ public class ExternalMallProductContext {
         }
 
 
-        public Builder withExternalProductId(String externalProductId) {
-            this.externalProductId = externalProductId;
+        public Builder withExternalProductGroupId(String externalProductId) {
+            this.externalProductGroupId = externalProductId;
             return this;
         }
+
+
+        public Builder withExternalMallSyncedOptions(List<ExternalMallSyncedOption> externalMallSyncedOptions) {
+            this.externalMallSyncedOptions = externalMallSyncedOptions;
+            return this;
+        }
+
 
         public ExternalMallProductContext build() {
             return new ExternalMallProductContext(this);

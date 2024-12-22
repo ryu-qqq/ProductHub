@@ -28,5 +28,6 @@ public record ExternalProductGroup(
         String externalExtraCategoryId,
         LocalDateTime insertTime,
         LocalDateTime updateTime,
+        List<ExternalProduct> externalProducts,
         List<ExternalProductImage> externalProductImages
 ) {}

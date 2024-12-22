@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.category;
 
-import com.ryuqq.setof.storage.db.core.category.MappingCategoryQueryRepository;
+import com.ryuqq.setof.db.core.category.MappingCategoryQueryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

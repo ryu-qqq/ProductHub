@@ -1,6 +1,6 @@
 package com.ryuqq.setof.domain.core.product;
 
-import com.ryuqq.setof.storage.db.core.product.dto.ProductStyleCodeDto;
+import com.ryuqq.setof.db.core.product.dto.ProductStyleCodeDto;
 
 public record ProductStyleCodeCommand(
         long productGroupId,

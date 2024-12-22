@@ -2,6 +2,7 @@ package com.ryuqq.setof.support.external.core.oco;
 
 import com.ryuqq.setof.enums.core.OptionType;
 import com.ryuqq.setof.support.external.core.ExternalMallOptionContext;
+import com.ryuqq.setof.support.external.core.ExternalMallProductContext;
 import com.ryuqq.setof.support.external.core.ExternalSyncProduct;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoOptionDto;
 import com.ryuqq.setof.support.external.core.oco.dto.OcoOptionContextDto;
@@ -12,9 +13,19 @@ import java.util.List;
 @Component
 public class OcoOptionMapper {
 
-    public OcoOptionContextDto generateOptionContext(ExternalMallOptionContext externalMallOptionContext) {
+    public OcoOptionContextDto generateOptionContext(String externalProductGroupId, ExternalMallOptionContext externalMallOptionContext) {
+
         List<ExternalSyncProduct> products = externalMallOptionContext.products();
         OptionType optionType = externalMallOptionContext.optionType();
+
+        Integer pid;
+
+        if(externalProductGroupId != null && !externalProductGroupId.isBlank()) {
+            pid = Integer.parseInt(externalProductGroupId);
+        } else {
+            pid = null;
+        }
+
 
         List<OcoOptionDto> options = products.stream()
                 .map(p -> {
@@ -23,9 +34,14 @@ public class OcoOptionMapper {
                         optionData2 = p.options().get(1).optionValue();
                     }
                     return new OcoOptionDto(
+                            p.optionId() == null ? null : Integer.parseInt(p.optionId()),
+                            pid,
                             p.option(),
                             optionData2,
-                            p.quantity()
+                            p.quantity(),
+                            "Y",
+                            0
+
                     );
                 })
                 .toList();
